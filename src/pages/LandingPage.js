@@ -2,8 +2,15 @@ import React, { useEffect, useState } from 'react';
 import tw from "twin.macro";
 import { getJobs } from "services/api.service";
 
-const Button = tw.button`p-2 bg-green-600 rounded-lg font-bold text-white mt-5 hover:bg-gray-600`;
-const Container = tw.div`w-full p-20 h-screen`;
+const Container = tw.div`w-full text-gray-800`;
+const Header = tw.header`py-24 md:py-48 text-center  grid place-items-center h-screen`;
+const HeaderContent = tw.div`p-8`;
+const Heading = tw.h1`text-green-500 text-6xl md:text-8xl font-bold`;
+const Description = tw.p`text-lg my-8 tracking-wide text-gray-700`;
+const ButtonRow = tw.div`mt-4 flex flex-col md:flex-row md:justify-between`;
+const Button = tw.button`px-24 py-3 mx-4 rounded-lg font-bold text-white mt-5 hocus:bg-green-600`;
+const SignUpButton = tw(Button)`bg-green-500`;
+const LogInButton = tw(Button)`border border-green-500 text-green-500 hocus:text-white`;
 
 const LandingPage = () => {
 
@@ -64,7 +71,17 @@ const LandingPage = () => {
 
     return (
         <Container>
-            <h1 className="text-4xl font-bold">Fetched Jobs</h1>
+            <Header>
+                <HeaderContent>
+                    <Heading>DevJobs</Heading>
+                    <Description>Lorem ipsum dolor sit amet, consectetur adipiscing elit</Description>
+                    <ButtonRow>
+                        <LogInButton>Sign In</LogInButton>
+                        <SignUpButton>Sign Up</SignUpButton>
+                    </ButtonRow>
+                    <p tw="my-8 text-gray-500">You need to have an account to register/post jobs</p>
+                </HeaderContent>
+            </Header>
 
             {loading ? (
                 <p>Loading please wait</p>
