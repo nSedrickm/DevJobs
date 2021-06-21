@@ -1,7 +1,7 @@
 import React from 'react';
 import "styles/output.css";
 import LandingPage from 'pages/LandingPage';
-import { Navbar } from "components";
+import { Navbar, Footer } from "components";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 function App() {
@@ -13,6 +13,7 @@ function App() {
           <LandingPage />
         </Route>
       </Switch>
+      <Footer />
     </BrowserRouter>
   );
 }

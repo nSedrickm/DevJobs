@@ -129,7 +129,7 @@ const LandingPage = () => {
             <p tw="text-center text-3xl text-green-600 font-bold cursor-pointer my-12" onClick={() => handleRefresh()}>See More Jobs</p>
             <hr tw="mx-12" />
 
-            <HeaderContent tw="my-12">
+            <HeaderContent tw="my-12 text-center">
                 <h4 tw="text-gray-500 text-3xl font-bold">To see And Post More Job Offers</h4>
                 <ButtonRow>
                     <ButtonOutline>Sign In</ButtonOutline>
