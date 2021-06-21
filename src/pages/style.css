@@ -1,0 +1,12 @@
+.App {
+  padding: 10px 100px;
+  border-bottom : 1px solid dodgerblue;
+}
+
+.job {
+  padding: 25px 0;
+}
+
+.button {
+  padding: 10px;
+}
