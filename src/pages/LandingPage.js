@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import tw from "twin.macro";
 import { getJobs } from "services/api.service";
-import "pages/style.css";
 
-const Button = tw.button`p-4 bg-green-600 rounded-lg font-bold text-white mt-5 hover:bg-gray-600`;
+const Button = tw.button`p-2 bg-green-600 rounded-lg font-bold text-white mt-5 hover:bg-gray-600`;
+const Container = tw.div`w-full p-20 h-screen`;
 
 const LandingPage = () => {
 
@@ -63,9 +63,8 @@ const LandingPage = () => {
     }
 
     return (
-        <div className="App">
-            <h1>Fetched Jobs</h1>
-            <Button onClick={() => handleRefresh()}>refresh jobs</Button>
+        <Container>
+            <h1 className="text-4xl font-bold">Fetched Jobs</h1>
 
             {loading ? (
                 <p>Loading please wait</p>
@@ -75,7 +74,7 @@ const LandingPage = () => {
                         jobs?.map(job => {
                             return (
                                 <div
-                                    className="job"
+                                    className="p-4 my-4 shadow-lg bg-gray-100"
                                     key={job.pk}
                                 >
                                     <p key="1">pk: {job.pk}</p>
@@ -94,19 +93,10 @@ const LandingPage = () => {
                 </>
             )}
 
+            <Button onClick={() => handleRefresh()}>refresh jobs</Button>
 
-            <div className="bg-gray-900 p-20 h-screen flex justify-center items-start flex-col">
-                <h1 className="text-5xl text-white">Hello Tailwind 👋</h1>
-                <p className="text-gray-400 mt-5 text-lg">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit
-                    consequuntur odio aut nobis ab quis? Reiciendis doloremque ut quo fugiat
-                    eveniet tempora, atque alias earum ullam inventore itaque sapiente iste?
-                </p>
-                <button class="p-4 bg-green-600 rounded-lg font-bold text-white mt-5 hover:bg-gray-600">
-                    Hello Friends 🚀
-                </button>
-            </div>
-        </div>
+        </Container>
+
     )
 }
 
