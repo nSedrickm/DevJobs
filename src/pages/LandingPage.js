@@ -1,17 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import tw from "twin.macro";
+import styled from "styled-components";
+import heroBg from "images/hero.svg";
 import { getJobs } from "services/api.service";
 
 const Container = tw.div`w-full text-gray-800`;
-const Header = tw.header`pt-24 md:py-32 text-center md:h-screen md:relative`;
+const Header = styled.header`
+  ${tw`pt-24 md:py-32 text-center md:h-screen md:relative`}
+  background-image: url(${heroBg});
+  background-size: contain;
+  background-position: top center;
+  background-repeat: no-repeat;
+`;
 const HeaderContent = tw.div`grid place-items-center p-8`;
 const JobsNav = tw.div`lg:absolute bottom-20 inset-x-12 flex flex-col md:flex-row justify-between`;
-const Heading = tw.h1`text-green-500 text-6xl md:text-8xl font-bold`;
+const Heading = tw.h1`text-green-600 text-6xl md:text-8xl font-bold`;
 const Description = tw.p`text-lg my-8 tracking-wide text-gray-700`;
 const ButtonRow = tw.div`mt-4 flex flex-col md:flex-row md:justify-between`;
-const Button = tw.button`px-24 py-3 mx-4 rounded-lg font-bold text-white mt-5 hocus:bg-green-600`;
-const ButtonPrimary = tw(Button)`bg-green-500`;
-const ButtonOutline = tw(Button)`border border-green-500 text-green-500 hocus:text-white`;
+const Button = tw.button`px-24 py-3 mx-4 rounded-lg font-bold text-white mt-5 hocus:bg-green-700`;
+const ButtonPrimary = tw(Button)`bg-green-600`;
+const ButtonOutline = tw(Button)`border border-green-600 text-green-600 hocus:text-white`;
 
 const LandingPage = () => {
 
@@ -85,7 +93,7 @@ const LandingPage = () => {
                 <JobsNav>
                     <h2 tw="font-bold text-2xl mb-4">Posted Jobs</h2>
                     <ul tw="inline-flex items-center text-sm md:text-base font-bold">
-                        <li tw="cursor-pointer px-4 py-1 mx-2 bg-green-100 text-green-600">New Jobs</li>
+                        <li tw="cursor-pointer px-4 py-1 mx-2 bg-green-100 text-green-700">New Jobs</li>
                         <li>|</li>
                         <li tw="cursor-pointer px-4 py-1 mx-2">1 Week Ago</li>
                         <li>|</li>
@@ -106,7 +114,7 @@ const LandingPage = () => {
                         {jobs.length && (
                             jobs?.map(job => {
                                 return (
-                                    <div className="p-8 my-4 rounded-lg shadow-lg md:w-1/3 text-gray-500 border hover:border-green-500" key={job.pk} >
+                                    <div className="p-8 my-4 rounded-lg shadow-lg md:w-1/3 text-gray-500 border hover:border-green-600" key={job.pk} >
                                         <div tw="mb-4">
                                             <h3 tw="font-bold text-3xl mb-4 text-gray-700">{job.title}</h3>
                                             <p>Company : {job.company_name}</p>
@@ -117,8 +125,8 @@ const LandingPage = () => {
                                             <p>Users Applied": {job.users_applied}</p>
                                             <p>Created Date": {job.created_date}</p>
                                         </div>
-                                        <button tw="w-full p-2 rounded font-bold bg-green-500 hocus:bg-green-600 text-white mb-2">Apply</button>
-                                        <a a href={job.url} tw="block text-center w-full p-2 rounded font-bold text-green-500 border border-green-500 hocus:bg-green-600 hocus:text-white">See Full Details</a>
+                                        <button tw="w-full p-2 rounded font-bold bg-green-600 hocus:bg-green-700 text-white mb-2">Apply</button>
+                                        <a a href={job.url} tw="block text-center w-full p-2 rounded font-bold text-green-600 border border-green-600 hocus:bg-green-700 hocus:text-white">See Full Details</a>
                                     </div>
                                 )
                             }))}
@@ -126,7 +134,7 @@ const LandingPage = () => {
                 )}
             </div>
 
-            <p tw="text-center text-3xl text-green-600 font-bold cursor-pointer my-12" onClick={() => handleRefresh()}>See More Jobs</p>
+            <p tw="text-center text-3xl text-green-700 font-bold cursor-pointer my-12" onClick={() => handleRefresh()}>See More Jobs</p>
             <hr tw="mx-12" />
 
             <HeaderContent tw="my-12 text-center">
