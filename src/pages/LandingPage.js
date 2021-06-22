@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import tw from "twin.macro";
 import styled from "styled-components";
 import heroBg from "images/hero.svg";
+import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
 import { getJobs } from "services/api.service";
 
 const Container = tw.div`w-full text-gray-800`;
@@ -17,9 +19,9 @@ const JobsNav = tw.div`lg:absolute bottom-20 inset-x-12 flex flex-col md:flex-ro
 const Heading = tw.h1`text-green-600 text-6xl md:text-8xl font-bold`;
 const Description = tw.p`text-lg my-8 tracking-wide text-gray-700`;
 const ButtonRow = tw.div`mt-4 flex flex-col md:flex-row md:justify-between`;
-const Button = tw.button`px-24 py-3 mx-4 rounded-lg font-bold text-white mt-5 hocus:bg-green-700`;
+const Button = tw(Link)`px-24 py-3 mx-4 rounded-lg font-bold text-white mt-5 hover:bg-green-700`;
 const ButtonPrimary = tw(Button)`bg-green-600`;
-const ButtonOutline = tw(Button)`border border-green-600 text-green-600 hocus:text-white`;
+const ButtonOutline = tw(Button)`border border-green-600 text-green-600 hover:text-white`;
 
 const LandingPage = () => {
 
@@ -38,15 +40,15 @@ const LandingPage = () => {
                 if (error.response) {
                     // The request was made and the server responded with a status code
                     // that falls out of the range of 2xx
-                    window.alert("An error occured, could not get jobs")
+                    toast.error("An error occured, could not get jobs")
                 } else if (error.request) {
                     // The request was made but no response was received
                     // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
                     // http.ClientRequest in node.js
-                    window.alert("An error occured, could not get jobs")
+                    toast.error("An error occured, could not get jobs")
                 } else {
                     // Something happened in setting up the request that triggered an Error
-                    window.alert("An error occured, could not get jobs")
+                    toast.error("An error occured, could not get jobs")
                 }
                 setLoading(false);
             });
@@ -57,22 +59,21 @@ const LandingPage = () => {
         getJobs()
             .then(response => {
                 setJobs(response.data);
-                console.log(response.data);
                 setLoading(false);
             })
             .catch(error => {
                 if (error.response) {
                     // The request was made and the server responded with a status code
                     // that falls out of the range of 2xx
-                    window.alert("An error occured, could not get jobs")
+                    toast.error("An error occured, could not get jobs")
                 } else if (error.request) {
                     // The request was made but no response was received
                     // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
                     // http.ClientRequest in node.js
-                    window.alert("An error occured, could not get jobs")
+                    toast.error("An error occured, could not get jobs")
                 } else {
                     // Something happened in setting up the request that triggered an Error
-                    window.alert("An error occured, could not get jobs")
+                    toast.error("An error occured, could not get jobs")
                 }
                 setLoading(false);
             });
@@ -85,8 +86,8 @@ const LandingPage = () => {
                     <Heading>DevJobs</Heading>
                     <Description>Lorem ipsum dolor sit amet, consectetur adipiscing elit</Description>
                     <ButtonRow>
-                        <ButtonOutline>Sign In</ButtonOutline>
-                        <ButtonPrimary>Sign Up</ButtonPrimary>
+                        <ButtonOutline to="/login">Sign In</ButtonOutline>
+                        <ButtonPrimary to="/register">Sign Up</ButtonPrimary>
                     </ButtonRow>
                     <p tw="my-8 text-gray-500">You need to have an account to register/post jobs</p>
                 </HeaderContent>
@@ -140,8 +141,8 @@ const LandingPage = () => {
             <HeaderContent tw="my-12 text-center">
                 <h4 tw="text-gray-500 text-3xl font-bold">To see And Post More Job Offers</h4>
                 <ButtonRow>
-                    <ButtonOutline>Sign In</ButtonOutline>
-                    <ButtonPrimary>Sign Up</ButtonPrimary>
+                    <ButtonOutline to="/login">Sign In</ButtonOutline>
+                    <ButtonPrimary to="/register">Sign Up</ButtonPrimary>
                 </ButtonRow>
                 <p tw="my-8 text-gray-500">You need to have an account to register/post jobs</p>
             </HeaderContent>
