@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 const MainHeader = tw.div``;
 const Brand = tw.img`font-bold text-4xl text-green-600 ml-2 p-2 mr-auto`;
 const Nav = tw.nav`inline-flex`;
-const NavLink = tw(Link)`inline-flex px-4 py-2 hocus:text-green-700 hocus:font-bold`;
+const NavLink = tw(Link)`inline-flex px-4 py-2 hocus:text-green-700`;
 const Input = tw.input`border border-green-600 w-96 my-2 p-1.5 px-8 rounded-md bg-opacity-90 hocus:outline-none`;
 const Button = tw(Link)`inline-flex px-4 py-2 mx-2 rounded-md font-bold hover:bg-green-700`;
 const SearchBar = tw.div`relative mx-auto`;
@@ -29,10 +29,10 @@ const Navbar = () => {
                     <SearchIcon />
                 </SearchBar>
                 <Nav>
-                    <NavLink to="/" className="text-green-600">Home</NavLink>
+                    <NavLink to="/" tw="text-green-600">Home</NavLink>
                     <NavLink to="/employers">Employer (Post Jobs)</NavLink>
-                    <Button to="/login" className="bg-green-600 text-white">Sign In</Button>
-                    <Button to="/register" className="border border-green-600 text-green-600  hover:text-white">Sign Up</Button>
+                    <Button to="/login" tw="bg-green-600 text-white">Sign In</Button>
+                    <Button to="/register" tw="border border-green-600 text-green-600  hover:bg-green-100">Sign Up</Button>
                 </Nav>
             </DesktopNav>
             <MobileNav>

@@ -21,7 +21,7 @@ const Description = tw.p`text-lg my-8 tracking-wide text-gray-700`;
 const ButtonRow = tw.div`mt-4 flex flex-col md:flex-row md:justify-between`;
 const Button = tw(Link)`px-24 py-3 mx-4 rounded-lg font-bold text-white mt-5 hover:bg-green-700`;
 const ButtonPrimary = tw(Button)`bg-green-600`;
-const ButtonOutline = tw(Button)`border border-green-600 text-green-600 hover:text-white`;
+const ButtonOutline = tw(Button)`border border-green-600 text-green-600 hover:bg-green-100`;
 
 const LandingPage = () => {
 
@@ -115,7 +115,7 @@ const LandingPage = () => {
                         {jobs.length && (
                             jobs?.map(job => {
                                 return (
-                                    <div className="p-8 my-4 rounded-lg shadow-lg md:w-1/3 text-gray-500 border hover:border-green-600" key={job.pk} >
+                                    <div className="p-8 my-4 rounded-xl shadow-md md:w-1/3 text-gray-500 border hover:border-green-600 hover:shadow-none" key={job.pk} >
                                         <div tw="mb-4">
                                             <h3 tw="font-bold text-3xl mb-4 text-gray-700">{job.title}</h3>
                                             <p>Company : {job.company_name}</p>
@@ -127,7 +127,7 @@ const LandingPage = () => {
                                             <p>Created Date": {job.created_date}</p>
                                         </div>
                                         <button tw="w-full p-2 rounded font-bold bg-green-600 hocus:bg-green-700 text-white mb-2">Apply</button>
-                                        <a a href={job.url} tw="block text-center w-full p-2 rounded font-bold text-green-600 border border-green-600 hocus:bg-green-700 hocus:text-white">See Full Details</a>
+                                        <a a href={job.url} tw="block text-center w-full p-2 rounded font-bold text-green-600 border border-green-600 hocus:bg-green-100">See Full Details</a>
                                     </div>
                                 )
                             }))}
