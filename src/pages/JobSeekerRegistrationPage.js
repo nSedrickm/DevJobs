@@ -213,18 +213,39 @@ const JobSeekerRegistrationPage = () => {
                             <h1 tw="text-xl sm:text-2xl  font-bold ">About Me</h1>
                         </header>
 
-                        <div tw="w-full sm:w-2/3 md:w-1/2  mx-auto bg-white md:shadow-lg md:rounded-xl">
+                        <div tw="w-full sm:w-2/3 md:w-3/5  mx-auto bg-white md:shadow-lg md:rounded-xl">
 
                             <form tw="p-4 sm:p-8">
                                 <label tw="block text-center mb-2">About Me</label>
                                 <TextArea rows="8"></TextArea>
 
-
-
-
-                                <button onClick={() => dispatch({ type: "changeStage", payload: 6 })} tw="w-full p-2 bg-green-600 text-center font-bold text-white rounded-md mt-2">Next</button>
+                                <button onClick={() => dispatch({ type: "changeStage", payload: 8 })} tw="w-2/3 lg:w-1/3 block mx-auto p-2 bg-green-600 text-center font-bold text-white rounded-md mt-2">Next</button>
                             </form>
                         </div>
+                    </>
+                )}
+
+                {state.stage === 8 && (
+                    <>
+                        <header tw="w-full flex justify-center items-center my-4">
+                            <BsPeopleCircle size={24} tw="mr-4 text-green-600" />
+                            <h1 tw="text-xl sm:text-2xl  font-bold ">Cv/Resume Information</h1>
+                        </header>
+
+                        <div tw="w-full sm:w-2/3  mx-auto md:rounded-xl">
+
+                            <form tw="bg-green-100 h-48 my-8 text-center p-4 sm:p-8">
+                                <p tw="my-2 text-sm">This is top priority</p>
+                                <label tw="block text-center my-2 font-bold">Cv/Resume</label>
+                                <p tw="text-gray-500 text-sm my-4 text-center mx-auto my-2">Name of uploaded file</p>
+                                <button tw="md:w-1/3 inline-flex justify-center items-center px-6 py-2 bg-white font-bold text-green-600 rounded-md my-2">Upload &nbsp; <FiUploadCloud size={20} /></button>
+                            </form>
+
+                            <button onClick={() => dispatch({ type: "changeStage", payload: 8 })} tw="block w-1/3 mx-auto p-2 bg-green-600 text-center font-bold text-white rounded-md">Next</button>
+
+                        </div>
+
+
                     </>
                 )}
             </div>
