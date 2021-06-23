@@ -9,6 +9,7 @@ import LogInPage from 'pages/LogInPage';
 import RoleSelectPage from 'pages/RoleSelectPage';
 import PasswordResetPage from 'pages/PasswordResetPage';
 import JobSeekerRegistrationPage from 'pages/JobSeekerRegistrationPage';
+import EmployerRegistrationPage from 'pages/EmployerRegistrationPage';
 
 function App() {
   return (
@@ -30,6 +31,9 @@ function App() {
           </Route>
           <Route exact path="/job-seeker">
             <JobSeekerRegistrationPage />
+          </Route>
+          <Route exact path="/employer">
+            <EmployerRegistrationPage />
           </Route>
           <Route exact path="/reset-password">
             <PasswordResetPage />
