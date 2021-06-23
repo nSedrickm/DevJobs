@@ -1,9 +1,50 @@
-import React from "react";
+import React, { useReducer } from "react";
 import tw from "twin.macro";
 import { Link } from "react-router-dom";
 const Input = tw.input`border border-green-600 w-full mt-2 mb-4 p-2 px-4 placeholder-gray-400 text-sm rounded bg-opacity-90 hocus:outline-none focus:ring-green-600 focus:border-green-600`;
 
+const reducer = (state, action) => {
+    switch (action.type) {
+        case 'changeStage':
+            return {
+                ...state,
+                stage: action.payload
+            };
+        case 'loading':
+            return {
+                ...state,
+                loading: action.payload
+            };
+        default:
+            throw new Error();
+    }
+}
+
 const SignUpPage = () => {
+
+    const [state, dispatch] = useReducer(reducer, {
+        stage: 1,
+        loading: false
+    });
+
+    if (state.stage === 2) {
+        return (
+            <section tw="text-gray-600 lg:h-screen bg-white md:bg-gray-100">
+                <div tw="mx-auto py-12 md:p-24 md:m-24 lg:mx-36 bg-white md:shadow-lg md:rounded-xl">
+                    <header tw="text-center mb-8 p-4">
+                        <p tw="text-base mb-2">Step 1 Of 9</p>
+
+                        <h1 tw="text-2xl text-green-600 mb-4 font-bold">Confirm Your Email Address</h1>
+                        <p tw="text-lg">A Link Has Been Sent To Your Email Address Used To Register. Please Click The Link To Continue</p>
+                    </header>
+                    <div tw="">
+                        <button onClick={() => dispatch({ type: "changeStage", payload: 1 })} tw=" px-6 py-2 bg-green-600 text-center font-bold text-white rounded-md mx-auto block">Back</button>
+                    </div>
+                </div>
+            </section>
+        )
+    }
+
     return (
         <section tw="text-gray-600 lg:h-screen bg-white md:bg-gray-100">
             <div tw="mx-auto py-12 md:m-24 lg:mx-36 bg-white md:shadow-lg md:rounded-xl">
@@ -27,22 +68,22 @@ const SignUpPage = () => {
                             <Input type="text" placeholder="email@example.com" />
 
                             <label tw="block text-green-600 text-sm">Password</label>
-                            <Input type="password" placholder="do not share" />
+                            <Input type="password" />
 
                             <label tw="block text-green-600 text-sm">Confirm Password</label>
-                            <Input type="password" placholder="do not share" />
+                            <Input type="password" />
 
-                            <button type="submit" tw="w-full p-2 bg-green-600 text-center font-bold text-white rounded-md">Sign Up</button>
+                            <button onClick={() => dispatch({ type: "changeStage", payload: 2 })} tw="w-full p-2 bg-green-600 text-center font-bold text-white rounded-md">Sign Up</button>
                             <small tw="text-center my-4 mx-auto block">Already have an account <Link to="/login" tw="text-green-600 font-bold">Sign In</Link></small>
 
                         </form>
-
 
                     </div>
                 </div>
             </div>
         </section>
     )
+
 }
 
 export default SignUpPage;

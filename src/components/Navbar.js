@@ -12,7 +12,7 @@ const Input = tw.input`border border-green-600 w-96 my-2 p-1.5 px-8 rounded-md b
 const Button = tw(Link)`inline-flex px-4 py-2 mx-2 rounded-md font-bold hover:bg-green-700`;
 const SearchBar = tw.div`relative mx-auto`;
 const SearchIcon = tw(FiSearch)`absolute left-2 inset-y-5`;
-const DesktopNav = tw.div`hidden lg:flex items-center justify-between h-20 px-4`;
+const DesktopNav = tw.div`hidden lg:flex items-center justify-between h-16 px-4`;
 const MobileNav = tw.div`lg:hidden flex items-center justify-between h-20 shadow-lg px-4 rounded-b-2xl`;
 
 const Navbar = () => {
