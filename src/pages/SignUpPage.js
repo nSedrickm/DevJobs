@@ -1,6 +1,7 @@
 import React, { useReducer } from "react";
 import tw from "twin.macro";
 import { Link } from "react-router-dom";
+
 const Input = tw.input`border border-green-600 w-full mt-2 mb-4 p-2 px-4 placeholder-gray-400 text-sm rounded bg-opacity-90 hocus:outline-none focus:ring-green-600 focus:border-green-600`;
 
 const reducer = (state, action) => {
@@ -74,7 +75,7 @@ const SignUpPage = () => {
                             <Input type="password" />
 
                             <button onClick={() => dispatch({ type: "changeStage", payload: 2 })} tw="w-full p-2 bg-green-600 text-center font-bold text-white rounded-md">Sign Up</button>
-                            <small tw="text-center my-4 mx-auto block">Already have an account <Link to="/login" tw="text-green-600 font-bold">Sign In</Link></small>
+                            <p tw="text-center my-4 mx-auto block">Already have an account <Link to="/login" tw="text-green-600 font-bold">Sign In</Link></p>
 
                         </form>
 

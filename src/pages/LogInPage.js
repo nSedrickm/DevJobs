@@ -30,7 +30,10 @@ const LogInPage = () => {
                             <Input type="password" />
 
                             <button tw="w-full p-2 bg-green-600 text-center font-bold text-white rounded-md">Sign In</button>
-                            <small tw="text-center my-4 mx-auto block">Dont Have An Account Yet?  <Link to="/signup" tw="text-green-600 font-bold">Sign Up</Link></small>
+
+                            <Link to="/reset-password" tw="text-green-600 my-6 block text-center">Forgot Password</Link>
+
+                            <p tw="text-center my-4 mx-auto block">Dont Have An Account Yet?  <Link to="/signup" tw="text-green-600 font-bold">Sign Up</Link></p>
 
                         </form>
 
