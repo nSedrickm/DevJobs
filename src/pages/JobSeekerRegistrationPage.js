@@ -33,6 +33,26 @@ const JobSeekerRegistrationPage = () => {
         loading: false
     });
 
+
+    // after developer completes registeration you can sign them in auto or redirect to login page
+    // on signin display homepage
+    if (state.stage === 9) {
+        return (
+            <section tw="text-gray-600 bg-white md:bg-gray-100">
+                <div tw="mx-auto py-12 md:w-2/3 my-24 md:my-48 bg-white md:shadow-lg md:rounded-xl">
+                    <header tw="text-center mb-4 p-8">
+                        <h1 tw="text-3xl text-green-600 mb-4 font-bold">Congratulations</h1>
+                        <p tw="text-sm">welcome to a faster way of applying for jobs with just two clicks</p>
+                    </header>
+                    <div tw="text-center">
+                        <Link to="/login" tw="block w-2/3 md:w-1/3 mx-auto p-2 bg-green-600  text-center font-bold text-white rounded-md">Next</Link>
+                    </div>
+                </div>
+            </section>
+        )
+    }
+
+
     return (
         <section tw="text-gray-600  bg-white md:bg-gray-100  p-8">
             <div tw="mx-auto py-12 mb-12">
@@ -241,13 +261,11 @@ const JobSeekerRegistrationPage = () => {
                                 <button tw="md:w-1/3 inline-flex justify-center items-center px-6 py-2 bg-white font-bold text-green-600 rounded-md my-2">Upload &nbsp; <FiUploadCloud size={20} /></button>
                             </form>
 
-                            <button onClick={() => dispatch({ type: "changeStage", payload: 8 })} tw="block w-1/3 mx-auto p-2 bg-green-600 text-center font-bold text-white rounded-md">Next</button>
-
+                            <button onClick={() => dispatch({ type: "changeStage", payload: 9 })} tw="block w-1/3 mx-auto p-2 bg-green-600 text-center font-bold text-white rounded-md">Next</button>
                         </div>
-
-
                     </>
                 )}
+
             </div>
         </section>
     )
