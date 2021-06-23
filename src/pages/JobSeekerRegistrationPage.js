@@ -2,7 +2,7 @@ import React, { useReducer } from "react";
 import tw from "twin.macro";
 import { Link } from "react-router-dom";
 import { FiUploadCloud } from "react-icons/fi";
-import { BsArrowRight, BsPeopleCircle } from "react-icons/bs";
+import { BsArrowRight, BsPeopleCircle, BsPersonBoundingBox } from "react-icons/bs";
 
 const Input = tw.input`border border-gray-600 w-full mt-2 mb-4 p-2 px-4 placeholder-gray-400 text-sm rounded bg-opacity-90 hocus:outline-none focus:ring-green-600 focus:border-green-600`;
 const Select = tw.select`border border-gray-600 w-full mt-2 mb-4 p-2 px-4 placeholder-gray-400 text-sm rounded bg-opacity-90 hocus:outline-none focus:ring-green-600 focus:border-green-600`;
@@ -64,15 +64,40 @@ const JobSeekerRegistrationPage = () => {
                     <h1 tw="text-3xl text-green-600 mb-4 font-bold">Job Seeker Profile</h1>
                     <p tw="text-base">We Need These Details To Help You Get Jobs Related To Your Profile</p>
                     <ul tw="hidden md:inline-flex items-center text-sm md:text-base font-semibold mt-8">
-                        <li className={state.stage === 3 && "text-green-600"} tw="cursor-pointer px-4 py-1 mx-2">Personal Information</li>
+                        <li onClick={() => dispatch({ type: "changeStage", payload: 3 })}
+                            className={state.stage === 3 && "text-green-600"}
+                            tw="cursor-pointer px-4 py-1 mx-2"
+                        >
+                            Personal Information
+                        </li>
                         <li><BsArrowRight size={24} /></li>
-                        <li className={state.stage === 4 && "text-green-600"} tw="cursor-pointer px-4 py-1 mx-2">Contact Information</li>
+                        <li onClick={() => dispatch({ type: "changeStage", payload: 4 })}
+                            className={state.stage === 4 && "text-green-600"}
+                            tw="cursor-pointer px-4 py-1 mx-2"
+                        >
+                            Contact Information
+                        </li>
                         <li><BsArrowRight size={24} /></li>
-                        <li className={state.stage === 5 && "text-green-600"} tw="cursor-pointer px-4 py-1 mx-2">Stack/Role Information</li>
+                        <li onClick={() => dispatch({ type: "changeStage", payload: 5 })}
+                            className={state.stage === 5 && "text-green-600"}
+                            tw="cursor-pointer px-4 py-1 mx-2"
+                        >
+                            Stack/Role Information
+                        </li>
                         <li><BsArrowRight size={24} /></li>
-                        <li className={state.stage === 6 && "text-green-600"} tw="cursor-pointer px-4 py-1 mx-2">About Me</li>
+                        <li onClick={() => dispatch({ type: "changeStage", payload: 6 })}
+                            className={state.stage === 6 && "text-green-600"}
+                            tw="cursor-pointer px-4 py-1 mx-2"
+                        >
+                            About Me
+                        </li>
                         <li><BsArrowRight size={24} /></li>
-                        <li className={state.stage === 7 && "text-green-600"} tw="cursor-pointer px-4 py-1 mx-2">Cv/Resume</li>
+                        <li onClick={() => dispatch({ type: "changeStage", payload: 7 })}
+                            className={state.stage === 7 && "text-green-600"}
+                            tw="cursor-pointer px-4 py-1 mx-2"
+                        >
+                            Cv/Resume
+                        </li>
                     </ul>
                 </header>
 
@@ -121,33 +146,25 @@ const JobSeekerRegistrationPage = () => {
                     <>
                         <header tw="w-full flex justify-center items-center my-4">
                             <BsPeopleCircle size={24} tw="mr-4 text-green-600" />
-                            <h1 tw="text-2xl  font-bold ">Personal Information</h1>
+                            <h1 tw="text-2xl  font-bold ">Contact Information</h1>
                         </header>
 
                         <div tw="w-full sm:w-2/3 md:w-1/2 lg:w-1/3 mx-auto bg-white md:shadow-lg md:rounded-xl">
 
                             <form tw="p-8">
-                                <label tw="block">First Name</label>
-                                <Input type="text" placeholder="John Doe" />
+                                <label tw="block">Email</label>
+                                <Input type="email" placeholder="email@example.com" />
 
-                                <label tw="block">Last Name</label>
-                                <Input type="text" placeholder="John Doe" />
+                                <label tw="block">Github</label>
+                                <Input type="text" placeholder="username" />
 
-                                <label tw="block">Age</label>
-                                <Input type="number" placeholder="John Doe" />
+                                <label tw="block">Twitter</label>
+                                <Input type="text" placeholder="username" />
 
-                                <label tw="block">Gender</label>
-                                <Select >
-                                    <option value="" hidden>please select your gender</option>
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
-                                </Select>
+                                <label tw="block">Instagram</label>
+                                <Input type="text" placeholder="username" />
 
-                                <label tw="block">Upload Picture</label>
-                                <button tw="w-full inline-flex justify-center items-center px-6 py-2 border border-green-500 hocus:bg-green-100 text-green-600 rounded-md mt-2">Upload &nbsp; <FiUploadCloud /></button>
-
-                                <p tw="text-gray-500 my-4 text-center mx-auto">Name of uploaded file</p>
-                                <button onClick={() => dispatch({ type: "changeStage", payload: 4 })} tw="w-full p-2 bg-green-600 text-center font-bold text-white rounded-md mt-2">Next</button>
+                                <button onClick={() => dispatch({ type: "changeStage", payload: 5 })} tw="w-full p-2 bg-green-600 text-center font-bold text-white rounded-md mt-2">Next</button>
                             </form>
                         </div>
                     </>
