@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { FiUploadCloud } from "react-icons/fi";
 import { BsArrowRight, BsPeopleCircle } from "react-icons/bs";
 import { GrStackOverflow } from "react-icons/gr";
+import { ImLocation2 } from "react-icons/im";
 
 const Input = tw.input`border border-gray-600 w-full mt-2 mb-4 p-2 px-4 placeholder-gray-400 text-sm rounded bg-opacity-90 hocus:outline-none focus:ring-green-600 focus:border-green-600`;
 const Select = tw.select`border border-gray-600 w-full mt-2 mb-4 p-2 px-4 placeholder-gray-400 text-sm rounded bg-opacity-90 hocus:outline-none focus:ring-green-600 focus:border-green-600`;
@@ -203,7 +204,7 @@ const JobSeekerRegistrationPage = () => {
                 {state.stage === 6 && (
                     <>
                         <header tw="w-full flex justify-center items-center my-4">
-                            <GrStackOverflow size={24} tw="mr-4 text-green-600" />
+                            <ImLocation2 size={24} tw="mr-4 text-green-600" />
                             <h1 tw="text-xl sm:text-2xl  font-bold ">Location Information</h1>
                         </header>
 

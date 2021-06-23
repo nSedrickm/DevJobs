@@ -4,10 +4,12 @@ import { Link } from "react-router-dom";
 import { FiUploadCloud } from "react-icons/fi";
 import { BsArrowRight, BsBuilding, BsPeopleCircle } from "react-icons/bs";
 import { GrStackOverflow } from "react-icons/gr";
+import { ImLocation2 } from "react-icons/im";
 
 const Input = tw.input`border border-gray-600 w-full mt-2 mb-4 p-2 px-4 placeholder-gray-400 text-sm rounded bg-opacity-90 hocus:outline-none focus:ring-green-600 focus:border-green-600`;
 const Select = tw.select`border border-gray-600 w-full mt-2 mb-4 p-2 px-4 placeholder-gray-400 text-sm rounded bg-opacity-90 hocus:outline-none focus:ring-green-600 focus:border-green-600`;
-const TextArea = tw.textarea`w-full rounded-lg mb-6 hocus:outline-none focus:ring-green-600 focus:border-green-600`;
+const TextArea = tw.textarea`w-full rounded-lg mt-2 mb-6 hocus:outline-none focus:ring-green-600 focus:border-green-600`;
+const RadioInput = tw.input`border border-green-600 w-5 h-5 mr-4 rounded-full hocus:outline-none focus:ring-0 focus:border-green-600 text-green-600`;
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -143,25 +145,45 @@ const EmployerRegistrationPage = () => {
                 {state.stage === 4 && (
                     <>
                         <header tw="w-full flex justify-center items-center my-4">
-                            <BsPeopleCircle size={24} tw="mr-4 text-green-600" />
-                            <h1 tw="text-2xl  font-bold ">Contact Information</h1>
+                            <ImLocation2 size={24} tw="mr-4 text-green-600" />
+                            <h1 tw="text-2xl  font-bold ">Company/Job Location</h1>
                         </header>
 
                         <div tw="w-full sm:w-2/3 md:w-1/2 lg:w-1/3 mx-auto bg-white md:shadow-lg md:rounded-xl">
 
                             <form tw="p-4 sm:p-8">
+                                <label tw="w-full p-2 px-4 text-green-600 rounded-md  inline-flex items-center border border-green-600">
+                                    <RadioInput type="radio" name="role" />
+                                    <span>Remote</span>
+                                </label>
+                                <small tw="text-green-600 mb-3 mt-1 block">if selected click next otherwise continue below</small>
+
                                 <label tw="block">Email</label>
                                 <Input type="email" placeholder="email@example.com" />
 
-                                <label tw="block">Github</label>
-                                <Input type="text" placeholder="username" />
+                                <label tw="block">Country</label>
+                                <Select >
+                                    <option value="" hidden>please select country</option>
+                                    <option value="Nigeria">Nigeria</option>
+                                    <option value="Cameroon">Cameroon</option>
+                                </Select>
 
-                                <label tw="block">Twitter</label>
-                                <Input type="text" placeholder="username" />
+                                <label tw="block">State</label>
+                                <Select >
+                                    <option value="" hidden>please select state</option>
+                                    <option value="male">Lagos</option>
+                                    <option value="female">Bamenda</option>
+                                </Select>
 
-                                <label tw="block">Instagram</label>
-                                <Input type="text" placeholder="username" />
+                                <label tw="block">City</label>
+                                <Select >
+                                    <option value="" hidden>please select city</option>
+                                    <option value="male">Lagos</option>
+                                    <option value="pretoria">Pretoria Island</option>
+                                </Select>
 
+                                <label tw="block">Precise Location<sup tw="text-red-500">*</sup></label>
+                                <TextArea rows="4"></TextArea>
                                 <button onClick={() => dispatch({ type: "changeStage", payload: 5 })} tw="w-full p-2 bg-green-600 text-center font-bold text-white rounded-md mt-2">Next</button>
                             </form>
                         </div>
