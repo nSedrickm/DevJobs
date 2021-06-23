@@ -1,13 +1,13 @@
 import React from 'react';
 import "styles/output.css";
+import { Navbar, Footer } from "components";
+import { Toaster } from 'react-hot-toast';
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import LandingPage from 'pages/LandingPage';
 import SignUpPage from 'pages/SignUpPage';
 import LogInPage from 'pages/LogInPage';
 import RoleSelectPage from 'pages/RoleSelectPage';
-
-import { Navbar, Footer } from "components";
-import { Toaster } from 'react-hot-toast';
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import PasswordResetPage from 'pages/PasswordResetPage';
 
 function App() {
   return (
@@ -26,6 +26,9 @@ function App() {
           </Route>
           <Route exact path="/role">
             <RoleSelectPage />
+          </Route>
+          <Route exact path="/reset-password">
+            <PasswordResetPage />
           </Route>
         </Switch>
         <Footer />
