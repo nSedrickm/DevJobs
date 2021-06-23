@@ -1,7 +1,7 @@
 import React, { useReducer } from "react";
 import tw from "twin.macro";
 import { Link } from "react-router-dom";
-import { FiUploadCloud } from "react-icons/fi";
+import { FiFileText, FiUploadCloud } from "react-icons/fi";
 import { BsArrowRight, BsBuilding, BsPeopleCircle } from "react-icons/bs";
 import { GrStackOverflow } from "react-icons/gr";
 import { ImLocation2 } from "react-icons/im";
@@ -56,7 +56,7 @@ const EmployerRegistrationPage = () => {
 
 
     return (
-        <section tw="text-gray-600  bg-white md:bg-gray-100  p-8">
+        <section tw="text-gray-600 bg-white md:bg-gray-100 p-8">
             <div tw="mx-auto py-12 mb-12">
                 <header tw="text-center">
                     <h1 tw="text-3xl text-green-600 mb-4 font-bold">Employer Profile</h1>
@@ -194,22 +194,32 @@ const EmployerRegistrationPage = () => {
                 {state.stage === 5 && (
                     <>
                         <header tw="w-full flex justify-center items-center my-4">
-                            <GrStackOverflow size={24} tw="mr-4 text-green-600" />
-                            <h1 tw="text-xl sm:text-2xl  font-bold ">Stack/Role Information</h1>
+                            <FiFileText size={24} tw="mr-4 text-green-600" />
+                            <h1 tw="text-xl sm:text-2xl  font-bold ">Job Details</h1>
                         </header>
 
                         <div tw="w-full sm:w-2/3 md:w-1/2 lg:w-1/3 mx-auto bg-white md:shadow-lg md:rounded-xl">
 
                             <form tw="p-4 sm:p-8">
-                                <label tw="block">Stack, Dev Role</label>
-                                <Input type="text" placeholder="Front End" />
+                                <label tw="block">Job Title</label>
+                                <Input type="text" placeholder="Front End Developer" />
 
-                                <label tw="block">Experience Level</label>
+                                <label tw="block">Number Of Hiers</label>
                                 <Input type="text" placeholder="5 years" />
 
-                                <label tw="block">Salary/Pay Range</label>
+                                <label tw="block">Experience Level</label>
                                 <Input type="text" placeholder="$150000" />
 
+                                <label tw="block">Expected Salary</label>
+                                <Input type="text" placeholder="$150000" />
+
+                                <label tw="block">Duration</label>
+                                <Select >
+                                    <option value="" hidden>please select duration</option>
+                                    <option value="full-time">Full time</option>
+                                    <option value="part-time">Part time</option>
+                                    <option value="contract">Contract</option>
+                                </Select>
 
                                 <button onClick={() => dispatch({ type: "changeStage", payload: 6 })} tw="w-full p-2 bg-green-600 text-center font-bold text-white rounded-md mt-2">Next</button>
                             </form>
