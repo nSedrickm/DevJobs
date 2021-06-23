@@ -3,6 +3,7 @@ import "styles/output.css";
 import LandingPage from 'pages/LandingPage';
 import SignUpPage from 'pages/SignUpPage';
 import LogInPage from 'pages/LogInPage';
+import RoleSelectPage from 'pages/RoleSelectPage';
 
 import { Navbar, Footer } from "components";
 import { Toaster } from 'react-hot-toast';
@@ -22,6 +23,9 @@ function App() {
           </Route>
           <Route exact path="/login">
             <LogInPage />
+          </Route>
+          <Route exact path="/role">
+            <RoleSelectPage />
           </Route>
         </Switch>
         <Footer />

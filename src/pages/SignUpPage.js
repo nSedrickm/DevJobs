@@ -2,7 +2,6 @@ import React, { useReducer } from "react";
 import tw from "twin.macro";
 import { Link } from "react-router-dom";
 const Input = tw.input`border border-green-600 w-full mt-2 mb-4 p-2 px-4 placeholder-gray-400 text-sm rounded bg-opacity-90 hocus:outline-none focus:ring-green-600 focus:border-green-600`;
-const RadioInput = tw.input`border border-green-600 w-6 h-6 mr-4 rounded-full hocus:outline-none focus:ring-0 focus:border-green-600 text-green-600`;
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -38,41 +37,8 @@ const SignUpPage = () => {
                         <p tw="text-lg">A Link Has Been Sent To Your Email Address Used To Register. Please Click The Link To Continue</p>
                     </header>
                     <div tw="text-center">
-                        <button onClick={() => dispatch({ type: "changeStage", payload: 1 })} tw=" px-8 py-2 mx-2 border border-green-600 hocus:bg-green-100 text-green-600 text-center font-bold rounded-md">Back</button>
-                        <button onClick={() => dispatch({ type: "changeStage", payload: 3 })} tw=" px-8 py-2 mx-2 bg-green-600  text-center font-bold text-white rounded-md">Next</button>
-                    </div>
-                </div>
-            </section>
-        )
-    }
-
-    if (state.stage === 3) {
-        return (
-            <section tw="text-gray-600 lg:h-screen bg-white md:bg-gray-100">
-                <div tw="mx-auto py-12 md:m-24 lg:mx-36 bg-white md:shadow-lg md:rounded-xl">
-                    <header tw="text-center mb-8 p-4">
-                        <p tw="text-base mb-2">Step 2 Of 9</p>
-                        <h1 tw="text-4xl font-bold text-green-600 mb-2">DevJobs</h1>
-                        <p tw="text-base">Let Us Know How You will Be Using Our Products</p>
-                    </header>
-                    <div tw="flex flex-col md:flex-row">
-                        <div tw="w-full md:w-1/2 p-8 mx-auto">
-                            <form>
-                                <label tw="w-full p-3 rounded-md mb-6 inline-flex items-center border border-green-600">
-                                    <RadioInput type="radio" name="role" />
-                                    <span>Job Seeker</span>
-                                </label>
-
-                                <label tw="w-full p-3 rounded-md mb-6 inline-flex items-center border border-green-600">
-                                    <RadioInput type="radio" name="role" />
-                                    <span>Employer</span>
-                                </label>
-
-                                <button onClick={() => dispatch({ type: "changeStage", payload: 4 })} tw="w-full p-3 bg-green-600 text-center font-bold text-white rounded-md">Next</button>
-
-                            </form>
-
-                        </div>
+                        <Link to="/" tw=" px-8 py-2 mx-2 border border-green-600 hocus:bg-green-100 text-green-600 text-center font-bold rounded-md">Back</Link>
+                        <Link to="/role" tw=" px-8 py-2 mx-2 bg-green-600  text-center font-bold text-white rounded-md">Next</Link>
                     </div>
                 </div>
             </section>
