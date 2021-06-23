@@ -8,10 +8,11 @@ import SignUpPage from 'pages/SignUpPage';
 import LogInPage from 'pages/LogInPage';
 import RoleSelectPage from 'pages/RoleSelectPage';
 import PasswordResetPage from 'pages/PasswordResetPage';
+import JobSeekerRegistrationPage from 'pages/JobSeekerRegistrationPage';
 
 function App() {
   return (
-    <div className="bg-gray-100">
+    <div className="bg-white lg:bg-gray-100">
       <BrowserRouter>
         <Navbar />
         <Switch>
@@ -26,6 +27,9 @@ function App() {
           </Route>
           <Route exact path="/role">
             <RoleSelectPage />
+          </Route>
+          <Route exact path="/job-seeker">
+            <JobSeekerRegistrationPage />
           </Route>
           <Route exact path="/reset-password">
             <PasswordResetPage />
