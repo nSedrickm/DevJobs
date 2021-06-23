@@ -2,7 +2,8 @@ import React, { useReducer } from "react";
 import tw from "twin.macro";
 import { Link } from "react-router-dom";
 import { FiUploadCloud } from "react-icons/fi";
-import { BsArrowRight, BsPeopleCircle, BsPersonBoundingBox } from "react-icons/bs";
+import { BsArrowRight, BsPeopleCircle } from "react-icons/bs";
+import { GrStackOverflow } from "react-icons/gr";
 
 const Input = tw.input`border border-gray-600 w-full mt-2 mb-4 p-2 px-4 placeholder-gray-400 text-sm rounded bg-opacity-90 hocus:outline-none focus:ring-green-600 focus:border-green-600`;
 const Select = tw.select`border border-gray-600 w-full mt-2 mb-4 p-2 px-4 placeholder-gray-400 text-sm rounded bg-opacity-90 hocus:outline-none focus:ring-green-600 focus:border-green-600`;
@@ -30,32 +31,6 @@ const JobSeekerRegistrationPage = () => {
         stage: 3,
         loading: false
     });
-
-
-    if (state.stage === 5) {
-        return (
-            <section tw="text-gray-600 lg:h-screen bg-white md:bg-gray-100">
-                <div tw="mx-auto py-12 md:p-24 md:m-24 lg:mx-36 bg-white md:shadow-lg md:rounded-xl">
-                    <header tw="text-center p-8">
-                        <h1 tw="text-2xl text-green-600 mb-4 font-bold">Email Confirmation Code Sent</h1>
-                        <p tw="text-base">Enter the reset code sent to your email</p>
-                    </header>
-                    <div tw="w-full md:w-1/2 mx-auto">
-                        <form>
-                            <label tw="block">Password</label>
-                            <Input type="text" />
-
-                            <label tw="block">Confirm Password</label>
-                            <Input type="text" />
-
-                            <Link to="/login" tw="block w-full p-2 bg-green-600 text-center font-bold text-white rounded-md mt-2">Reset</Link>
-                        </form>
-
-                    </div>
-                </div>
-            </section>
-        )
-    }
 
     return (
         <section tw="text-gray-600  bg-white md:bg-gray-100  p-8">
@@ -165,6 +140,32 @@ const JobSeekerRegistrationPage = () => {
                                 <Input type="text" placeholder="username" />
 
                                 <button onClick={() => dispatch({ type: "changeStage", payload: 5 })} tw="w-full p-2 bg-green-600 text-center font-bold text-white rounded-md mt-2">Next</button>
+                            </form>
+                        </div>
+                    </>
+                )}
+
+
+                {state.stage === 5 && (
+                    <>
+                        <header tw="w-full flex justify-center items-center my-4">
+                            <GrStackOverflow size={24} tw="mr-4 text-green-600" />
+                            <h1 tw="text-2xl  font-bold ">Stack/Role Information</h1>
+                        </header>
+
+                        <div tw="w-full sm:w-2/3 md: w-1/2 lg:w-1/3 mx-auto bg-white md:shadow-lg md:rounded-xl">
+
+                            <form tw="p-8">
+                                <label tw="block">Stack, Dev Role</label>
+                                <Input type="text" placeholder="LAMP" />
+
+                                <label tw="block">Experience Level</label>
+                                <Input type="text" placeholder="5 years" />
+
+                                <label tw="block">Salary/Pay Range</label>
+                                <Input type="text" placeholder="username" />
+
+                                <button onClick={() => dispatch({ type: "changeStage", payload: 6 })} tw="w-full p-2 bg-green-600 text-center font-bold text-white rounded-md mt-2">Next</button>
                             </form>
                         </div>
                     </>
