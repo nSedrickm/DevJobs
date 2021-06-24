@@ -6,9 +6,10 @@ import { BsArrowRight, BsBuilding, BsPeopleCircle } from "react-icons/bs";
 import { GrStackOverflow } from "react-icons/gr";
 import { ImLocation2 } from "react-icons/im";
 
+const Label = tw.label`block text-sm`;
 const Input = tw.input`border border-gray-600 w-full mt-2 mb-4 p-2 px-4 placeholder-gray-400 text-sm rounded bg-opacity-90 hocus:outline-none focus:ring-green-600 focus:border-green-600`;
 const Select = tw.select`border border-gray-600 w-full mt-2 mb-4 p-2 px-4 placeholder-gray-400 text-sm rounded bg-opacity-90 hocus:outline-none focus:ring-green-600 focus:border-green-600`;
-const TextArea = tw.textarea`w-full rounded-lg mt-2 mb-6 hocus:outline-none focus:ring-green-600 focus:border-green-600`;
+const TextArea = tw.textarea`w-full rounded mt-2 mb-6 hocus:outline-none focus:ring-green-600 focus:border-green-600`;
 const RadioInput = tw.input`border border-green-600 w-5 h-5 mr-4 rounded-full hocus:outline-none focus:ring-0 focus:border-green-600 text-green-600`;
 
 const reducer = (state, action) => {
@@ -120,19 +121,19 @@ const EmployerRegistrationPage = () => {
                         <div tw="w-full sm:w-2/3 md:w-1/2 lg:w-1/3 mx-auto bg-white md:shadow-lg md:rounded-xl">
 
                             <form tw="p-4 sm:p-8">
-                                <label tw="block">Company Name</label>
+                                <Label>Company Name</Label>
                                 <Input type="text" placeholder="John Doe" />
 
-                                <label tw="block">Company Email</label>
+                                <Label>Company Email</Label>
                                 <Input type="email" placeholder="email@company.com" />
 
-                                <label tw="block">Company Identification Number</label>
+                                <Label>Company Identification Number</Label>
                                 <Input type="text" placeholder="CMN-12303NGN" />
 
-                                <label tw="block">Website Link</label>
+                                <Label>Website Link</Label>
                                 <Input type="text" placeholder="https://company.com" />
 
-                                <label tw="block">LinkedIn</label>
+                                <Label>LinkedIn</Label>
                                 <Input type="text" placeholder="https://linkedin.com/company" />
 
                                 <button onClick={() => dispatch({ type: "changeStage", payload: 4 })} tw="w-full p-2 bg-green-600 text-center font-bold text-white rounded-md mt-2">Next</button>
@@ -158,31 +159,31 @@ const EmployerRegistrationPage = () => {
                                 </label>
                                 <small tw="text-green-600 mb-3 mt-1 block">if selected click next otherwise continue below</small>
 
-                                <label tw="block">Email</label>
+                                <Label>Email</Label>
                                 <Input type="email" placeholder="email@example.com" />
 
-                                <label tw="block">Country</label>
+                                <Label>Country</Label>
                                 <Select >
                                     <option value="" hidden>please select country</option>
                                     <option value="Nigeria">Nigeria</option>
                                     <option value="Cameroon">Cameroon</option>
                                 </Select>
 
-                                <label tw="block">State</label>
+                                <Label>State</Label>
                                 <Select >
                                     <option value="" hidden>please select state</option>
                                     <option value="male">Lagos</option>
                                     <option value="female">Bamenda</option>
                                 </Select>
 
-                                <label tw="block">City</label>
+                                <Label>City</Label>
                                 <Select >
                                     <option value="" hidden>please select city</option>
                                     <option value="male">Lagos</option>
                                     <option value="pretoria">Pretoria Island</option>
                                 </Select>
 
-                                <label tw="block">Precise Location<sup tw="text-red-500">*</sup></label>
+                                <Label>Precise Location<sup tw="text-red-500">*</sup></Label>
                                 <TextArea rows="4"></TextArea>
                                 <button onClick={() => dispatch({ type: "changeStage", payload: 5 })} tw="w-full p-2 bg-green-600 text-center font-bold text-white rounded-md mt-2">Next</button>
                             </form>
@@ -201,19 +202,19 @@ const EmployerRegistrationPage = () => {
                         <div tw="w-full sm:w-2/3 md:w-1/2 lg:w-1/3 mx-auto bg-white md:shadow-lg md:rounded-xl">
 
                             <form tw="p-4 sm:p-8">
-                                <label tw="block">Job Title</label>
+                                <Label>Job Title</Label>
                                 <Input type="text" placeholder="Front End Developer" />
 
-                                <label tw="block">Number Of Hiers</label>
+                                <Label>Number Of Hiers</Label>
                                 <Input type="text" placeholder="5 years" />
 
-                                <label tw="block">Experience Level</label>
+                                <Label>Experience Level</Label>
                                 <Input type="text" placeholder="$150000" />
 
-                                <label tw="block">Expected Salary</label>
+                                <Label>Expected Salary</Label>
                                 <Input type="text" placeholder="$150000" />
 
-                                <label tw="block">Duration</label>
+                                <Label>Duration</Label>
                                 <Select >
                                     <option value="" hidden>please select duration</option>
                                     <option value="full-time">Full time</option>
@@ -231,25 +232,38 @@ const EmployerRegistrationPage = () => {
                     <>
                         <header tw="w-full flex justify-center items-center my-4">
                             <GrStackOverflow size={24} tw="mr-4 text-green-600" />
-                            <h1 tw="text-xl sm:text-2xl  font-bold ">Location Information</h1>
+                            <h1 tw="text-xl sm:text-2xl  font-bold ">Job Requirements</h1>
                         </header>
 
-                        <div tw="w-full sm:w-2/3 md:w-1/2 lg:w-1/3 mx-auto bg-white md:shadow-lg md:rounded-xl">
+                        <form tw="w-full sm:w-2/3 md:w-1/2 lg:w-2/5  mx-auto ">
+                            <div tw="p-4 sm:p-6 mb-8 bg-white md:shadow-lg md:rounded-xl">
+                                <Label>About The Job Role</Label>
+                                <TextArea rows="3"></TextArea>
 
-                            <form tw="p-4 sm:p-8">
-                                <label tw="block">Country</label>
-                                <Input type="text" placeholder="Nigeria" />
+                                <Label>Requirement Details</Label>
+                                <TextArea rows="3"></TextArea>
 
-                                <label tw="block">State</label>
-                                <Input type="text" placeholder="Lagos" />
+                                <Label>Perks</Label>
+                                <TextArea rows="3"></TextArea>
+                            </div>
 
-                                <label tw="block">City</label>
-                                <Input type="text" placeholder="Lagos" />
+                            <header tw="w-full flex justify-center items-center my-8">
+                                <GrStackOverflow size={24} tw="mr-4 text-green-600" />
+                                <h1 tw="text-xl sm:text-2xl  font-bold ">Post Expiry Date</h1>
+                            </header>
 
+                            <div tw="p-4 sm:p-8 mb-8 bg-white md:shadow-lg md:rounded-xl">
+                                <p tw="text-sm mb-4">Set Expiry Date For This Job</p>
 
-                                <button onClick={() => dispatch({ type: "changeStage", payload: 7 })} tw="w-full p-2 bg-green-600 text-center font-bold text-white rounded-md mt-2">Next</button>
-                            </form>
-                        </div>
+                                <Label>Date</Label>
+                                <Input type="date" />
+
+                                <Label>Time</Label>
+                                <Input type="time" value="07:30" />
+                            </div>
+
+                            <button onClick={() => dispatch({ type: "changeStage", payload: 7 })} tw="block w-2/3 mx-auto p-2 bg-green-600 text-center font-bold text-white rounded-md mt-2">Next</button>
+                        </form>
                     </>
                 )}
 
@@ -263,7 +277,7 @@ const EmployerRegistrationPage = () => {
                         <div tw="w-full sm:w-2/3 md:w-3/5  mx-auto bg-white md:shadow-lg md:rounded-xl">
 
                             <form tw="p-4 sm:p-8">
-                                <label tw="block text-center mb-2">About Me</label>
+                                <Label tw="text-center mb-2">About Me</Label>
                                 <TextArea rows="8"></TextArea>
 
                                 <button onClick={() => dispatch({ type: "changeStage", payload: 8 })} tw="w-2/3 lg:w-1/3 block mx-auto p-2 bg-green-600 text-center font-bold text-white rounded-md mt-2">Next</button>
@@ -283,7 +297,7 @@ const EmployerRegistrationPage = () => {
 
                             <form tw="bg-green-100 h-48 my-8 text-center p-4 sm:p-8">
                                 <p tw="my-2 text-sm">This is top priority</p>
-                                <label tw="block text-center my-2 font-bold">Cv/Resume</label>
+                                <Label tw="text-center my-2 font-bold">Cv/Resume</Label>
                                 <p tw="text-gray-500 text-sm my-4 text-center mx-auto my-2">Name of uploaded file</p>
                                 <button tw="md:w-1/3 inline-flex justify-center items-center px-6 py-2 bg-white font-bold text-green-600 rounded-md my-2">Upload &nbsp; <FiUploadCloud size={20} /></button>
                             </form>
