@@ -5,5 +5,5 @@ axios.defaults.baseURL = API_URL;
 
 // item routes
 export const getJobs = () => {
-    return axios.get(API_URL).then(response => response)
+    return axios.get(API_URL + "/job").then(response => response)
 }
