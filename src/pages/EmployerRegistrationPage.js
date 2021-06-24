@@ -44,8 +44,8 @@ const EmployerRegistrationPage = () => {
             <section tw="text-gray-600 bg-white md:bg-gray-100">
                 <div tw="mx-auto py-12 md:w-2/3 my-24 md:my-48 bg-white md:shadow-lg md:rounded-xl">
                     <header tw="text-center mb-4 p-8">
-                        <h1 tw="text-3xl text-green-600 mb-4 font-bold">Congratulations</h1>
-                        <p tw="text-sm">welcome to a faster way of applying for jobs with just two clicks</p>
+                        <h1 tw="text-3xl text-green-600 mb-4 font-bold">Registration Completed</h1>
+                        <p tw="text-base font-medium">welcome to a faster way of applying for jobs with just two clicks</p>
                     </header>
                     <div tw="text-center">
                         <Link to="/login" tw="block w-2/3 md:w-1/3 mx-auto p-2 bg-green-600  text-center font-bold text-white rounded-md">Next</Link>
@@ -271,18 +271,35 @@ const EmployerRegistrationPage = () => {
                     <>
                         <header tw="w-full flex justify-center items-center my-4">
                             <BsPeopleCircle size={24} tw="mr-4 text-green-600" />
-                            <h1 tw="text-xl sm:text-2xl  font-bold ">About Me</h1>
+                            <h1 tw="text-xl sm:text-2xl  font-bold ">Employer Personal Details</h1>
                         </header>
 
-                        <div tw="w-full sm:w-2/3 md:w-3/5  mx-auto bg-white md:shadow-lg md:rounded-xl">
+                        <form tw="w-full sm:w-2/3 md:w-1/2 lg:w-1/3 mx-auto">
+                            <div tw="p-4 sm:p-6 mb-8 bg-white md:shadow-lg md:rounded-xl">
+                                <label tw="block">First Name</label>
+                                <Input type="text" placeholder="John Doe" />
 
-                            <form tw="p-4 sm:p-8">
-                                <Label tw="text-center mb-2">About Me</Label>
-                                <TextArea rows="8"></TextArea>
+                                <label tw="block">Last Name</label>
+                                <Input type="text" placeholder="John Doe" />
 
-                                <button onClick={() => dispatch({ type: "changeStage", payload: 8 })} tw="w-2/3 lg:w-1/3 block mx-auto p-2 bg-green-600 text-center font-bold text-white rounded-md mt-2">Next</button>
-                            </form>
-                        </div>
+                                <label tw="block">Age</label>
+                                <Input type="number" placeholder="John Doe" />
+
+                                <label tw="block">Gender</label>
+                                <Select >
+                                    <option value="" hidden>please select your gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                </Select>
+
+                                <label tw="block">Upload Picture</label>
+                                <button tw="w-full inline-flex justify-center items-center px-6 py-2 border border-green-500 hocus:bg-green-100 text-green-600 rounded-md mt-2">Upload &nbsp; <FiUploadCloud /></button>
+
+                                <p tw="text-gray-500 my-4 text-center mx-auto">Name of uploaded file</p>
+                            </div>
+
+                            <button onClick={() => dispatch({ type: "changeStage", payload: 8 })} tw="block w-2/3 mx-auto p-2 bg-green-600 text-center font-bold text-white rounded-md mt-2">Next</button>
+                        </form>
                     </>
                 )}
 
@@ -290,20 +307,23 @@ const EmployerRegistrationPage = () => {
                     <>
                         <header tw="w-full flex justify-center items-center my-4">
                             <BsPeopleCircle size={24} tw="mr-4 text-green-600" />
-                            <h1 tw="text-xl sm:text-2xl  font-bold ">Cv/Resume Information</h1>
+                            <h1 tw="text-xl sm:text-2xl  font-bold ">Employer Connection Details</h1>
                         </header>
 
-                        <div tw="w-full sm:w-2/3  mx-auto md:rounded-xl">
+                        <form tw="w-full sm:w-2/3 md:w-1/2 lg:w-1/3 mx-auto">
+                            <div tw="p-4 sm:p-6 mb-8 bg-white md:shadow-lg md:rounded-xl">
+                                <label tw="block">Email</label>
+                                <Input type="email" placeholder="email@example.com" />
 
-                            <form tw="bg-green-100 h-48 my-8 text-center p-4 sm:p-8">
-                                <p tw="my-2 text-sm">This is top priority</p>
-                                <Label tw="text-center my-2 font-bold">Cv/Resume</Label>
-                                <p tw="text-gray-500 text-sm my-4 text-center mx-auto my-2">Name of uploaded file</p>
-                                <button tw="md:w-1/3 inline-flex justify-center items-center px-6 py-2 bg-white font-bold text-green-600 rounded-md my-2">Upload &nbsp; <FiUploadCloud size={20} /></button>
-                            </form>
+                                <label tw="block">LinkedIn</label>
+                                <Input type="text" placeholder="https://linkedin.com/employer-name" />
 
-                            <button onClick={() => dispatch({ type: "changeStage", payload: 9 })} tw="block w-1/3 mx-auto p-2 bg-green-600 text-center font-bold text-white rounded-md">Next</button>
-                        </div>
+                                <label tw="block">Phone Number</label>
+                                <Input type="text" placeholder="+234801808" />
+                            </div>
+
+                            <button onClick={() => dispatch({ type: "changeStage", payload: 9 })} tw="block w-2/3 mx-auto p-2 bg-green-600 text-center font-bold text-white rounded-md mt-2">Next</button>
+                        </form>
                     </>
                 )}
 
