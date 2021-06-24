@@ -38,7 +38,7 @@ const EmployerRegistrationPage = () => {
 
 
     // after developer completes registeration you can sign them in auto or redirect to login page
-    // on signin display homepage
+    // on signin display employer dashboard
     if (state.stage === 9) {
         return (
             <section tw="text-gray-600 bg-white md:bg-gray-100">
