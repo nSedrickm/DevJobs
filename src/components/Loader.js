@@ -7,9 +7,9 @@ const Container = tw.div`h-screen grid place-items-center`;
 const Loader = () => {
     return (
         <Container>
-            <div>
-                <Spinner tw="mx-auto" />
-                <p tw="mt-2">Loading please wait</p>
+            <div tw="flex flex-col items-center">
+                <Spinner tw="" />
+                <p tw="mt-3 text-gray-500">Loading please wait</p>
             </div>
         </Container>
     );
