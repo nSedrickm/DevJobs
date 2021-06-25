@@ -9,7 +9,7 @@ const Footer = () => {
     return (
 
         <FooterContainer>
-            <ul tw="md:inline-flex items-center text-base md:text-lg  mx-auto">
+            <ul tw="md:inline-flex text-center items-center text-base md:text-lg  mx-auto">
                 <li tw="cursor-pointer px-4 py-1 mx-auto">Get Hired</li>
                 <li tw="hidden md:inline-flex">|</li>
                 <li tw="cursor-pointer px-4 py-1 mx-auto">Hire Professional</li>
