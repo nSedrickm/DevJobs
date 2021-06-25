@@ -13,8 +13,12 @@ const JobNav = tw.nav`px-4 sm:px-8 pt-20 pb-10 lg:px-20 text-center md:text-left
 const JobNavTitle = tw.h2`font-bold text-3xl mb-8 lg:mb-0`;
 const JobNavUl = tw.ul`inline-flex items-center`;
 const JobNavLi = tw.li`font-semibold text-sm sm:text-base cursor-pointer p-2 py-1 `;
-const JobCard = tw.div`p-5 m-4 rounded-lg shadow-lg md:w-1/2 lg:w-1/3 text-gray-500 border hover:border-green-600 hover:shadow-none`;
+const JobCard = tw.div`p-5 m-4 rounded-lg shadow-lg md:w-1/2 lg:w-1/3 bg-white text-gray-500 border hover:border-green-600 hover:shadow-none`;
+const JobCardTitle = tw.h3`font-bold text-xl md:text-2xl mb-4 text-gray-700`;
 const JobCardBody = tw.div`mb-4`;
+const JobMeta = tw.div`flex flex-row md:inline-flex text-sm lg:text-base py-2`;
+const ApplyButton = tw.button`block w-full p-1 sm:p-2 rounded font-bold bg-green-600 hocus:bg-green-700 text-white mb-3`;
+const DetailsButton = tw.a`block text-center w-full p-1 sm:p-2 rounded font-bold text-green-600 border border-green-600 hocus:bg-green-100`;
 const Divider = tw.hr`mx-20 border-gray-300`;
 
 const HomePage = () => {
@@ -26,7 +30,6 @@ const HomePage = () => {
         getJobs()
             .then(response => {
                 setJobs(response.data);
-                console.log(response.data);
                 setLoading(false);
             })
             .catch(error => {
@@ -100,17 +103,25 @@ const HomePage = () => {
                                 return (
                                     <JobCard key={job.pk} >
                                         <JobCardBody>
-                                            <h3>{job.title}</h3>
-                                            <p>Company : {job.company_name}</p>
-                                            <p>Company Name: {job.company_name}</p>
-                                            <p>Duration: {job.duration}</p>
-                                            <p>experience_level": {job.experience_level}</p>
-                                            <p>expected_salary": {job.expected_salary}</p>
-                                            <p>Users Applied": {job.users_applied}</p>
-                                            <p>Created Date": {new Date(job.created_date).toLocaleString()}</p>
+                                            <JobCardTitle>{job.title}</JobCardTitle>
+                                            <JobMeta>
+                                                <p>Company : {job.company_name}</p>
+                                            </JobMeta>
+                                            <JobMeta>
+                                                <p>Lagos nigeria</p>
+                                                <p tw="mx-1 md:mx-2">|</p>
+                                                <p>Full Time</p>
+                                                <p tw="mx-1 md:mx-2">|</p>
+                                                <p>$20000000/year</p>
+                                            </JobMeta>
+                                            <JobMeta>
+                                                <p>{job.users_applied ? job.users_applied : 0} applies</p>
+                                                <p tw="mx-1 md:mx-2">|</p>
+                                                <p>Posted {new Date(job.created_date).toLocaleString()}</p>
+                                            </JobMeta>
                                         </JobCardBody>
-                                        <button tw="w-full p-2 rounded font-bold bg-green-600 hocus:bg-green-700 text-white mb-2">Apply</button>
-                                        <a a href={job.url} tw="block text-center w-full p-2 rounded font-bold text-green-600 border border-green-600 hocus:bg-green-100">See Full Details</a>
+                                        <ApplyButton>Apply</ApplyButton>
+                                        <DetailsButton href={job.url}>See Full Details</DetailsButton>
                                     </JobCard>
                                 )
                             }))}
