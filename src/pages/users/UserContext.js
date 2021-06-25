@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState, useReducer } from "react";
+import React, { createContext, useContext, useEffect, useReducer } from "react";
 import { getLocalUserState, setLocalUserState } from "services/storage.service";
 import { Switch, Route, Redirect } from "react-router-dom";
 import LogInPage from "pages/users/LogInPage";

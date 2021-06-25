@@ -15,7 +15,7 @@ function App() {
     <div className="bg-white lg:bg-gray-100">
       <BrowserRouter>
         <Toaster
-          position="bottom-right"
+          position="top-center"
         />
 
         <Switch>
