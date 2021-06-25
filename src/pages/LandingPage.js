@@ -90,8 +90,8 @@ const LandingPage = () => {
                     <Heading>DevJobs</Heading>
                     <Description>Lorem ipsum dolor sit amet, consectetur adipiscing elit</Description>
                     <ButtonRow>
-                        <ButtonOutline to="/login">Sign In</ButtonOutline>
-                        <ButtonPrimary to="/signup">Sign Up</ButtonPrimary>
+                        <ButtonOutline to="/users/login">Sign In</ButtonOutline>
+                        <ButtonPrimary to="/users/signup">Sign Up</ButtonPrimary>
                     </ButtonRow>
                     <p tw="my-8 text-gray-500">You need to have an account to register/post jobs</p>
                 </HeaderContent>
@@ -148,8 +148,8 @@ const LandingPage = () => {
             <HeaderContent tw="py-24 text-center">
                 <h4 tw="text-gray-500 text-2xl font-bold">To see And Post More Job Offers</h4>
                 <ButtonRow>
-                    <ButtonOutline to="/login">Sign In</ButtonOutline>
-                    <ButtonPrimary to="/signup">Sign Up</ButtonPrimary>
+                    <ButtonOutline to="/users/login">Sign In</ButtonOutline>
+                    <ButtonPrimary to="/users/signup">Sign Up</ButtonPrimary>
                 </ButtonRow>
                 <p tw="my-8 text-gray-500">You need to have an account to register/post jobs</p>
             </HeaderContent>
