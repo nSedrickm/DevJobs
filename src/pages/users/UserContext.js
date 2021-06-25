@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useReducer } from "react";
-import { getLocalUserState, setLocalUserState } from "services/storage.service";
+import { getLocalUserState, setLocalUserState, clearLocalUserState } from "services/storage.service";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { UserNavbar, Footer } from "components";
 import LogInPage from "pages/users/LogInPage";
@@ -26,7 +26,7 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 isAuthorized: notAuthorized,
-                userData: action.payload.userData
+                userData: {}
             }
         }
         default: {
@@ -51,11 +51,17 @@ const UserProvider = () => {
         initialState = getLocalUserState();
     }, [state])
 
+    const hanldeLogOut = () => {
+        dispatch({ type: "LOGOUT" })
+        clearLocalUserState();
+    }
+
     return (
         <UserContext.Provider
             value={{
                 state,
                 dispatch,
+                hanldeLogOut
             }}
         >
             <UserNavbar />
