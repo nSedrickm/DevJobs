@@ -5,6 +5,8 @@ import { getJobs } from "services/api.service";
 import { FiArrowRightCircle } from 'react-icons/fi';
 import { UserNavbar, Footer, Loader } from 'components';
 
+const InlineLoader = tw(props => <Loader {...props} />)``;
+
 const Container = tw.div`w-full text-gray-800 bg-white`;
 const JobContainer = tw.div`p-4 sm:p-8 lg:p-20 flex flex-col md:flex-row justify-center`;
 const JobNav = tw.nav`px-4 sm:px-8 pt-20 pb-10 lg:px-20 text-center md:text-left flex flex-col items-center justify-center lg:flex-row lg:justify-between`;
@@ -90,7 +92,7 @@ const HomePage = () => {
 
             <JobContainer>
                 {loading ? (
-                    <Loader tw="h-96" />
+                    <InlineLoader tw="h-96" />
                 ) : (
                     <>
                         {jobs.length && (
@@ -98,7 +100,7 @@ const HomePage = () => {
                                 return (
                                     <JobCard key={job.pk} >
                                         <JobCardBody>
-                                            <h3 tw="">{job.title}</h3>
+                                            <h3>{job.title}</h3>
                                             <p>Company : {job.company_name}</p>
                                             <p>Company Name: {job.company_name}</p>
                                             <p>Duration: {job.duration}</p>
