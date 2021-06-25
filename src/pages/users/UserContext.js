@@ -1,11 +1,9 @@
 import React, { createContext, useContext, useEffect, useReducer } from "react";
 import { getLocalUserState, setLocalUserState, clearLocalUserState } from "services/storage.service";
 import { Switch, Route, Redirect } from "react-router-dom";
-import { UserNavbar, Footer } from "components";
 import LogInPage from "pages/users/LogInPage";
 import SignUpPage from "pages/users/SignUpPage";
 import HomePage from "pages/users/HomePage";
-
 
 const UserContext = createContext();
 const useUserContext = () => useContext(UserContext);
@@ -64,7 +62,6 @@ const UserProvider = () => {
                 hanldeLogOut
             }}
         >
-            <UserNavbar />
             <Switch>
                 <Route exact path="/users/login">
                     {state.isAuthorized === Authorized ? <Redirect to="/users/home" /> : <LogInPage />}
@@ -83,7 +80,6 @@ const UserProvider = () => {
                     <Redirect to="/users/login" />
                 </Route>
             </Switch>
-            <Footer />
         </UserContext.Provider>
     )
 }

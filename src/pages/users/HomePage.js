@@ -3,7 +3,7 @@ import tw from "twin.macro";
 import toast from "react-hot-toast";
 import { getJobs } from "services/api.service";
 import { FiArrowRightCircle } from 'react-icons/fi';
-import { Loader } from 'components';
+import { UserNavbar, Footer, Loader } from 'components';
 
 const Container = tw.div`w-full text-gray-800 bg-white`;
 const JobContainer = tw.div`p-4 sm:p-8 lg:p-20 flex flex-col md:flex-row justify-center`;
@@ -72,6 +72,7 @@ const HomePage = () => {
 
     return (
         <Container>
+            <UserNavbar />
             <JobNav>
                 <JobNavTitle>Posted Jobs</JobNavTitle>
                 <JobNavUl>
@@ -117,6 +118,7 @@ const HomePage = () => {
 
             <p tw="text-center text-3xl text-green-700 font-bold cursor-pointer py-12 flex items-center justify-center" onClick={() => handleRefresh()}>See More Jobs &nbsp; <FiArrowRightCircle /></p>
 
+            <Footer />
         </Container>
     )
 }
