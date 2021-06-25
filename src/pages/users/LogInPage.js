@@ -46,11 +46,11 @@ const LogInPage = () => {
                     // The request was made and the server responded with a status code
                     // that falls out of the range of 2xx
                     if (error.response.status === 400) {
-                        if (error.response.data.username) {
-                            toast.error(error.response.data.username[0]);
+                        if (error.response.data.non_field_errors) {
+                            toast.error("Wrong username or password provided");
                         }
                         else if (error.response.data.password1) {
-                            toast.error(error.response.data.password1[0]);
+                            toast.error("An error occurred Please check your network and try again");
                         }
                     }
                 } else if (error.request) {
@@ -98,7 +98,7 @@ const LogInPage = () => {
                                 name="password"
                                 {...register("password")}
                             />
-                            {errors.password1 && <ErrorMessage>{errors.password1.message}</ErrorMessage>}
+                            {errors.password && <ErrorMessage>{errors.password.message}</ErrorMessage>}
 
 
                             <button tw="w-full p-2 mt-4 bg-green-600 text-center font-bold text-white rounded-md">Sign In</button>
