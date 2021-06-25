@@ -9,6 +9,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { registerUser } from "services/auth.service";
 
+const Label = tw.label`block text-sm mt-2`;
 const Input = tw.input`border border-green-600 w-full mt-2 mb-2 p-2 px-4 placeholder-gray-400 text-sm rounded bg-opacity-90 hocus:outline-none focus:ring-green-600 focus:border-green-600`;
 const ErrorMessage = tw.p`text-sm text-red-500 mb-2`;
 
@@ -52,7 +53,7 @@ const SignUpPage = () => {
                         if (error.response.data.username) {
                             toast.error(error.response.data.username[0]);
                         }
-                        else if(error.response.data.password1) {
+                        else if (error.response.data.password1) {
                             toast.error(error.response.data.password1[0]);
                         }
                     }
@@ -82,7 +83,7 @@ const SignUpPage = () => {
                     </header>
                     <div tw="text-center">
                         <Link to="/" tw=" px-8 py-2 mx-2 border border-green-600 hocus:bg-green-100 text-green-600 text-center font-bold rounded-md">Back</Link>
-                        <Link to="/role" tw=" px-8 py-2 mx-2 bg-green-600  text-center font-bold text-white rounded-md">Next</Link>
+                        <Link to="/users/login" tw=" px-8 py-2 mx-2 bg-green-600  text-center font-bold text-white rounded-md">Next</Link>
                     </div>
                 </div>
             </section>
@@ -93,7 +94,7 @@ const SignUpPage = () => {
         <section tw="text-gray-600 md:p-24">
             <div tw="mx-auto py-12 lg:mx-24 bg-white md:shadow-lg md:rounded-xl">
                 <header tw="text-center mb-8 p-4">
-                    <h1 tw="text-4xl font-bold text-green-600 mb-2">DevJobs</h1>
+                    <h1 tw="text-5xl font-bold text-green-600 mb-2">DevJobs</h1>
                     <p tw="text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
                 </header>
                 <div tw="flex flex-col md:flex-row">
@@ -105,7 +106,7 @@ const SignUpPage = () => {
                     </div>
                     <div tw="w-full md:w-1/2 p-4">
                         <form tw="w-5/6 md:w-2/3 mx-auto" onSubmit={handleSubmit(handleSignUp)}>
-                            <label tw="block text-sm mt-2">User Name</label>
+                            <Label>User Name</Label>
                             <Input
                                 type="text"
                                 placeholder="johndoe"
@@ -113,10 +114,10 @@ const SignUpPage = () => {
 
                             />
                             {errors.username && <ErrorMessage>{errors.username.message}</ErrorMessage>}
-                            {/* <label tw="block text-sm mt-2">Email</label>
+                            {/* <Label>Email</Label>
                             <Input type="text" placeholder="email@example.com" /> */}
 
-                            <label tw="block text-sm mt-2">Password</label>
+                            <Label>Password</Label>
                             <Input
                                 type="password"
                                 name="password1"
@@ -124,7 +125,7 @@ const SignUpPage = () => {
                             />
                             {errors.password1 && <ErrorMessage>{errors.password1.message}</ErrorMessage>}
 
-                            <label tw="block text-sm mt-2">Confirm Password</label>
+                            <Label>Confirm Password</Label>
                             <Input
                                 type="password"
                                 name="password2"
