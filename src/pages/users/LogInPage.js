@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { userLogin } from "services/auth.service";
+import { useUserContext } from "./UserContext";
 
 const Label = tw.label`block text-sm mt-2`;
 const Input = tw.input`border border-green-600 w-full mt-2 mb-2 p-2 px-4 placeholder-gray-400 text-sm rounded bg-opacity-90 hocus:outline-none focus:ring-green-600 focus:border-green-600`;
@@ -21,6 +22,7 @@ const LogInSchema = yup.object().shape({
 const LogInPage = () => {
 
     const [loading, setLoading] = useState(false);
+    const { dispatch } = useUserContext();
     const {
         register,
         handleSubmit,
@@ -37,6 +39,7 @@ const LogInPage = () => {
             .then(response => {
                 toast.success("Login Successfull");
                 console.log(response.data)
+                dispatch({ type: "LOGIN", payload: response.data })
             })
             .catch(error => {
                 if (error.response) {
