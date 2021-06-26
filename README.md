@@ -3,6 +3,8 @@
 
 Frontend repo for dev jobs project
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/ee19dc76-4975-4f4a-805e-57b2c68b8d26/deploy-status)](https://app.netlify.com/sites/devjobspjt71/deploys)
+
 # Getting Started with the project
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
