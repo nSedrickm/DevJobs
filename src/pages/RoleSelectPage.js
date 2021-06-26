@@ -35,7 +35,7 @@ const RoleSelectPage = () => {
                             </label>
 
                             <Link
-                                to={role === "job-seeker" ? "/job-seeker" : "/employer"}
+                                to={role === "job-seeker" ? "/users/job-seeker" : "/users/employer"}
                                 tw="block p-3 bg-green-600 text-center font-bold text-white rounded-md"
                             >
                                 Next

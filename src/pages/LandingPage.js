@@ -96,7 +96,7 @@ const LandingPage = () => {
             <Header>
                 <HeaderContent>
                     <Heading>DevJobs</Heading>
-                    <Description>Lorem ipsum dolor sit amet, consectetur adipiscing elit</Description>
+                    <Description>&lt; Ctrl + F Developer Jobs Faster / &gt;</Description>
                     <ButtonRow>
                         <ButtonOutline to="/users/login">Sign In</ButtonOutline>
                         <ButtonPrimary to="/users/signup">Sign Up</ButtonPrimary>

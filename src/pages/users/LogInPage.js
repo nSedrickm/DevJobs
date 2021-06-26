@@ -69,11 +69,11 @@ const LogInPage = () => {
     if (loading) return <Loader />
 
     return (
-        <section tw="text-gray-600 md:p-24">
+        <section tw="text-gray-600 md:p-24 lg:h-screen">
             <div tw="mx-auto py-12 lg:mx-24 bg-white md:shadow-lg md:rounded-xl">
                 <header tw="text-center mb-8 p-4">
                     <h1 tw="text-5xl font-bold text-green-600 mb-2">DevJobs</h1>
-                    <p tw="text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+                    <p tw="text-base">&lt; Ctrl + F Developer Jobs Faster / &gt;</p>
                 </header>
                 <div tw="flex flex-col md:flex-row">
                     <div tw="w-full md:w-1/2 p-4 text-center">
