@@ -49,7 +49,7 @@ const UserProvider = () => {
         initialState = getLocalUserState();
     }, [state])
 
-    const hanldeLogOut = () => {
+    const handleLogOut = () => {
         dispatch({ type: "LOGOUT" })
         clearLocalUserState();
     }
@@ -59,7 +59,7 @@ const UserProvider = () => {
             value={{
                 state,
                 dispatch,
-                hanldeLogOut
+                handleLogOut
             }}
         >
             <Switch>

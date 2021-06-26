@@ -18,7 +18,7 @@ const MobileNav = tw.div`lg:hidden flex items-center justify-between h-20 shadow
 
 const UserNavbar = () => {
 
-    const { hanldeLogOut } = useUserContext()
+    const { handleLogOut } = useUserContext()
 
     return (
         <MainHeader>
@@ -35,7 +35,7 @@ const UserNavbar = () => {
                 <Nav>
                     <NavLink to="/users/home" tw="text-green-600">Home</NavLink>
                     <NavLink to="">Employer (Post Jobs)</NavLink>
-                    <Button onClick={() => hanldeLogOut()}>logout</Button>
+                    <Button onClick={() => handleLogOut()}>logout</Button>
                 </Nav>
             </DesktopNav>
             <MobileNav>
