@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { userLogin } from "services/auth.service";
+import { userLogin, setAuthHeaders } from "services/auth.service";
 import { useUserContext } from "./UserContext";
 
 const Label = tw.label`block text-sm mt-2`;
@@ -38,7 +38,7 @@ const LogInPage = () => {
         userLogin(data)
             .then(response => {
                 toast.success("Login Successfull");
-                console.log(response.data)
+                setAuthHeaders(response.data);
                 dispatch({ type: "LOGIN", payload: response.data })
             })
             .catch(error => {
