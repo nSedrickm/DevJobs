@@ -37,6 +37,25 @@ const JobSeekerRegistrationPage = () => {
 
     // after developer completes registeration you can sign them in auto or redirect to login page
     // on signin display homepage
+
+    // if (stage === 2) {
+    //     return (
+    //         <section tw="text-gray-600 md:p-24 h-screen">
+    //             <div tw="mx-auto p-12 lg:mx-36 bg-white md:shadow-lg md:rounded-xl">
+    //                 <header tw="text-center mb-8 p-8">
+    //                     <p tw="text-base mb-2">Step 1 Of 9</p>
+    //                     <h1 tw="text-2xl text-green-600 mb-4 font-bold">Confirm Your Email Address</h1>
+    //                     <p tw="text-lg">A Link Has Been Sent To Your Email Address Used To Register. Please Click The Link To Continue</p>
+    //                 </header>
+    //                 <div tw="text-center">
+    //                     <Link to="/" tw=" px-8 py-2 mx-2 border border-green-600 hocus:bg-green-100 text-green-600 text-center font-bold rounded-md">Back</Link>
+    //                     <Link to="/users/login" tw=" px-8 py-2 mx-2 bg-green-600  text-center font-bold text-white rounded-md">Next</Link>
+    //                 </div>
+    //             </div>
+    //         </section>
+    //     )
+    // }
+
     if (state.stage === 9) {
         return (
             <section tw="text-gray-600 bg-white md:bg-gray-100">

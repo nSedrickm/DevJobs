@@ -11,6 +11,7 @@ import { registerUser } from "services/auth.service";
 
 const Label = tw.label`block text-sm mt-2`;
 const Input = tw.input`border border-green-600 w-full mt-2 mb-2 p-2 px-4 placeholder-gray-400 text-sm rounded bg-opacity-90 hocus:outline-none focus:ring-green-600 focus:border-green-600`;
+const RadioInput = tw.input`border border-green-600 w-6 h-6 mr-4 rounded-full hocus:outline-none focus:ring-0 focus:border-green-600 text-green-600`;
 const ErrorMessage = tw.p`text-sm text-red-500 mb-2`;
 
 const SignupSchema = yup.object().shape({
@@ -25,6 +26,7 @@ const SignupSchema = yup.object().shape({
 const SignUpPage = () => {
 
     const [stage, setStage] = useState(1);
+    const [role, setRole] = useState("");
     const [loading, setLoading] = useState(false);
 
     const {
@@ -73,19 +75,40 @@ const SignUpPage = () => {
 
     if (loading) return <Loader />
 
+
     if (stage === 2) {
         return (
-            <section tw="text-gray-600 md:p-24 h-screen">
-                <div tw="mx-auto p-12 lg:mx-36 bg-white md:shadow-lg md:rounded-xl">
-                    <header tw="text-center mb-8 p-8">
-                        <p tw="text-base mb-2">Step 1 Of 9</p>
-                        <h1 tw="text-2xl text-green-600 mb-4 font-bold">Confirm Your Email Address</h1>
-                        <p tw="text-lg">A Link Has Been Sent To Your Email Address Used To Register. Please Click The Link To Continue</p>
+            <section tw="text-gray-600 px-4 sm:px-8 py-24 lg:py-36 lg:h-screen">
+                <div tw="mx-auto md:w-2/3 bg-white py-8 lg:border lg:shadow-lg md:rounded-xl">
+                    <header tw="text-center p-4">
+                        <p tw="text-sm my-2">Step 2 Of 9</p>
+                        <h1 tw="text-4xl font-bold text-green-600 mb-2">DevJobs</h1>
+                        <p tw="text-base">Let Us Know How You will Be Using Our Products</p>
                     </header>
-                    <div tw="text-center">
-                        <Link to="/" tw=" px-8 py-2 mx-2 border border-green-600 hocus:bg-green-100 text-green-600 text-center font-bold rounded-md">Back</Link>
-                        <Link to="/users/login" tw=" px-8 py-2 mx-2 bg-green-600  text-center font-bold text-white rounded-md">Next</Link>
-                    </div>
+                    <form tw="w-full md:w-2/3 lg:w-1/2 p-4 mx-auto">
+                        <label
+                            onClick={() => setRole("job-seeker")}
+                            tw="w-full p-3 rounded-md mb-6 inline-flex items-center border border-green-600"
+                        >
+                            <RadioInput type="radio" name="role" />
+                            <span>Job Seeker</span>
+                        </label>
+
+                        <label
+                            onClick={() => setRole("employer")}
+                            tw="w-full p-3 rounded-md mb-6 inline-flex items-center border border-green-600"
+                        >
+                            <RadioInput type="radio" name="role" />
+                            <span>Employer</span>
+                        </label>
+
+                        <Link
+                            to={role === "job-seeker" ? "users/job-seeker" : "users/employer"}
+                            tw="block p-3 bg-green-600 text-center font-bold text-white rounded-md"
+                        >
+                            Next
+                        </Link>
+                    </form>
                 </div>
             </section>
         )
@@ -96,7 +119,7 @@ const SignUpPage = () => {
             <div tw="mx-auto py-12 lg:mx-24 bg-white md:shadow-lg md:rounded-xl">
                 <header tw="text-center mb-8 p-4">
                     <h1 tw="text-5xl font-bold text-green-600 mb-2">DevJobs</h1>
-                    <p tw="text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+                    <p tw="text-base">&lt; Ctrl + F Developer Jobs Faster / &gt;</p>
                 </header>
                 <div tw="flex flex-col md:flex-row">
                     <div tw="w-full md:w-1/2 p-4 text-center">
