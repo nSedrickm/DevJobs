@@ -5,7 +5,6 @@ import { Toaster } from 'react-hot-toast';
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { UserProvider } from 'pages/users/UserContext';
 import LandingPage from 'pages/LandingPage';
-import RoleSelectPage from 'pages/RoleSelectPage';
 import PasswordResetPage from 'pages/PasswordResetPage';
 import JobSeekerRegistrationPage from 'pages/JobSeekerRegistrationPage';
 import EmployerRegistrationPage from 'pages/EmployerRegistrationPage';
@@ -41,9 +40,6 @@ const MainComponent = () => {
       <Switch>
         <Route exact path="/">
           <LandingPage />
-        </Route>
-        <Route exact path="/role">
-          <RoleSelectPage />
         </Route>
         <Route exact path="/job-seeker">
           <JobSeekerRegistrationPage />
