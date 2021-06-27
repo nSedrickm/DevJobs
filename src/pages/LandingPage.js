@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { getJobs } from "services/api.service";
 import { FiArrowRightCircle } from 'react-icons/fi';
 import { Loader, Navbar, Footer } from 'components';
+import { useUserContext } from './UserContext';
 
 const Container = tw.div`w-full text-gray-800 bg-white`;
 const Header = styled.header`
@@ -28,16 +29,17 @@ const JobNav = tw.nav`px-4 sm:px-8 pt-20 pb-10 lg:px-20 text-center md:text-left
 const JobNavTitle = tw.h2`font-bold text-3xl mb-8 lg:mb-0`;
 const JobNavUl = tw.ul`inline-flex items-center`;
 const JobNavLi = tw.li`font-semibold text-sm sm:text-base cursor-pointer p-2 py-1 `;
-const JobCard = tw.div`p-5 m-4 rounded-lg shadow-lg md:w-1/2 lg:w-1/3 bg-white text-gray-500 border hover:border-green-600 hover:shadow-none`;
+const JobCard = tw.div`p-5 m-4 border rounded-lg shadow-lg md:w-1/2 lg:w-1/3 bg-white text-gray-500 border hover:border-green-600 hover:shadow-none`;
 const JobCardTitle = tw.h3`font-bold text-xl md:text-2xl mb-4 text-gray-700`;
 const JobCardBody = tw.div`mb-4`;
 const JobMeta = tw.div`flex flex-row md:inline-flex text-sm lg:text-base py-2`;
-const ApplyButton = tw.button`block w-full p-1 sm:p-2 rounded font-bold bg-green-600 hocus:bg-green-700 text-white mb-3`;
-const DetailsButton = tw(Link)`block text-center w-full p-1 sm:p-2 rounded font-bold text-green-600 border border-green-600 hocus:bg-green-100`;
+const ApplyButton = tw.button`block w-full p-1 sm:p-1.5 rounded font-bold text-sm bg-green-600 hocus:bg-green-700 text-white mb-3`;
+const DetailsButton = tw(Link)`block text-center w-full p-1 sm:p-1.5 rounded font-bold text-sm text-green-600 border border-green-600 hocus:bg-green-100`;
 const Divider = tw.hr`mx-20 border-gray-300`;
 
 const LandingPage = () => {
 
+    const { state } = useUserContext();
     const [jobs, setJobs] = useState({})
     const [loading, setLoading] = useState(false);
 
@@ -95,18 +97,19 @@ const LandingPage = () => {
         <>
             <Navbar />
             <Container>
-                <Header>
-                    <HeaderContent>
-                        <Heading>DevJobs</Heading>
-                        <Description>&lt; Ctrl + F Developer Jobs Faster / &gt;</Description>
-                        <ButtonRow>
-                            <ButtonOutline to="/login">Log In</ButtonOutline>
-                            <ButtonPrimary to="/signup">Sign Up</ButtonPrimary>
-                        </ButtonRow>
-                        <p tw="my-8 text-gray-500">You need to have an account to register/post jobs</p>
-                    </HeaderContent>
-                </Header>
-
+                {!state.key && (
+                    <Header>
+                        <HeaderContent>
+                            <Heading>DevJobs</Heading>
+                            <Description>&lt; Ctrl + F Developer Jobs Faster / &gt;</Description>
+                            <ButtonRow>
+                                <ButtonOutline to="/login">Log In</ButtonOutline>
+                                <ButtonPrimary to="/signup">Sign Up</ButtonPrimary>
+                            </ButtonRow>
+                            <p tw="my-8 text-gray-500">You need to have an account to register/post jobs</p>
+                        </HeaderContent>
+                    </Header>
+                )}
 
                 <JobNav>
                     <JobNavTitle>Posted Jobs</JobNavTitle>
@@ -150,7 +153,7 @@ const LandingPage = () => {
                                                     <p>Posted {new Date(job.created_date).toLocaleString()}</p>
                                                 </JobMeta>
                                             </JobCardBody>
-                                            <ApplyButton>Apply</ApplyButton>
+                                            <ApplyButton>{state.key ? "Apply" : "Login To Apply"}</ApplyButton>
                                             <DetailsButton to={"/job/details/" + job.pk}>See Full Details</DetailsButton>
                                         </JobCard>
                                     )
@@ -161,17 +164,20 @@ const LandingPage = () => {
 
                 <p tw="text-center text-3xl text-green-700 font-bold cursor-pointer py-12 flex items-center justify-center" onClick={() => handleRefresh()}>See More Jobs &nbsp; <FiArrowRightCircle /></p>
 
+                {!state.key && (
+                    <>
+                        <Divider />
 
-                <Divider />
-
-                <HeaderContent tw="py-24 text-center">
-                    <h4 tw="text-gray-500 text-2xl font-bold">To see And Post More Job Offers</h4>
-                    <ButtonRow>
-                        <ButtonOutline to="/login">Log In</ButtonOutline>
-                        <ButtonPrimary to="/signup">Sign Up</ButtonPrimary>
-                    </ButtonRow>
-                    <p tw="my-8 text-gray-500">You need to have an account to register/post jobs</p>
-                </HeaderContent>
+                        <HeaderContent tw="py-24 text-center">
+                            <h4 tw="text-gray-500 text-2xl font-bold">To see And Post More Job Offers</h4>
+                            <ButtonRow>
+                                <ButtonOutline to="/login">Log In</ButtonOutline>
+                                <ButtonPrimary to="/signup">Sign Up</ButtonPrimary>
+                            </ButtonRow>
+                            <p tw="my-8 text-gray-500">You need to have an account to register/post jobs</p>
+                        </HeaderContent>
+                    </>
+                )}
             </Container>
             <Footer />
         </>
