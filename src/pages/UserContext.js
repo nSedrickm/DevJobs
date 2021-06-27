@@ -88,7 +88,7 @@ const UserProvider = () => {
                 </Route>
 
                 <Route exact path="/dashboard">
-                    {state.isAuthorized === Authorized ? <Dashboard /> : <Redirect to="/" />}
+                    {state.isAuthorized === Authorized ? <Dashboard /> : <Redirect to="/login" />}
                 </Route>
 
                 <Route exact path="/profile/job-seeker">
