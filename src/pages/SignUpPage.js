@@ -7,7 +7,8 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { registerUser } from "services/auth.service";
+import { registerUser, setAuthHeaders } from "services/auth.service";
+import { useUserContext } from "./UserContext";
 
 const Label = tw.label`block text-sm mt-2`;
 const Input = tw.input`border border-green-600 w-full mt-2 mb-2 p-2 px-4 placeholder-gray-400 text-sm rounded bg-opacity-90 hocus:outline-none focus:ring-green-600 focus:border-green-600`;
@@ -24,7 +25,7 @@ const SignupSchema = yup.object().shape({
 
 
 const SignUpPage = () => {
-
+    const { dispatch } = useUserContext();
     const [stage, setStage] = useState(1);
     const [role, setRole] = useState("");
     const [loading, setLoading] = useState(false);
@@ -43,10 +44,12 @@ const SignUpPage = () => {
 
         registerUser(data)
             .then(response => {
-                toast.success("Registration Successfull");
-                console.log(response.data)
+                toast.success("Registration Successful");
+                setAuthHeaders(response.data);
                 setLoading(false);
                 setStage(2);
+                dispatch({ type: "LOGIN", payload: response.data })
+                toast.success("A confirmation Email has been sent to your email address");
             })
             .catch(error => {
                 if (error.response) {
@@ -83,7 +86,7 @@ const SignUpPage = () => {
                     <header tw="text-center p-4">
                         <p tw="text-sm my-2">Step 2 Of 9</p>
                         <h1 tw="text-4xl font-bold text-green-600 mb-2">DevJobs</h1>
-                        <p tw="text-base">Let Us Know How You will Be Using Our Products</p>
+                        <p tw="text-base">Please Let Us Know How You will Be Using Our Products</p>
                     </header>
                     <form tw="w-full md:w-2/3 lg:w-1/2 p-4 mx-auto">
                         <label
@@ -103,7 +106,7 @@ const SignUpPage = () => {
                         </label>
 
                         <Link
-                            to={role === "job-seeker" ? "users/job-seeker" : "users/employer"}
+                            to={role === "job-seeker" ? "/profile/job-seeker" : "/profile/employer"}
                             tw="block p-3 bg-green-600 text-center font-bold text-white rounded-md"
                         >
                             Next
@@ -123,7 +126,7 @@ const SignUpPage = () => {
                 </header>
                 <div tw="flex flex-col md:flex-row">
                     <div tw="w-full md:w-1/2 p-4 text-center">
-                        <p tw="mb-8 text-lg font-bold">Sign Up  With</p>
+                        <p tw="mb-8 text-lg font-bold">Sign Up With</p>
                         <button tw="p-2 rounded-md text-xl bg-gray-200 mb-5 w-5/6 md:w-2/3 mx-auto text-center">Google</button>
                         <button tw="p-2 rounded-md text-xl bg-blue-800 w-5/6 md:w-2/3 mx-auto text-white">facebook</button>
                         <p tw="text-green-600 my-4 text-sm">Terms & Privacy | cookie policy</p>
