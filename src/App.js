@@ -10,6 +10,10 @@ function App() {
       <BrowserRouter>
         <Toaster
           position="top-center"
+          toastOptions={{
+            className: 'md:mt-8',
+            duration: 5000
+          }}
         />
         <UserProvider />
       </BrowserRouter>
