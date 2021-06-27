@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { getJobs } from "services/api.service";
 import { FiArrowRightCircle } from 'react-icons/fi';
-import { Loader } from 'components';
+import { Loader, Navbar, Footer } from 'components';
 
 const Container = tw.div`w-full text-gray-800 bg-white`;
 const Header = styled.header`
@@ -92,85 +92,89 @@ const LandingPage = () => {
     }
 
     return (
-        <Container>
-            <Header>
-                <HeaderContent>
-                    <Heading>DevJobs</Heading>
-                    <Description>&lt; Ctrl + F Developer Jobs Faster / &gt;</Description>
+        <>
+            <Navbar />
+            <Container>
+                <Header>
+                    <HeaderContent>
+                        <Heading>DevJobs</Heading>
+                        <Description>&lt; Ctrl + F Developer Jobs Faster / &gt;</Description>
+                        <ButtonRow>
+                            <ButtonOutline to="/users/login">Sign In</ButtonOutline>
+                            <ButtonPrimary to="/users/signup">Sign Up</ButtonPrimary>
+                        </ButtonRow>
+                        <p tw="my-8 text-gray-500">You need to have an account to register/post jobs</p>
+                    </HeaderContent>
+                </Header>
+
+
+                <JobNav>
+                    <JobNavTitle>Posted Jobs</JobNavTitle>
+                    <JobNavUl>
+                        <JobNavLi tw=" bg-green-100 text-green-700">New Jobs</JobNavLi>
+                        <JobNavLi>|</JobNavLi>
+                        <JobNavLi >1 Week Ago</JobNavLi>
+                        <JobNavLi>|</JobNavLi>
+                        <JobNavLi >2 Weeks Ago</JobNavLi>
+                        <JobNavLi>|</JobNavLi>
+                        <JobNavLi >1 Month Ago</JobNavLi>
+                    </JobNavUl>
+                </JobNav>
+
+                <Divider />
+
+                <JobContainer>
+                    {loading ? (
+                        <InlineLoader tw="h-96" />
+                    ) : (
+                        <>
+                            {jobs.length && (
+                                jobs?.map(job => {
+                                    return (
+                                        <JobCard key={job.pk} >
+                                            <JobCardBody>
+                                                <JobCardTitle>{job.title}</JobCardTitle>
+                                                <JobMeta>
+                                                    <p>Company : {job.company_name}</p>
+                                                </JobMeta>
+                                                <JobMeta>
+                                                    <p>Lagos,Nigeria</p>
+                                                    <p tw="mx-1 md:mx-2">|</p>
+                                                    <p>fulltime</p>
+                                                    <p tw="mx-1 md:mx-2">|</p>
+                                                    <p>$20000000/year</p>
+                                                </JobMeta>
+                                                <JobMeta>
+                                                    <p tw="text-center">{job.users_applied ? job.users_applied : 0} applies</p>
+                                                    <p tw="mx-1 md:mx-2">|</p>
+                                                    <p>Posted {new Date(job.created_date).toLocaleString()}</p>
+                                                </JobMeta>
+                                            </JobCardBody>
+                                            <ApplyButton>Apply</ApplyButton>
+                                            <DetailsButton href={job.url}>See Full Details</DetailsButton>
+                                        </JobCard>
+                                    )
+                                }))}
+                        </>
+                    )}
+                </JobContainer>
+
+                <p tw="text-center text-3xl text-green-700 font-bold cursor-pointer py-12 flex items-center justify-center" onClick={() => handleRefresh()}>See More Jobs &nbsp; <FiArrowRightCircle /></p>
+
+
+                <Divider />
+
+                <HeaderContent tw="py-24 text-center">
+                    <h4 tw="text-gray-500 text-2xl font-bold">To see And Post More Job Offers</h4>
                     <ButtonRow>
                         <ButtonOutline to="/users/login">Sign In</ButtonOutline>
                         <ButtonPrimary to="/users/signup">Sign Up</ButtonPrimary>
                     </ButtonRow>
                     <p tw="my-8 text-gray-500">You need to have an account to register/post jobs</p>
                 </HeaderContent>
-            </Header>
-
-
-            <JobNav>
-                <JobNavTitle>Posted Jobs</JobNavTitle>
-                <JobNavUl>
-                    <JobNavLi tw=" bg-green-100 text-green-700">New Jobs</JobNavLi>
-                    <JobNavLi>|</JobNavLi>
-                    <JobNavLi >1 Week Ago</JobNavLi>
-                    <JobNavLi>|</JobNavLi>
-                    <JobNavLi >2 Weeks Ago</JobNavLi>
-                    <JobNavLi>|</JobNavLi>
-                    <JobNavLi >1 Month Ago</JobNavLi>
-                </JobNavUl>
-            </JobNav>
-
-            <Divider />
-
-            <JobContainer>
-                {loading ? (
-                    <InlineLoader tw="h-96" />
-                ) : (
-                    <>
-                        {jobs.length && (
-                            jobs?.map(job => {
-                                return (
-                                    <JobCard key={job.pk} >
-                                        <JobCardBody>
-                                            <JobCardTitle>{job.title}</JobCardTitle>
-                                            <JobMeta>
-                                                <p>Company : {job.company_name}</p>
-                                            </JobMeta>
-                                            <JobMeta>
-                                                <p>Lagos,Nigeria</p>
-                                                <p tw="mx-1 md:mx-2">|</p>
-                                                <p>fulltime</p>
-                                                <p tw="mx-1 md:mx-2">|</p>
-                                                <p>$20000000/year</p>
-                                            </JobMeta>
-                                            <JobMeta>
-                                                <p tw="text-center">{job.users_applied ? job.users_applied : 0} applies</p>
-                                                <p tw="mx-1 md:mx-2">|</p>
-                                                <p>Posted {new Date(job.created_date).toLocaleString()}</p>
-                                            </JobMeta>
-                                        </JobCardBody>
-                                        <ApplyButton>Apply</ApplyButton>
-                                        <DetailsButton href={job.url}>See Full Details</DetailsButton>
-                                    </JobCard>
-                                )
-                            }))}
-                    </>
-                )}
-            </JobContainer>
-
-            <p tw="text-center text-3xl text-green-700 font-bold cursor-pointer py-12 flex items-center justify-center" onClick={() => handleRefresh()}>See More Jobs &nbsp; <FiArrowRightCircle /></p>
-
-
-            <Divider />
-
-            <HeaderContent tw="py-24 text-center">
-                <h4 tw="text-gray-500 text-2xl font-bold">To see And Post More Job Offers</h4>
-                <ButtonRow>
-                    <ButtonOutline to="/users/login">Sign In</ButtonOutline>
-                    <ButtonPrimary to="/users/signup">Sign Up</ButtonPrimary>
-                </ButtonRow>
-                <p tw="my-8 text-gray-500">You need to have an account to register/post jobs</p>
-            </HeaderContent>
-        </Container>
+            </Container>
+            <Footer />
+        </>
     )
 }
 

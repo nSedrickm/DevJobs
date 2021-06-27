@@ -3,7 +3,7 @@ import tw from "twin.macro";
 import logo from "images/logo-sm.svg";
 import { FiMenu, FiSearch } from "react-icons/fi";
 import { Link } from "react-router-dom";
-import { useUserContext } from "pages/users/UserContext";
+import { useUserContext } from "pages/UserContext";
 
 const MainHeader = tw.div`bg-white`;
 const Brand = tw.img`font-bold text-4xl text-green-600 ml-2 p-2 mr-auto`;

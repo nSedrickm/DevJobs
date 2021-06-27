@@ -1,9 +1,13 @@
 import React, { createContext, useContext, useEffect, useReducer } from "react";
 import { getLocalUserState, setLocalUserState, clearLocalUserState } from "services/storage.service";
 import { Switch, Route, Redirect } from "react-router-dom";
-import LogInPage from "pages/users/LogInPage";
-import SignUpPage from "pages/users/SignUpPage";
-import HomePage from "pages/users/HomePage";
+import LogInPage from "pages/LogInPage";
+import SignUpPage from "pages/SignUpPage";
+import HomePage from "pages/HomePage";
+import LandingPage from "pages/LandingPage";
+import JobSeekerRegistrationPage from "pages/JobSeekerRegistrationPage";
+import EmployerRegistrationPage from "pages/EmployerRegistrationPage";
+import PasswordResetPage from "pages/PasswordResetPage";
 
 const UserContext = createContext();
 const useUserContext = () => useContext(UserContext);
@@ -40,6 +44,7 @@ let initialState = localState || {
     userData: {},
     notifications: {}
 }
+
 const UserProvider = () => {
 
     const [state, dispatch] = useReducer(reducer, initialState);
@@ -63,21 +68,38 @@ const UserProvider = () => {
             }}
         >
             <Switch>
-                <Route exact path="/users/login">
-                    {state.isAuthorized === Authorized ? <Redirect to="/users/home" /> : <LogInPage />}
+                <Route exact path="/">
+                    <LandingPage />
                 </Route>
 
-                <Route exact path="/users/signup">
+                <Route exact path="/login">
+                    {state.isAuthorized === Authorized ? <Redirect to="/home" /> : <LogInPage />}
+                </Route>
+
+                <Route exact path="/signup">
                     <SignUpPage />
                 </Route>
 
-                <Route path="/users/home">
-                    {state.isAuthorized === Authorized ? <HomePage /> : <Redirect to="/users/login" />}
+                <Route exact path="/job-seeker">
+                    <JobSeekerRegistrationPage />
+                </Route>
+
+                <Route exact path="/employer">
+                    <EmployerRegistrationPage />
+                </Route>
+
+                <Route path="/home">
+                    {state.isAuthorized === Authorized ? <HomePage /> : <Redirect to="/login" />}
+                </Route>
+
+
+                <Route exact path="/reset-password">
+                    <PasswordResetPage />
                 </Route>
 
                 <Route>
                     {/* Redirect users to login if they hit a missing route*/}
-                    <Redirect to="/users/login" />
+                    <Redirect to="/login" />
                 </Route>
             </Switch>
         </UserContext.Provider>
