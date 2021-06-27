@@ -25,7 +25,7 @@ const CompanyDetailsSchema = yup.object().shape({
     company_name: yup.string().required('Company Name is required'),
     company_email: yup.string().email("Please enter a valid email address").required('Email is required'),
     company_website: yup.string().required('Website address is required'),
-    company_number: yup.string().required('Company Number is required'),
+    company_number: yup.number().required('Company Number is required'),
     company_linkedin: yup.string(),
 
 });
@@ -203,8 +203,8 @@ const EmployerRegistrationPage = () => {
 
                                 <Label>Company Identification Number</Label>
                                 <Input
-                                    type="text"
-                                    placeholder="CMN-12303NGN"
+                                    type="number"
+                                    placeholder="123456"
                                     {...register("company_number")}
                                 />
                                 {errors.company_number && <ErrorMessage>{errors.company_number.message}</ErrorMessage>}
