@@ -4,6 +4,7 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import LogInPage from "pages/LogInPage";
 import SignUpPage from "pages/SignUpPage";
 import LandingPage from "pages/LandingPage";
+import Dashboard from "pages/Dashboard";
 import JobSeekerRegistrationPage from "pages/JobSeekerRegistrationPage";
 import EmployerRegistrationPage from "pages/EmployerRegistrationPage";
 import PasswordResetPage from "pages/PasswordResetPage";
@@ -84,6 +85,10 @@ const UserProvider = () => {
 
                 <Route exact path="/signup">
                     <SignUpPage />
+                </Route>
+
+                <Route exact path="/dashboard">
+                    {state.isAuthorized === Authorized ? <Dashboard /> : <Redirect to="/" />}
                 </Route>
 
                 <Route exact path="/profile/job-seeker">
