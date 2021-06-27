@@ -86,11 +86,11 @@ const UserProvider = () => {
                     <SignUpPage />
                 </Route>
 
-                <Route exact path="/job-seeker">
+                <Route exact path="/profile/job-seeker">
                     {state.isAuthorized === Authorized ? <JobSeekerRegistrationPage /> : <Redirect to="/" />}
                 </Route>
 
-                <Route exact path="/employer">
+                <Route exact path="/profile/employer">
                     {state.isAuthorized === Authorized ? <EmployerRegistrationPage /> : <Redirect to="/" />}
                 </Route>
 
