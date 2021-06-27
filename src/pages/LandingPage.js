@@ -24,17 +24,17 @@ const ButtonPrimary = tw(Button)`bg-green-600`;
 const ButtonOutline = tw(Button)`border border-green-600 text-green-600 hover:bg-green-100`;
 const InlineLoader = tw(props => <Loader {...props} />)``;
 
-const JobContainer = tw.div`p-4 sm:p-8 lg:p-20 flex flex-col md:flex-row justify-center`;
+const JobContainer = tw.div`p-4 sm:p-8 lg:p-20 flex flex-col lg:flex-row justify-center`;
 const JobNav = tw.nav`px-4 sm:px-8 pt-20 pb-10 lg:px-20 text-center md:text-left flex flex-col items-center justify-center lg:flex-row lg:justify-between`;
 const JobNavTitle = tw.h2`font-bold text-3xl mb-8 lg:mb-0`;
 const JobNavUl = tw.ul`inline-flex items-center`;
 const JobNavLi = tw.li`font-semibold text-sm sm:text-base cursor-pointer p-2 py-1 `;
-const JobCard = tw.div`p-5 m-4 border rounded-lg shadow-lg md:w-1/2 lg:w-1/3 bg-white text-gray-500 border hover:border-green-600 hover:shadow-none`;
+const JobCard = tw.div`p-5 mx-auto lg:mx-3 my-3 border rounded-lg shadow-lg sm:w-2/3 md:w-1/2 lg:w-1/3 bg-white text-gray-500 border hover:border-green-600 hover:shadow-none`;
 const JobCardTitle = tw.h3`font-bold text-xl md:text-2xl mb-4 text-gray-700`;
 const JobCardBody = tw.div`mb-4`;
 const JobMeta = tw.div`flex flex-row md:inline-flex text-sm lg:text-base py-2`;
-const ApplyButton = tw.button`block w-full p-1 sm:p-1.5 rounded font-bold text-sm bg-green-600 hocus:bg-green-700 text-white mb-3`;
-const DetailsButton = tw(Link)`block text-center w-full p-1 sm:p-1.5 rounded font-bold text-sm text-green-600 border border-green-600 hocus:bg-green-100`;
+const ApplyButton = tw.button`block w-full p-2 sm:py-1.5 rounded font-bold text-sm border border-green-600 bg-green-600 hocus:bg-green-700 text-white mb-3`;
+const DetailsButton = tw(Link)`block text-center w-full p-2 sm:py-1.5 rounded font-bold text-sm text-green-600 border border-green-600 hocus:bg-green-100`;
 const Divider = tw.hr`mx-20 border-gray-300`;
 
 const LandingPage = () => {
