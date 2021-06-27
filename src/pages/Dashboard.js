@@ -11,20 +11,19 @@ import * as yup from "yup";
 import { setAuthHeaders } from 'services/auth.service';
 import { useUserContext } from './UserContext';
 
-const InlineLoader = tw(props => <Loader {...props} />)``;
 
 const Container = tw.div`w-full text-gray-800`;
-const JobContainer = tw.div`p-4 sm:p-8 lg:p-20 flex flex-col md:flex-row justify-center`;
+const InlineLoader = tw(props => <Loader {...props} />)``;
+
+const JobContainer = tw.div`p-4 sm:p-12 lg:p-20 justify-center grid md:grid-cols-2 lg:grid-cols-3 gap-6 place-items-center place-content-center`;
 const JobNav = tw.nav`px-4 sm:px-8 pt-20 pb-10 lg:px-20 text-center md:text-left flex flex-col items-center justify-center lg:flex-row lg:justify-between`;
-const JobNavTitle = tw.h2`font-bold text-3xl mb-8 lg:mb-0`;
+const JobNavTitle = tw.h2`font-bold text-2xl mb-8 lg:mb-0`;
 const JobNavUl = tw.ul`inline-flex items-center`;
 const JobNavLi = tw.li`inline-flex items-center font-semibold text-sm sm:text-base cursor-pointer px-4 py-2 mx-2 bg-green-100 text-green-700 rounded shadow`;
-const JobCard = tw.div`p-5 m-4 rounded-lg shadow-lg md:w-1/2 lg:w-1/3 bg-white text-gray-500 border hover:border-green-600 hover:shadow-none`;
-const JobCardTitle = tw.h3`font-bold text-xl md:text-2xl mb-4 text-gray-700`;
+const JobCard = tw.div`p-5 mx-auto w-full border rounded-xl shadow-lg  bg-white text-gray-500 border hover:border-green-600 hover:shadow-none`;
+const JobCardTitle = tw.h3`font-bold text-xl mb-4 text-gray-700`;
 const JobCardBody = tw.div`mb-4`;
 const JobMeta = tw.div`flex flex-row md:inline-flex text-sm lg:text-base py-2`;
-const ApplyButton = tw.button`block w-full p-1 sm:p-2 rounded font-bold bg-green-600 hocus:bg-green-700 text-white mb-3`;
-const DetailsButton = tw.a`block text-center w-full p-1 sm:p-2 rounded font-bold text-green-600 border border-green-600 hocus:bg-green-100`;
 const Divider = tw.hr`mx-20 border-gray-300`;
 const Label = tw.label`block text-sm`;
 const Input = tw.input`border border-gray-600 w-full mt-2 mb-4 p-2 px-4 placeholder-gray-400 text-sm rounded bg-opacity-90 hocus:outline-none focus:ring-green-600 focus:border-green-600`;
@@ -155,11 +154,14 @@ const Dashboard = () => {
 
             <Divider />
 
+
             <JobContainer>
                 {loading ? (
-                    <InlineLoader tw="h-96" />
+                    <InlineLoader tw="h-96 md:col-span-2 lg:col-span-3" />
                 ) : (
                     <>
+                        <JobNavTitle tw="col-span-3 text-left">All Applications</JobNavTitle>
+
                         {jobs.length && (
                             jobs?.map(job => {
                                 return (
@@ -167,23 +169,9 @@ const Dashboard = () => {
                                         <JobCardBody>
                                             <JobCardTitle>{job.title}</JobCardTitle>
                                             <JobMeta>
-                                                <p>Company : {job.company_name}</p>
-                                            </JobMeta>
-                                            <JobMeta>
-                                                <p>Lagos nigeria</p>
-                                                <p tw="mx-1 md:mx-2">|</p>
-                                                <p>Full Time</p>
-                                                <p tw="mx-1 md:mx-2">|</p>
-                                                <p>$20000000/year</p>
-                                            </JobMeta>
-                                            <JobMeta>
-                                                <p>{job.users_applied ? job.users_applied : 0} applies</p>
-                                                <p tw="mx-1 md:mx-2">|</p>
-                                                <p>Posted {new Date(job.created_date).toLocaleString()}</p>
+                                                <p>PK : {job.pk}</p>
                                             </JobMeta>
                                         </JobCardBody>
-                                        <ApplyButton>Apply</ApplyButton>
-                                        <DetailsButton href={job.url}>See Full Details</DetailsButton>
                                     </JobCard>
                                 )
                             }))}
