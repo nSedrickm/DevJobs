@@ -8,6 +8,7 @@ import LandingPage from "pages/LandingPage";
 import JobSeekerRegistrationPage from "pages/JobSeekerRegistrationPage";
 import EmployerRegistrationPage from "pages/EmployerRegistrationPage";
 import PasswordResetPage from "pages/PasswordResetPage";
+import JobDetails from "pages/JobDetails";
 
 const UserContext = createContext();
 const useUserContext = () => useContext(UserContext);
@@ -70,6 +71,10 @@ const UserProvider = () => {
             <Switch>
                 <Route exact path="/">
                     <LandingPage />
+                </Route>
+
+                <Route exact path="/job/details/:pk">
+                    <JobDetails />
                 </Route>
 
                 <Route exact path="/login">

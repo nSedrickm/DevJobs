@@ -7,3 +7,7 @@ axios.defaults.baseURL = API_URL;
 export const getJobs = () => {
     return axios.get(API_URL + "/job").then(response => response)
 }
+
+export const getJobDetails = (pk) => {
+    return axios.get(`${API_URL}/job/detail/${pk}`).then(response => response)
+}

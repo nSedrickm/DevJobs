@@ -33,7 +33,7 @@ const JobCardTitle = tw.h3`font-bold text-xl md:text-2xl mb-4 text-gray-700`;
 const JobCardBody = tw.div`mb-4`;
 const JobMeta = tw.div`flex flex-row md:inline-flex text-sm lg:text-base py-2`;
 const ApplyButton = tw.button`block w-full p-1 sm:p-2 rounded font-bold bg-green-600 hocus:bg-green-700 text-white mb-3`;
-const DetailsButton = tw.a`block text-center w-full p-1 sm:p-2 rounded font-bold text-green-600 border border-green-600 hocus:bg-green-100`;
+const DetailsButton = tw(Link)`block text-center w-full p-1 sm:p-2 rounded font-bold text-green-600 border border-green-600 hocus:bg-green-100`;
 const Divider = tw.hr`mx-20 border-gray-300`;
 
 const LandingPage = () => {
@@ -151,7 +151,7 @@ const LandingPage = () => {
                                                 </JobMeta>
                                             </JobCardBody>
                                             <ApplyButton>Apply</ApplyButton>
-                                            <DetailsButton href={job.url}>See Full Details</DetailsButton>
+                                            <DetailsButton to={"/job/details/" + job.pk}>See Full Details</DetailsButton>
                                         </JobCard>
                                     )
                                 }))}
