@@ -29,6 +29,7 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 isAuthorized: notAuthorized,
+                key: "",
                 userData: {}
             }
         }
@@ -42,6 +43,7 @@ let localState = getLocalUserState();
 
 let initialState = localState || {
     isAuthorized: notAuthorized,
+    key: "",
     userData: {},
     notifications: {}
 }

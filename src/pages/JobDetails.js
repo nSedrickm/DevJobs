@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { getJobDetails } from "services/api.service";
 import { Loader, Navbar, Footer } from 'components';
 import { useParams } from 'react-router-dom';
+import { useUserContext } from './UserContext';
 
 const Container = tw.div`w-full text-gray-800 bg-white p-8 md:p-12`;
 const Header = tw.div`text-center md:h-64 md:relative bg-green-100 p-8 rounded-lg`;
@@ -17,6 +18,8 @@ const Button = tw.button`block w-full sm:w-2/3 md:w-1/3 mb-12 mx-auto p-2 bg-gre
 
 const JobDetails = () => {
 
+    const { state } = useUserContext();
+    console.log(state);
     const [details, setdetails] = useState({})
     const [loading, setLoading] = useState(true);
     const { pk } = useParams()
@@ -94,9 +97,7 @@ const JobDetails = () => {
                     </div>
                 </div>
 
-                <Button onClick={() => console.log("apply")}>Apply</Button>
-
-
+                <Button onClick={() => console.log("apply")}>{state.key ? "Apply" : "Login To Apply"}</Button>
 
             </Container>
             <Footer />
