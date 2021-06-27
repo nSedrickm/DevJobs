@@ -37,7 +37,7 @@ const LogInPage = () => {
 
         userLogin(data)
             .then(response => {
-                toast.success("Login Successfull");
+                toast.success("Login Successful");
                 setAuthHeaders(response.data);
                 dispatch({ type: "LOGIN", payload: response.data })
             })
