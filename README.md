@@ -21,6 +21,13 @@ cp env.example .env.development.local
 cp env.example .env.production.local
 ```
 The .env files in project root contains all variables used by the UI including the API URL.
+
+### Install Dependencies
+
+```bash
+npm install
+```
+
 ## Available Scripts
 
 In the project directory, you can run:
