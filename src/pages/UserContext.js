@@ -3,7 +3,6 @@ import { getLocalUserState, setLocalUserState, clearLocalUserState } from "servi
 import { Switch, Route, Redirect } from "react-router-dom";
 import LogInPage from "pages/LogInPage";
 import SignUpPage from "pages/SignUpPage";
-import HomePage from "pages/HomePage";
 import LandingPage from "pages/LandingPage";
 import JobSeekerRegistrationPage from "pages/JobSeekerRegistrationPage";
 import EmployerRegistrationPage from "pages/EmployerRegistrationPage";
@@ -80,7 +79,7 @@ const UserProvider = () => {
                 </Route>
 
                 <Route exact path="/login">
-                    {state.isAuthorized === Authorized ? <Redirect to="/home" /> : <LogInPage />}
+                    {state.isAuthorized === Authorized ? <Redirect to="/" /> : <LogInPage />}
                 </Route>
 
                 <Route exact path="/signup">
@@ -88,17 +87,12 @@ const UserProvider = () => {
                 </Route>
 
                 <Route exact path="/job-seeker">
-                    <JobSeekerRegistrationPage />
+                    {state.isAuthorized === Authorized ? <JobSeekerRegistrationPage /> : <Redirect to="/" />}
                 </Route>
 
                 <Route exact path="/employer">
-                    <EmployerRegistrationPage />
+                    {state.isAuthorized === Authorized ? <EmployerRegistrationPage /> : <Redirect to="/" />}
                 </Route>
-
-                <Route path="/home">
-                    {state.isAuthorized === Authorized ? <HomePage /> : <Redirect to="/login" />}
-                </Route>
-
 
                 <Route exact path="/reset-password">
                     <PasswordResetPage />
