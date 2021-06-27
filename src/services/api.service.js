@@ -31,3 +31,7 @@ export const createJob = (data) => {
         description: data.description
     }).then(response => response)
 }
+
+export const jobApplication = (pk) => {
+    return axios.post(API_URL + "/job/apply/?pk=" + pk).then(response => response)
+}

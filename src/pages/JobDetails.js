@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import tw from "twin.macro";
 import toast from "react-hot-toast";
-import { getJobDetails } from "services/api.service";
+import { getJobDetails, jobApplication } from "services/api.service";
 import { Loader, Navbar, Footer } from 'components';
-import { useParams } from 'react-router-dom';
+import { useParams, Link, useHistory } from 'react-router-dom';
 import { useUserContext } from './UserContext';
+import { setAuthHeaders } from 'services/auth.service';
 
 const Container = tw.div`w-full text-gray-800 bg-white p-8 md:p-12`;
 const Header = tw.div`text-center md:h-64 md:relative bg-green-100 p-8 rounded-lg`;
@@ -15,14 +16,15 @@ const JobNavUl = tw.ul`md:inline-flex items-center`;
 const JobNavLi = tw.li`text-sm lg:text-base cursor-pointer px-2 py-1 lg:px-4 lg:py-2  mb-2 text-gray-500`;
 const Divider = tw.span`hidden md:inline-flex px-2 py-1 lg:px-4 lg:py-2 text-green-600 mb-2`;
 const Button = tw.button`block w-full sm:w-2/3 md:w-1/3 mb-12 mx-auto p-2 bg-green-600 text-center font-bold text-white rounded-md mt-2`;
+const ButtonLink = tw(Link)`block w-full sm:w-2/3 md:w-1/3 mb-12 mx-auto p-2 bg-green-600 text-center font-bold text-white rounded-md mt-2`;
 
 const JobDetails = () => {
 
     const { state } = useUserContext();
-    console.log(state);
     const [details, setdetails] = useState({})
     const [loading, setLoading] = useState(true);
     const { pk } = useParams()
+    const history = useHistory();
 
     useEffect(() => {
 
@@ -49,6 +51,37 @@ const JobDetails = () => {
                 setLoading(false);
             });
     }, [pk]);
+
+    const handleJobApplication = (pk) => {
+
+        setLoading(true);
+        setAuthHeaders(state);
+        jobApplication(pk)
+            .then(response => {
+                toast.success(response.data.request);
+
+                setTimeout(() => {
+                    history.push("/")
+                }, 800);
+                setLoading(false);
+            })
+            .catch(error => {
+                if (error.response) {
+                    // The request was made and the server responded with a status code
+                    // that falls out of the range of 2xx
+                    toast.error("An error occured, could not get jobs")
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                    // http.ClientRequest in node.js
+                    toast.error("An error occured, could not get jobs")
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    toast.error("An error occured, could not get jobs")
+                }
+                setLoading(false);
+            });
+    }
 
     if (loading) return <Loader className="bg-white text-gray-600" />;
 
@@ -97,8 +130,11 @@ const JobDetails = () => {
                     </div>
                 </div>
 
-                <Button onClick={() => console.log("apply")}>{state.key ? "Apply" : "Login To Apply"}</Button>
-
+                {state.key && pk ? (
+                    <Button onClick={() => { handleJobApplication(pk) }}>Apply</Button>
+                ) : (
+                    <ButtonLink to="/login">Login To Apply</ButtonLink>
+                )}
             </Container>
             <Footer />
         </>

@@ -32,8 +32,6 @@ const TextArea = tw.textarea`w-full rounded mt-2 mb-2 hocus:outline-none focus:r
 const ErrorMessage = tw.p`text-sm text-red-500 mb-2`;
 const SubmitButton = tw.button`block w-full md:w-2/3 mx-auto p-2 bg-green-600 text-center font-bold text-white rounded-md mt-2`;
 
-
-
 const JobSchema = yup.object().shape({
     company_number: yup.string().required('Company Number is required'),
     company_name: yup.string().required('Company Name is required'),
@@ -89,7 +87,6 @@ const Dashboard = () => {
     });
 
     const handleCreateJob = (data) => {
-        console.log(data)
         setLoading(true)
         setAuthHeaders(state)
         createJob(data)
