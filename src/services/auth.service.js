@@ -17,6 +17,14 @@ export const registerUser = ({ username, password1, password2 }) => {
         }).then(response => response)
 }
 
+export const createEmployerProfile = ({ company_name, company_number }) => {
+    return axios.post(API_URL + "/profile/employer/",
+        {
+            company_name: company_name,
+            company_number: company_number
+        }).then(response => response)
+}
+
 export const userLogin = async ({ username, password }) => {
     return axios.post(API_URL + "/dj-rest-auth/login/",
         {
