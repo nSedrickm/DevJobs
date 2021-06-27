@@ -52,7 +52,7 @@ const EmployerRegistrationPage = () => {
     const { state } = useUserContext();
 
     const [lstate, dispatch] = useReducer(reducer, {
-        stage: 9,
+        stage: 3,
         loading: false
     });
 
@@ -69,7 +69,7 @@ const EmployerRegistrationPage = () => {
         setAuthHeaders(state);
         createEmployerProfile(data)
             .then(response => {
-                toast.success("Employer " + response.data.company_name + " Created Successfull");
+                toast.success("Employer " + response.data.company_name + " Created Successfully");
                 console.log(response.data)
                 dispatch({ type: "loading", payload: false })
                 dispatch({ type: "changeStage", payload: 9 })
