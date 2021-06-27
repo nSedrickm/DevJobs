@@ -11,3 +11,23 @@ export const getJobs = () => {
 export const getJobDetails = (pk) => {
     return axios.get(`${API_URL}/job/detail/${pk}`).then(response => response)
 }
+
+export const getDashboard = () => {
+    return axios.get(API_URL + "/job/dashboard/").then(response => response)
+}
+
+export const createJob = (data) => {
+    return axios.post(API_URL + "/job/create/", {
+        company_id: data.company_number,
+        company_email: data.company_email,
+        country: data.country,
+        state: data.state,
+        city: data.city,
+        title: data.title,
+        company_name: data.company_name,
+        company_website: data.company_website,
+        experience_level: data.experience_level,
+        expected_salary: data.expected_salary,
+        description: data.description
+    }).then(response => response)
+}
