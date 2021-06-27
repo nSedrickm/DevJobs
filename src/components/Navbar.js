@@ -19,20 +19,21 @@ const Navbar = () => {
     return (
         <MainHeader>
             <DesktopNav>
-                <Brand src={logo} alt="DevJobs logo" />
+                <Link to="/">
+                    <Brand src={logo} alt="DevJobs logo" />
+                </Link>
                 <SearchBar>
                     <Input
                         type="search"
                         placeholder="Search jobs"
-                        autoFocus
                     />
                     <SearchIcon />
                 </SearchBar>
                 <Nav>
                     <NavLink to="/" tw="text-green-600">Home</NavLink>
                     <NavLink to="/employers">Employer (Post Jobs)</NavLink>
-                    <Button to="/users/signup" tw="bg-green-600 text-white">Sign Up</Button>
-                    <Button to="/users/login" tw="border border-green-600 text-green-600  hover:bg-green-100">Sign In</Button>
+                    <Button to="/signup" tw="bg-green-600 text-white">Sign Up</Button>
+                    <Button to="/login" tw="border border-green-600 text-green-600  hover:bg-green-100">Log In</Button>
                 </Nav>
             </DesktopNav>
             <MobileNav>

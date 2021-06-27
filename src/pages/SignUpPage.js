@@ -162,7 +162,7 @@ const SignUpPage = () => {
                             {errors.password2 && <ErrorMessage>{errors.password2.message}</ErrorMessage>}
 
                             <button type="submit" tw="w-full p-2 mt-4 bg-green-600 text-center font-bold text-white rounded-md">Sign Up</button>
-                            <p tw="text-center my-4 mx-auto block">Already have an account <Link to="/users/login" tw="text-green-600 font-bold">Sign In</Link></p>
+                            <p tw="text-center my-4 mx-auto block">Already have an account <Link to="/login" tw="text-green-600 font-bold">Log In</Link></p>
 
                         </form>
 

@@ -105,7 +105,7 @@ const LogInPage = () => {
 
                             <Link to="/reset-password" tw="text-green-600 my-6 block text-center">Forgot Password</Link>
 
-                            <p tw="text-center my-4 mx-auto block">Dont Have An Account Yet?  <Link to="/users/signup" tw="text-green-600 font-bold">Sign Up</Link></p>
+                            <p tw="text-center my-4 mx-auto block">Dont Have An Account Yet?  <Link to="/signup" tw="text-green-600 font-bold">Sign Up</Link></p>
 
                         </form>
 
