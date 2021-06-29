@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import { getDashboard, createJob } from "services/api.service";
 import { FiPlusCircle, FiRefreshCcw } from 'react-icons/fi';
 import { UserNavbar, Footer, Loader } from 'components';
-import { Dialog } from "evergreen-ui";
+import { Dialog, minorScale } from "evergreen-ui";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
