@@ -23,16 +23,18 @@ const Footer = () => {
                 <li tw="cursor-pointer px-4 py-1 mx-auto">Privacy Policy</li>
                 <li tw="hidden md:inline-flex">|</li>
                 <li tw="cursor-pointer px-4 py-1 mx-auto">Cookie Policy</li>
+
+                <ul tw="flex flex-row items-center text-base md:text-lg  mx-auto my-4">
+                <li  tw="text-blue-500  cursor-pointer mx-auto px-1 hover:text-black md:flex"><FaFacebook size={24}/></li>
+                <li tw="text-blue-500  cursor-pointer mx-auto px-1 hover:text-black md:flex"><FaTwitterSquare size={24}/></li>
+                <li tw="text-blue-500 cursor-pointer mx-auto px-1 hover:text-black md:flex"><AiFillLinkedin size={24}/></li>
+                <li tw="text-blue-500 cursor-pointer mx-auto px-1 hover:text-black md:flex">< AiOutlineSlackSquare size={24}/></li>
+            </ul>
                 
             </ul>
 
 
-            <ul tw="flex flex-row items-center text-base md:text-lg  mx-auto my-4">
-            <li tw="text-blue-500 cursor-pointer mx-auto px-1 hover:text-black md:flex"><FaFacebook /></li>
-                <li tw="text-blue-500 cursor-pointer mx-auto px-1 hover:text-black md:flex"><FaTwitterSquare /></li>
-                <li tw="text-blue-500 cursor-pointer mx-auto px-1 hover:text-black md:flex"><AiFillLinkedin /></li>
-                <li tw="text-blue-500 cursor-pointer mx-auto px-1 hover:text-black md:flex">< AiOutlineSlackSquare /></li>
-            </ul>
+            
 
 
 
