@@ -1,7 +1,7 @@
 import React from "react";
 import tw from "twin.macro";
 import logo from "images/logo-sm.svg";
-import { FiMenu, FiSearch, FiLogOut, FiChevronDown } from "react-icons/fi";
+import { FiMenu, FiSearch, FiLogOut, FiChevronDown, FiUser } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { useUserContext } from "pages/UserContext";
 import { Popover, Menu, Position } from "evergreen-ui";
@@ -52,12 +52,20 @@ const Navbar = () => {
                                 content={
                                     <Menu>
                                         <Menu.Divider />
+                                        <Link to="/users/profile">
+                                        <Menu.Item
+                                            icon={FiUser}
+                                        >
+                                            Profile
+                                        </Menu.Item>
+                                        </Link>
                                         <Menu.Item
                                             icon={FiLogOut}
                                             onClick={() => handleLogOut()}
                                         >
                                             Log Out
                                         </Menu.Item>
+
                                     </Menu>
                                 }
                             >
