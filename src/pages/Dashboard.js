@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import { getDashboard, createJob } from "services/api.service";
 import { FiPlusCircle, FiRefreshCcw } from 'react-icons/fi';
 import { UserNavbar, Footer, Loader } from 'components';
-import { Dialog } from "evergreen-ui";
+import { Dialog} from "evergreen-ui";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -32,7 +32,7 @@ const ErrorMessage = tw.p`text-sm text-red-500 mb-2`;
 const SubmitButton = tw.button`block w-full md:w-2/3 mx-auto p-2 bg-green-600 text-center font-bold text-white rounded-md mt-2`;
 
 const JobSchema = yup.object().shape({
-    company_number: yup.number().required('Company Number is required'),
+    company_number: yup.number().min(0).required('Company Number is required'),
     company_name: yup.string().required('Company Name is required'),
     company_email: yup.string().email("Please enter a valid email address").required('Email is required'),
     company_website: yup.string().required('Website address is required'),

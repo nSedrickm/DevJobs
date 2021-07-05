@@ -9,6 +9,7 @@ import JobSeekerRegistrationPage from "pages/JobSeekerRegistrationPage";
 import EmployerRegistrationPage from "pages/EmployerRegistrationPage";
 import PasswordResetPage from "pages/PasswordResetPage";
 import JobDetails from "pages/JobDetails";
+import ProfilePage from "pages/ProfilePage";
 
 const UserContext = createContext();
 const useUserContext = () => useContext(UserContext);
@@ -89,6 +90,10 @@ const UserProvider = () => {
 
                 <Route exact path="/dashboard">
                     {state.isAuthorized === Authorized ? <Dashboard /> : <Redirect to="/login" />}
+                </Route>
+
+                <Route exact path="/users/profile">
+                    <ProfilePage />
                 </Route>
 
                 <Route exact path="/profile/job-seeker">
