@@ -8,7 +8,6 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { registerUser, setAuthHeaders } from "services/auth.service";
-import { useUserContext } from "./UserContext";
 
 const Label = tw.label`block text-sm mt-2`;
 const Input = tw.input`border border-green-600 w-full mt-2 mb-2 p-2 px-4 placeholder-gray-400 text-sm rounded bg-opacity-90 hocus:outline-none focus:ring-green-600 focus:border-green-600`;
@@ -24,7 +23,6 @@ const SignupSchema = yup.object().shape({
 
 
 const SignUpPage = () => {
-    const { dispatch } = useUserContext();
     const [stage, setStage] = useState(1);
     const [loading, setLoading] = useState(false);
 
@@ -46,7 +44,6 @@ const SignUpPage = () => {
                 setAuthHeaders(response.data);
                 setLoading(false);
                 setStage(2);
-                dispatch({ type: "LOGIN", payload: response.data })
                 toast.success("A confirmation Email has been sent to your email address");
             })
             .catch(error => {
