@@ -40,7 +40,7 @@ const DashboardEmployer =() => {
                 <SearchBar>
                     <Input
                         type="search"
-                        placeholder="Search jobs"
+                        placeholder="Search by name or date"
                     />
                     <SearchIcon />
                 </SearchBar>
