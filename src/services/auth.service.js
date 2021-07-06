@@ -40,3 +40,11 @@ export const logOut = () => {
         .then(response => response)
 }
 
+export const getUserId = async () => {
+    return axios.get(API_URL + "/dj-rest-auth/user/").then(response => response)
+};
+
+export const getUserProfile = async (pk) => {
+    return axios.get(API_URL + "/profile/" + pk).then(response => response)
+};
+

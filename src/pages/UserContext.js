@@ -2,6 +2,8 @@ import React, { createContext, useContext, useEffect, useReducer, useState } fro
 import { getLocalUserState, setLocalUserState, clearLocalUserState } from "services/storage.service";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { Navbar, Footer, Loader } from "components";
+import { getUserProfile, getUserId } from "services/auth.service";
+import toast from "react-hot-toast";
 import LogInPage from "pages/LogInPage";
 import SignUpPage from "pages/SignUpPage";
 import LandingPage from "pages/LandingPage";
@@ -26,6 +28,12 @@ const reducer = (state, action) => {
                 ...state,
                 isAuthorized: Authorized,
                 key: action.payload.key
+            }
+        }
+        case "SETUSERDATA": {
+            return {
+                ...state,
+                userData: action.payload
             }
         }
         case "LOGOUT": {
@@ -61,6 +69,64 @@ const UserProvider = () => {
         initialState = getLocalUserState();
     }, [state])
 
+    const handleGetUserProfile = (pk) => {
+
+        getUserProfile(pk)
+            .then(response => {
+                dispatch({
+                    type: "SETUSERDATA",
+                    payload: response.data
+                });
+            })
+            .catch(error => {
+                if (error.response) {
+                    // The request was made and the server responded with a status code
+                    // that falls out of the range of 2xx
+                    toast.error("Could not get agent details. Please log out and login again");
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                    // http.ClientRequest in node.js
+                    toast.error("An error occurred Please check your network and try again");
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    toast.error("An error occurred Please check your network and try again");
+                }
+                setLoading(false);
+            });
+    }
+
+    const getBasicUserProfile = () => {
+
+        setLoading(true);
+
+        getUserId()
+            .then(response => {
+                console.log(response.data);
+                dispatch({
+                    type: "SETUSERDATA",
+                    payload: response.data
+                });
+            })
+            .catch(error => {
+                if (error.response) {
+                    // The request was made and the server responded with a status code
+                    // that falls out of the range of 2xx
+                    toast.error("An error occured could not get user ID");
+
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                    // http.ClientRequest in node.js
+                    toast.error("An error occurred Please check your network and try again");
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    toast.error("An error occurred Please check your network and try again");
+                }
+                setLoading(false);
+            });
+    }
+
     const handleLogOut = () => {
         dispatch({ type: "LOGOUT" })
         clearLocalUserState();
@@ -75,7 +141,9 @@ const UserProvider = () => {
                 loading,
                 dispatch,
                 setLoading,
-                handleLogOut
+                handleLogOut,
+                handleGetUserProfile,
+                getBasicUserProfile
             }}
         >
             <Navbar />
