@@ -12,7 +12,6 @@ import { useUserContext } from "./UserContext";
 
 const Label = tw.label`block text-sm mt-2`;
 const Input = tw.input`border border-green-600 w-full mt-2 mb-2 p-2 px-4 placeholder-gray-400 text-sm rounded bg-opacity-90 hocus:outline-none focus:ring-green-600 focus:border-green-600`;
-const RadioInput = tw.input`border border-green-600 w-6 h-6 mr-4 rounded-full hocus:outline-none focus:ring-0 focus:border-green-600 text-green-600`;
 const ErrorMessage = tw.p`text-sm text-red-500 mb-2`;
 
 const SignupSchema = yup.object().shape({
@@ -27,7 +26,6 @@ const SignupSchema = yup.object().shape({
 const SignUpPage = () => {
     const { dispatch } = useUserContext();
     const [stage, setStage] = useState(1);
-    const [role, setRole] = useState("");
     const [loading, setLoading] = useState(false);
 
     const {
@@ -81,44 +79,20 @@ const SignUpPage = () => {
 
     if (stage === 2) {
         return (
-            <section tw="text-gray-600 px-4 sm:px-8 py-24 lg:py-36 lg:h-screen">
-                <div tw="mx-auto md:w-2/3 bg-white py-8 lg:border lg:shadow-lg md:rounded-xl">
-                    <header tw="text-center p-4">
-                        <p tw="text-sm my-2">Step 2 Of 9</p>
-                        <h1 tw="text-4xl font-bold text-green-600 mb-2">DevJobs</h1>
-                        <p tw="text-base">Please Let Us Know How You will Be Using Our Products</p>
+            <section tw="text-secondary md:py-24 h-screen">
+                <div tw="mx-auto py-12 md:w-2/3 my-24  bg-white md:shadow-lg md:rounded-xl">
+                    <header tw="text-center mb-4 p-8">
+                        <h1 tw="text-3xl text-green-600 mb-4 font-bold">Registration Completed</h1>
+                        <p tw="text-base font-medium">welcome to a faster way of applying for jobs with just two clicks</p>
                     </header>
-                    <form tw="w-full md:w-2/3 lg:w-1/2 p-4 mx-auto">
-                        <label
-                            onClick={() => setRole("job-seeker")}
-                            tw="w-full p-3 rounded-md mb-6 inline-flex items-center border border-green-600"
-                        >
-                            <RadioInput type="radio" name="role" />
-                            <span>Job Seeker</span>
-                        </label>
-
-                        <label
-                            onClick={() => setRole("employer")}
-                            tw="w-full p-3 rounded-md mb-6 inline-flex items-center border border-green-600"
-                        >
-                            <RadioInput type="radio" name="role" />
-                            <span>Employer</span>
-                        </label>
-
-                        <Link
-                            to={role === "job-seeker" ? "/profile/job-seeker" : "/profile/employer"}
-                            tw="block p-3 bg-green-600 text-center font-bold text-white rounded-md"
-                        >
-                            Next
-                        </Link>
-                    </form>
+                    <Link to="/login" tw="block w-2/3 sm:w-1/3 mx-auto p-2 bg-green-600  text-center font-bold text-white rounded-md">Finish</Link>
                 </div>
             </section>
         )
     }
 
     return (
-        <section tw="text-gray-600 md:p-24">
+        <section tw="text-secondary md:p-24">
             <div tw="mx-auto py-12 lg:mx-24 bg-white md:shadow-lg md:rounded-xl">
                 <header tw="text-center mb-8 p-4">
                     <h1 tw="text-5xl font-bold text-green-600 mb-2">DevJobs</h1>
