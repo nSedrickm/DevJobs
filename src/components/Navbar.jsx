@@ -1,10 +1,10 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState, useRef } from "react";
 import tw from "twin.macro";
 import logo from "images/logo-sm.svg";
-import { FiMenu, FiSearch, FiLogOut, FiChevronDown, FiUser, FiBell, FiInfo, FiGrid } from "react-icons/fi";
+import { FiMenu, FiSearch, FiLogOut, FiChevronDown, FiUser, FiBell, FiInfo, FiGrid, FiArrowLeft } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { useUserContext } from "pages/UserContext";
-import { Menu, Transition } from "@headlessui/react";
+import { Menu, Transition, Dialog } from "@headlessui/react";
 
 const MainHeader = tw.div`bg-white sticky inset-x-0 top-0 shadow-lg`;
 const Brand = tw.img`font-bold text-4xl text-primary ml-2 p-2 mr-auto`;
@@ -22,6 +22,8 @@ const MobileNav = tw.div`lg:hidden flex items-center justify-between h-20 shadow
 const Navbar = () => {
 
     const { state, handleLogOut } = useUserContext();
+    let [isOpen, setIsOpen] = useState(true);
+    let cancelButtonRef = useRef(null)
 
     return (
         <MainHeader>
@@ -46,30 +48,6 @@ const Navbar = () => {
                         </>
                     ) : (
                         <>
-                            {/* <Popover
-                                position={Position.BOTTOM_LEFT}
-                                content={
-                                    <Menu>
-                                        <Menu.Divider />
-                                        <Link to="/users/profile">
-                                            <Menu.Item
-                                                icon={FiUser}
-                                            >
-                                                Profile
-                                            </Menu.Item>
-                                        </Link>
-                                        <Menu.Item
-                                            icon={FiLogOut}
-                                            onClick={() => handleLogOut()}
-                                        >
-                                            Log Out
-                                        </Menu.Item>
-
-                                    </Menu>
-                                }
-                            >
-                                <ButtonLogOut>Menu &nbsp; <FiChevronDown size={20} tw="" /></ButtonLogOut>
-                            </Popover> */}
                             <Menu as="div" className="relative inline-block text-left z-50">
                                 <div>
                                     <Menu.Button className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-primary rounded-md hover:bg-opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
@@ -154,7 +132,7 @@ const Navbar = () => {
                                             <Menu.Item>
                                                 {({ active }) => (
                                                     <button
-                                                        onClick={() => handleLogOut()}
+                                                        onClick={() => setIsOpen(true)}
                                                         className={`${active ? 'text-secondary' : 'text-secondary-light'} group flex rounded-md items-center w-full p-2 mb-2 text-sm`}
                                                     >
                                                         <FiLogOut
@@ -166,8 +144,6 @@ const Navbar = () => {
                                                     </button>
                                                 )}
                                             </Menu.Item>
-
-
                                         </div>
 
                                     </Menu.Items>
@@ -181,7 +157,83 @@ const Navbar = () => {
                 <Brand src={logo} alt="DevJobs logo" />
                 <FiMenu size={28} tw="m-4" />
             </MobileNav>
+
+
+            <Transition appear show={isOpen} as={Fragment}>
+                <Dialog
+                    as="div"
+                    className="fixed inset-0 z-10 overflow-y-auto text-center"
+                    initialFocus={cancelButtonRef}
+                    onClose={() => setIsOpen(false)}
+                >
+                    <div className="min-h-screen px-4 text-center">
+                        <Transition.Child
+                            as={Fragment}
+                            enter="ease-out duration-300"
+                            enterFrom="opacity-0"
+                            enterTo="opacity-100"
+                            leave="ease-in duration-200"
+                            leaveFrom="opacity-100"
+                            leaveTo="opacity-0"
+                        >
+                            <Dialog.Overlay className="fixed bg-black bg-opacity-25 inset-0" />
+                        </Transition.Child>
+
+                        {/* This element is to trick the browser into centering the modal contents. */}
+                        <span
+                            className="inline-block h-screen align-middle"
+                            aria-hidden="true"
+                        >
+                            &#8203;
+                        </span>
+                        <Transition.Child
+                            as={Fragment}
+                            enter="ease-out duration-300"
+                            enterFrom="opacity-0 scale-95"
+                            enterTo="opacity-100 scale-100"
+                            leave="ease-in duration-200"
+                            leaveFrom="opacity-100 scale-100"
+                            leaveTo="opacity-0 scale-95"
+                        >
+                            <div className="inline-block w-full max-w-md p-8 my-8 overflow-hidden text-center align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+                                <Dialog.Title
+                                    as="h3"
+                                    className="text-3xl font-bold leading-6 text-primary"
+                                >
+                                    Hello!
+                                </Dialog.Title>
+                                <div className="my-8">
+                                    <p className="text-xl text-secondary-light">
+                                        Are you sure you want to logout?
+                                    </p>
+                                </div>
+
+                                <div className="mt-4 flex flex-col mx-auto justify-center">
+                                    <button
+                                        type="button"
+                                        className="inline-flex w-1/2 mx-auto justify-center text-sm font-medium text-white p-2 mb-4 bg-primary border border-transparent rounded-md hover:bg-green-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                                        ref={cancelButtonRef}
+                                        onClick={() => setIsOpen(false)}
+                                    >
+                                        <FiArrowLeft size={18} /> &nbsp; Back
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        className="inline-flex w-1/2 mx-auto justify-center text-sm font-medium text-danger p-2 mb-4  border border-danger-light rounded-md hover:bg-danger hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                                        onClick={() => handleLogOut()}
+                                    >
+                                        <FiLogOut size={18} /> &nbsp; Log Out
+                                    </button>
+                                </div>
+                            </div>
+                        </Transition.Child>
+                    </div>
+                </Dialog>
+            </Transition>
         </MainHeader>
+
+
     )
 }
 
