@@ -15,7 +15,7 @@ const Input = tw.input`border border-green-600 w-full mt-2 mb-2 p-2 px-4 placeho
 const ErrorMessage = tw.p`text-sm text-red-500 mb-2`;
 
 const LogInSchema = yup.object().shape({
-    username: yup.string().required('UserName is required'),
+    email: yup.string().email().required('Please enter a valid email address'),
     password: yup.string().min(8, 'Password must be at least 8 characters').required('Password is required'),
 });
 
@@ -84,13 +84,13 @@ const LogInPage = () => {
                     </div>
                     <div tw="w-full md:w-1/2 p-4">
                         <form tw="w-5/6 md:w-2/3 mx-auto" onSubmit={handleSubmit(handleLogIn)}>
-                            <Label>User Name</Label>
+                            <Label>Email</Label>
                             <Input
-                                type="text"
-                                name="username"
-                                {...register("username")}
+                                type="email"
+                                name="email@example.com"
+                                {...register("email")}
                             />
-                            {errors.username && <ErrorMessage>{errors.username.message}</ErrorMessage>}
+                            {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
 
                             <Label>Password</Label>
                             <Input
