@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { useUserContext } from "pages/UserContext";
 import { Popover, Menu, Position } from "evergreen-ui";
 
-const MainHeader = tw.div`bg-white z-50 sticky inset-x-0 top-0 shadow-lg`;
+const MainHeader = tw.div`bg-white sticky inset-x-0 top-0 shadow-lg`;
 const Brand = tw.img`font-bold text-4xl text-primary ml-2 p-2 mr-auto`;
 const Nav = tw.nav`inline-flex`;
 const NavLink = tw(Link)`inline-flex px-4 py-2 hocus:text-green-700`;
