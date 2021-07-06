@@ -94,7 +94,7 @@ const UserProvider = () => {
                 </Route>
 
                 <Route exact path="/users/profile">
-                    <ProfilePage />
+                    {state.isAuthorized === Authorized ? <ProfilePage /> : <Redirect to="/login" />}
                 </Route>
 
                 <Route exact path="/profile/job-seeker">
@@ -108,8 +108,8 @@ const UserProvider = () => {
                 <Route exact path="/reset-password">
                     <PasswordResetPage />
                 </Route>
-                <Route exact path="/DashboardEmployer">
-                    <DashboardEmployer />
+                <Route exact path="/employer/dashboard">
+                    {state.isAuthorized === Authorized ? <DashboardEmployer /> : <Redirect to="/" />}
                 </Route>
 
                 <Route>

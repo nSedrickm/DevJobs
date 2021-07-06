@@ -2,7 +2,7 @@ import React from "react";
 import tw from "twin.macro";
 import { Spinner } from "evergreen-ui";
 
-const Container = tw.div`h-screen grid place-items-center`;
+const Container = tw.div`h-screen grid place-items-center bg-white`;
 const Content = tw.div`flex flex-col items-center`;
 const Text = tw.p`mt-3 text-gray-500`;
 
