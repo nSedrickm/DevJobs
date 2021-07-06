@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import tw from "twin.macro";
 import toast from "react-hot-toast";
-import Loader from "components/Loader";
 
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -21,8 +20,7 @@ const LogInSchema = yup.object().shape({
 
 const LogInPage = () => {
 
-    const [loading, setLoading] = useState(false);
-    const { dispatch } = useUserContext();
+    const { dispatch, setLoading } = useUserContext();
     const {
         register,
         handleSubmit,
@@ -39,6 +37,7 @@ const LogInPage = () => {
             .then(response => {
                 toast.success("Login Successful");
                 setAuthHeaders(response.data);
+                setLoading(false);
                 dispatch({ type: "LOGIN", payload: response.data })
             })
             .catch(error => {
@@ -65,8 +64,6 @@ const LogInPage = () => {
                 setLoading(false);
             });
     }
-
-    if (loading) return <Loader />
 
     return (
         <section tw="text-gray-600 md:p-24 lg:h-screen">

@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { getJobs, jobApplication } from "services/api.service";
 import { setAuthHeaders } from 'services/auth.service';
 import { FiArrowRightCircle } from 'react-icons/fi';
-import { Loader, Navbar, Footer } from 'components';
+import { Loader } from 'components';
 import { useUserContext } from './UserContext';
 
 const Container = tw.div`w-full text-gray-800 bg-primary-lightest`;
@@ -30,7 +30,7 @@ const JobNav = tw.nav`px-4 sm:px-8 pt-20 pb-10 lg:px-20 text-center md:text-left
 const JobNavTitle = tw.h2`font-bold text-3xl mb-8 lg:mb-0`;
 const JobNavUl = tw.ul`inline-flex items-center`;
 const JobNavLi = tw.li`font-semibold text-sm sm:text-base cursor-pointer p-2 py-1 `;
-const JobCard = tw.div`p-5 mx-auto w-full border rounded-xl shadow-lg  bg-primary-lightest text-gray-500 border hover:border-primary hover:shadow-none`;
+const JobCard = tw.div`p-5 mx-auto w-full rounded-xl shadow-lg  bg-white text-gray-500 border hover:border-primary hover:shadow-none`;
 const JobCardTitle = tw.h3`font-bold text-xl md:text-2xl mb-4 text-gray-700`;
 const JobCardBody = tw.div`mb-4`;
 const JobMeta = tw.div`flex flex-row md:inline-flex text-sm lg:text-base py-2`;
@@ -122,97 +122,92 @@ const LandingPage = () => {
     }
 
     return (
-        <>
-            <Navbar />
-            <Container>
-                {!state.key && (
-                    <Header>
-                        <HeaderContent>
-                            <Heading>DevJobs</Heading>
-                            <Description>&lt; Ctrl + F Developer Jobs Faster / &gt;</Description>
-                            <ButtonRow>
-                                <ButtonOutline to="/login">Log In</ButtonOutline>
-                                <ButtonPrimary to="/signup">Sign Up</ButtonPrimary>
-                            </ButtonRow>
-                            <p tw="my-8 text-gray-500">You need to have an account to register/post jobs</p>
-                        </HeaderContent>
-                    </Header>
-                )}
+        <Container>
+            {!state.key && (
+                <Header>
+                    <HeaderContent>
+                        <Heading>DevJobs</Heading>
+                        <Description>&lt; Ctrl + F Developer Jobs Faster / &gt;</Description>
+                        <ButtonRow>
+                            <ButtonOutline to="/login">Log In</ButtonOutline>
+                            <ButtonPrimary to="/signup">Sign Up</ButtonPrimary>
+                        </ButtonRow>
+                        <p tw="my-8 text-gray-500">You need to have an account to register/post jobs</p>
+                    </HeaderContent>
+                </Header>
+            )}
 
-                <JobNav>
-                    <JobNavTitle>Posted Jobs</JobNavTitle>
-                    <JobNavUl>
-                        <JobNavLi tw=" bg-green-100 text-green-700">New Jobs</JobNavLi>
-                        <JobNavLi>|</JobNavLi>
-                        <JobNavLi >1 Week Ago</JobNavLi>
-                        <JobNavLi>|</JobNavLi>
-                        <JobNavLi >2 Weeks Ago</JobNavLi>
-                        <JobNavLi>|</JobNavLi>
-                        <JobNavLi >1 Month Ago</JobNavLi>
-                    </JobNavUl>
-                </JobNav>
+            <JobNav>
+                <JobNavTitle>Posted Jobs</JobNavTitle>
+                <JobNavUl>
+                    <JobNavLi tw=" bg-green-100 text-green-700">New Jobs</JobNavLi>
+                    <JobNavLi>|</JobNavLi>
+                    <JobNavLi >1 Week Ago</JobNavLi>
+                    <JobNavLi>|</JobNavLi>
+                    <JobNavLi >2 Weeks Ago</JobNavLi>
+                    <JobNavLi>|</JobNavLi>
+                    <JobNavLi >1 Month Ago</JobNavLi>
+                </JobNavUl>
+            </JobNav>
 
-                <Divider />
+            <Divider />
 
+
+            {loading ? (
+                <InlineLoader tw="h-96 bg-white m-4 sm:m-12 lg:m-20 shadow-lg rounded-md" />
+            ) : (
                 <JobContainer>
-                    {loading ? (
-                        <InlineLoader tw="h-96 md:col-span-2 lg:col-span-3" />
-                    ) : (
-                        <>
-                            {jobs.length && (
-                                jobs?.map(job => {
-                                    return (
-                                        <JobCard key={job.pk} >
-                                            <JobCardBody>
-                                                <JobCardTitle>{job.title}</JobCardTitle>
-                                                <JobMeta>
-                                                    <p>Company : {job.company_name}</p>
-                                                </JobMeta>
-                                                <JobMeta>
-                                                    <p>Lagos,Nigeria</p>
-                                                    <p tw="mx-1 md:mx-2">|</p>
-                                                    <p>fulltime</p>
-                                                    <p tw="mx-1 md:mx-2">|</p>
-                                                    <p>$20000000/year</p>
-                                                </JobMeta>
-                                                <JobMeta>
-                                                    <p tw="text-center">{job.users_applied ? job.users_applied : 0} applies</p>
-                                                    <p tw="mx-1 md:mx-2">|</p>
-                                                    <p>Posted {new Date(job.created_date).toLocaleString()}</p>
-                                                </JobMeta>
-                                            </JobCardBody>
-                                            {state.key && job.pk ? (
-                                                <ApplyButton onClick={() => { handleJobApplication(job.pk) }}>Apply</ApplyButton>
-                                            ) : (
-                                                <ApplyButtonLink to="/login">Login To Apply</ApplyButtonLink>
-                                            )}
-                                            <DetailsButton to={"/job/details/" + job.pk}>See Full Details</DetailsButton>
-                                        </JobCard>
-                                    )
-                                }))}
-                        </>
-                    )}
+                    {jobs.length && (
+                        jobs?.map(job => {
+                            return (
+                                <JobCard key={job.pk} >
+                                    <JobCardBody>
+                                        <JobCardTitle>{job.title}</JobCardTitle>
+                                        <JobMeta>
+                                            <p>Company : {job.company_name}</p>
+                                        </JobMeta>
+                                        <JobMeta>
+                                            <p>Lagos,Nigeria</p>
+                                            <p tw="mx-1 md:mx-2">|</p>
+                                            <p>fulltime</p>
+                                            <p tw="mx-1 md:mx-2">|</p>
+                                            <p>$20000000/year</p>
+                                        </JobMeta>
+                                        <JobMeta>
+                                            <p tw="text-center">{job.users_applied ? job.users_applied : 0} applies</p>
+                                            <p tw="mx-1 md:mx-2">|</p>
+                                            <p>Posted {new Date(job.created_date).toLocaleString()}</p>
+                                        </JobMeta>
+                                    </JobCardBody>
+                                    {state.key && job.pk ? (
+                                        <ApplyButton onClick={() => { handleJobApplication(job.pk) }}>Apply</ApplyButton>
+                                    ) : (
+                                        <ApplyButtonLink to="/login">Login To Apply</ApplyButtonLink>
+                                    )}
+                                    <DetailsButton to={"/job/details/" + job.pk}>See Full Details</DetailsButton>
+                                </JobCard>
+                            )
+                        }))}
                 </JobContainer>
+            )}
 
-                <p tw="text-center text-3xl text-green-700 font-bold cursor-pointer py-12 flex items-center justify-center" onClick={() => handleRefresh()}>See More Jobs &nbsp; <FiArrowRightCircle /></p>
+            <p tw="text-center text-3xl text-green-700 font-bold cursor-pointer py-12 flex items-center justify-center" onClick={() => handleRefresh()}>See More Jobs &nbsp; <FiArrowRightCircle /></p>
 
-                {!state.key && (
-                    <>
-                        <Divider />
+            {!state.key && (
+                <>
+                    <Divider />
 
-                        <HeaderContent tw="py-24 text-center">
-                            <h4 tw="text-gray-500 text-2xl font-bold">To see And Post More Job Offers</h4>
-                            <ButtonRow>
-                                <ButtonOutline to="/login">Log In</ButtonOutline>
-                                <ButtonPrimary to="/signup">Sign Up</ButtonPrimary>
-                            </ButtonRow>
-                            <p tw="my-8 text-gray-500">You need to have an account to register/post jobs</p>
-                        </HeaderContent>
-                    </>
-                )}
-            </Container>
-            <Footer />
-        </>
+                    <HeaderContent tw="py-24 text-center">
+                        <h4 tw="text-gray-500 text-2xl font-bold">To see And Post More Job Offers</h4>
+                        <ButtonRow>
+                            <ButtonOutline to="/login">Log In</ButtonOutline>
+                            <ButtonPrimary to="/signup">Sign Up</ButtonPrimary>
+                        </ButtonRow>
+                        <p tw="my-8 text-gray-500">You need to have an account to register/post jobs</p>
+                    </HeaderContent>
+                </>
+            )}
+        </Container>
     )
 }
 
