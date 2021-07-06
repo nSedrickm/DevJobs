@@ -10,6 +10,7 @@ import EmployerRegistrationPage from "pages/EmployerRegistrationPage";
 import PasswordResetPage from "pages/PasswordResetPage";
 import JobDetails from "pages/JobDetails";
 import ProfilePage from "pages/ProfilePage";
+import DashboardEmployer from "./EmployerDashboard/DashboardEmployer";
 
 const UserContext = createContext();
 const useUserContext = () => useContext(UserContext);
@@ -106,6 +107,9 @@ const UserProvider = () => {
 
                 <Route exact path="/reset-password">
                     <PasswordResetPage />
+                </Route>
+                <Route exact path="/DashboardEmployer">
+                    <DashboardEmployer />
                 </Route>
 
                 <Route>
