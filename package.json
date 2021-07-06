@@ -68,8 +68,9 @@
   },
   "babelMacros": {
     "twin": {
-      "config": "./src/tailwind.config.js",
-      "styled": "styled-components"
+      "config": "./tailwind.config.js",
+      "styled": "styled-components",
+      "format": "auto"
     }
   }
 }
