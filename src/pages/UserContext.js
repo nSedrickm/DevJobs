@@ -1,6 +1,7 @@
-import React, { createContext, useContext, useEffect, useReducer } from "react";
+import React, { createContext, useContext, useEffect, useReducer, useState } from "react";
 import { getLocalUserState, setLocalUserState, clearLocalUserState } from "services/storage.service";
 import { Switch, Route, Redirect } from "react-router-dom";
+import { Navbar, Footer, Loader } from "components";
 import LogInPage from "pages/LogInPage";
 import SignUpPage from "pages/SignUpPage";
 import LandingPage from "pages/LandingPage";
@@ -53,6 +54,7 @@ let initialState = localState || {
 const UserProvider = () => {
 
     const [state, dispatch] = useReducer(reducer, initialState);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         setLocalUserState(state);
@@ -64,14 +66,19 @@ const UserProvider = () => {
         clearLocalUserState();
     }
 
+    if (loading) return <Loader />
+
     return (
         <UserContext.Provider
             value={{
                 state,
+                loading,
                 dispatch,
+                setLoading,
                 handleLogOut
             }}
         >
+            <Navbar />
             <Switch>
                 <Route exact path="/">
                     <LandingPage />
@@ -117,6 +124,7 @@ const UserProvider = () => {
                     <Redirect to="/login" />
                 </Route>
             </Switch>
+            <Footer />
         </UserContext.Provider>
     )
 }
