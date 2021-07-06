@@ -10,19 +10,19 @@ import { FiArrowRightCircle } from 'react-icons/fi';
 import { Loader, Navbar, Footer } from 'components';
 import { useUserContext } from './UserContext';
 
-const Container = tw.div`w-full text-gray-800 bg-white`;
+const Container = tw.div`w-full text-gray-800 bg-primary-lightest`;
 const Header = styled.header`
   ${tw`pt-24 md:pt-32 text-center md:h-screen md:relative bg-white bg-cover md:bg-contain md:bg-center`}
   background-image: url(${heroBg});
   background-repeat: no-repeat;
 `;
 const HeaderContent = tw.div`grid place-items-center p-8`;
-const Heading = tw.h1`text-green-600 text-6xl md:text-8xl font-bold`;
+const Heading = tw.h1`text-primary text-6xl md:text-8xl font-bold`;
 const Description = tw.p`text-lg my-8 tracking-wide text-gray-700`;
 const ButtonRow = tw.div`mt-4 flex flex-col md:flex-row md:justify-between`;
-const Button = tw(Link)`px-24 py-3 mx-4 rounded-lg font-bold text-white mt-5 hover:bg-green-700`;
-const ButtonPrimary = tw(Button)`bg-green-600`;
-const ButtonOutline = tw(Button)`border border-green-600 text-green-600 hover:bg-green-100`;
+const Button = tw(Link)`px-24 py-3 mx-4 rounded-lg font-bold text-primary-lightest mt-5 hover:bg-green-700`;
+const ButtonPrimary = tw(Button)`bg-primary`;
+const ButtonOutline = tw(Button)`border border-primary text-primary hover:bg-green-100`;
 const InlineLoader = tw(props => <Loader {...props} />)``;
 
 const JobContainer = tw.div`p-4 sm:p-12 lg:p-20 justify-center grid md:grid-cols-2 lg:grid-cols-3 gap-6 place-items-center place-content-center`;
@@ -30,13 +30,13 @@ const JobNav = tw.nav`px-4 sm:px-8 pt-20 pb-10 lg:px-20 text-center md:text-left
 const JobNavTitle = tw.h2`font-bold text-3xl mb-8 lg:mb-0`;
 const JobNavUl = tw.ul`inline-flex items-center`;
 const JobNavLi = tw.li`font-semibold text-sm sm:text-base cursor-pointer p-2 py-1 `;
-const JobCard = tw.div`p-5 mx-auto w-full border rounded-xl shadow-lg  bg-white text-gray-500 border hover:border-green-600 hover:shadow-none`;
+const JobCard = tw.div`p-5 mx-auto w-full border rounded-xl shadow-lg  bg-primary-lightest text-gray-500 border hover:border-primary hover:shadow-none`;
 const JobCardTitle = tw.h3`font-bold text-xl md:text-2xl mb-4 text-gray-700`;
 const JobCardBody = tw.div`mb-4`;
 const JobMeta = tw.div`flex flex-row md:inline-flex text-sm lg:text-base py-2`;
-const ApplyButton = tw.button`block w-full p-2 sm:py-1.5 rounded font-bold text-sm border border-green-600 bg-green-600 hocus:bg-green-700 text-white mb-3`;
-const ApplyButtonLink = tw(Link)`block text-center w-full p-2 sm:py-1.5 rounded font-bold text-sm border border-green-600 bg-green-600 hocus:bg-green-700 text-white mb-3`;
-const DetailsButton = tw(Link)`block text-center w-full p-2 sm:py-1.5 rounded font-bold text-sm text-green-600 border border-green-600 hocus:bg-green-100`;
+const ApplyButton = tw.button`block w-full p-2 sm:py-1.5 rounded font-bold text-sm border border-primary bg-primary hocus:bg-green-700 text-primary-lightest mb-3`;
+const ApplyButtonLink = tw(Link)`block text-center w-full p-2 sm:py-1.5 rounded font-bold text-sm border border-primary bg-primary hocus:bg-green-700 text-primary-lightest mb-3`;
+const DetailsButton = tw(Link)`block text-center w-full p-2 sm:py-1.5 rounded font-bold text-sm text-primary border border-primary hocus:bg-green-100`;
 const Divider = tw.hr`mx-20 border-gray-300`;
 
 const LandingPage = () => {

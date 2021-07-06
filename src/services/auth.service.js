@@ -8,9 +8,10 @@ export const setAuthHeaders = ({ key }) => {
     axios.defaults.headers.common['Authorization'] = 'token ' + key;
 }
 
-export const registerUser = ({ username, password1, password2 }) => {
+export const registerUser = ({ username, email, password1, password2 }) => {
     return axios.post(API_URL + "/dj-rest-auth/registration/",
         {
+            email: email,
             username: username,
             password1: password1,
             password2: password2
@@ -25,10 +26,10 @@ export const createEmployerProfile = ({ company_name, company_number }) => {
         }).then(response => response)
 }
 
-export const userLogin = async ({ username, password }) => {
+export const userLogin = async ({ email, password }) => {
     return axios.post(API_URL + "/dj-rest-auth/login/",
         {
-            username: username,
+            email: email,
             password: password
         }).then(response => response)
 };

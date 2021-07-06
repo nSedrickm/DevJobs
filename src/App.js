@@ -6,7 +6,7 @@ import { UserProvider } from 'pages/UserContext';
 
 function App() {
   return (
-    <div className="bg-white lg:bg-gray-100">
+    <div className="bg-primary-lightest">
       <BrowserRouter>
         <Toaster
           position="top-center"
