@@ -1,11 +1,8 @@
 import React from "react";
 import {FiUser ,FiUploadCloud} from "react-icons/fi";
-import { Navbar, Footer } from "components";
 
 const ProfilePage = () =>{
     return (
-        <>
-        <Navbar/>
         <div className="p-8 md:p-20 bg-white">
             <h1 className="text-green-600 text-3xl font-bold mb-12">Profile</h1>
             <hr className="border border-gray-300 mb-12"/>
@@ -62,7 +59,7 @@ const ProfilePage = () =>{
 
             <form className="bg-green-100  my-8 text-center p-4 sm:p-8">
                  <p className="block text-lg text-center my-3 font-medium">Cv/Resume</p>
-                 <p className="text-gray-500 text-sm my-6 text-center mx-auto my-2">Name of uploaded file</p>
+                 <p className="text-gray-500 text-sm my-6 text-center mx-auto">Name of uploaded file</p>
                  <div className="my-4">
                 <button className=" inline-flex justify-center items-center px-12 py-2 bg-white font-medium text-green-600 rounded mx-4">Upload &nbsp; <FiUploadCloud size={20} /></button>
                 <button  className="inline-flex justify-center items-center px-12 py-2 text-center font-mdeium text-green-600 border border-green-600 rounded mx-4">Download</button>
@@ -70,8 +67,6 @@ const ProfilePage = () =>{
             </form>
 
         </div>
-        <Footer />
-        </>
     )
 }
 
