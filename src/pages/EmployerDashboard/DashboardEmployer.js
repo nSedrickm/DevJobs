@@ -25,7 +25,6 @@ const JobLi = tw(Link)` block w-full md:w-5/12  mb-12  p-14 border  text-center 
 const ButtonNewJobs = tw.button` flex  bg-primary items-center justify-center text-white  text-center  m-2  text-sm p-2 hover:bg-transparent hover:text-primary hover:border hover:border-primary`;
 const ButtonRefresh = tw.button` flex bg-transparent items-center justify-center text-primary border border-primary text-center text-sm m-2 p-2 hover:bg-primary hover:text-white `;
 const Label = tw.label`block text-sm`;
-//const Input = tw.input`border border-gray-600 w-full mt-2 mb-4 p-2 px-4 placeholder-gray-400 text-sm rounded bg-opacity-90 hocus:outline-none focus:ring-green-600 focus:border-green-600`;
 const TextArea = tw.textarea`w-full rounded mt-2 mb-2 hocus:outline-none focus:ring-green-600 focus:border-green-600`;
 const ErrorMessage = tw.p`text-sm text-red-500 mb-2`;
 const SubmitButton = tw.button`block w-full md:w-2/3 mx-auto p-2 bg-green-600 text-center font-bold text-white rounded-md mt-2`;
@@ -49,7 +48,7 @@ const DashboardEmployer = () => {
 
     const { state, dispatch } = useUserContext();
     const [loading, setLoading] = useState(false);
-    const [isShown, setIsShown] = React.useState(false)
+    const [isShown, setIsShown] = useState(false)
 
     useEffect(() => {
         if (!state.notifications) {
@@ -313,8 +312,7 @@ const DashboardEmployer = () => {
                             {errors.expected_salary && <ErrorMessage>{errors.expected_salary.message}</ErrorMessage>}
                         </div>
 
-
-                        <SubmitButton> Post Job</SubmitButton>
+                        <SubmitButton type="submit"> Post Job</SubmitButton>
                     </form>
                 </>
             </Dialog>
