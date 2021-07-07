@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import tw from "twin.macro";
 import styled from "styled-components";
 import heroBg from "images/hero.svg";
@@ -10,6 +10,8 @@ import { FiArrowRightCircle } from 'react-icons/fi';
 import { Loader } from 'components';
 import { useUserContext } from './UserContext';
 import { getLocalJobs, setLocalJobs } from 'services/storage.service';
+import { Pagination } from 'evergreen-ui';
+import { paginateFunc } from 'utils/filters';
 
 const Container = tw.div`w-full text-gray-800 bg-primary-lightest`;
 const Header = styled.header`
@@ -40,20 +42,61 @@ const ApplyButtonLink = tw(Link)`block text-center w-full p-2 sm:py-1.5 rounded 
 const DetailsButton = tw(Link)`block text-center w-full p-2 sm:py-1.5 rounded font-bold text-sm text-primary border border-primary hocus:bg-green-100`;
 const Divider = tw.hr`mx-20 border-gray-300`;
 
+let cachedJobs = getLocalJobs();
+
+let initialState = {
+    jobs: cachedJobs || [],
+    pageItems: [],
+    page: 1,
+    loading: false
+}
+
+function reducer(state, action) {
+    switch (action.type) {
+        case 'setJobs':
+            return {
+                ...state,
+                jobs: action.payload
+            };
+        case 'changePage':
+            return {
+                ...state,
+                page: action.payload
+            };
+        case 'paginateItems':
+            const start = 6 * (state.page - 1)
+            const end = start + 6;
+            let paginatedItems = paginateFunc(state.jobs, start, end);
+            return {
+                ...state,
+                pageItems: paginatedItems
+            };
+        case 'loading':
+            return {
+                ...state,
+                loading: action.payload
+            };
+        default:
+            throw new Error();
+    }
+}
+
 const LandingPage = () => {
 
     const { state } = useUserContext();
-    const [jobs, setJobs] = useState(getLocalJobs())
-    const [loading, setLoading] = useState(false);
+    const [lstate, ldispatch] = useReducer(reducer, initialState);
+    const { jobs, page, pageItems, loading } = lstate;
+    console.log(jobs.length);
 
     useEffect(() => {
         if (!jobs?.length) {
-            setLoading(true);
+            ldispatch({ type: "loading", payload: true });
             getJobs()
                 .then(response => {
-                    setJobs(response.data);
+                    ldispatch({ type: "setJobs", payload: response.data });
+                    ldispatch({ type: "paginateItems" });
                     setLocalJobs(response.data);
-                    setLoading(false);
+                    ldispatch({ type: "loading", payload: false });
                 })
                 .catch(error => {
                     if (error.response) {
@@ -69,18 +112,21 @@ const LandingPage = () => {
                         // Something happened in setting up the request that triggered an Error
                         toast.error("An error occured, could not get jobs")
                     }
-                    setLoading(false);
+                    ldispatch({ type: "loading", payload: false });
                 });
+        } else {
+            ldispatch({ type: "paginateItems" });
         }
     }, [jobs]);
 
     const handleRefresh = () => {
-        setLoading(true);
+        ldispatch({ type: "loading", payload: true });
         getJobs()
             .then(response => {
-                setJobs(response.data);
+                ldispatch({ type: "setJobs", payload: response.data });
+                ldispatch({ type: "paginateItems" });
                 setLocalJobs(response.data);
-                setLoading(false);
+                ldispatch({ type: "loading", payload: false });
             })
             .catch(error => {
                 if (error.response) {
@@ -96,17 +142,17 @@ const LandingPage = () => {
                     // Something happened in setting up the request that triggered an Error
                     toast.error("An error occured, could not get jobs")
                 }
-                setLoading(false);
+                ldispatch({ type: "loading", payload: false });
             });
     }
 
     const handleJobApplication = (pk) => {
-        setLoading(true);
+        ldispatch({ type: "loading", payload: true });
         setAuthHeaders(state);
         jobApplication(pk)
             .then(response => {
                 toast.success(response.data.request);
-                setLoading(false);
+                ldispatch({ type: "loading", payload: false });
             })
             .catch(error => {
                 if (error.response) {
@@ -122,7 +168,7 @@ const LandingPage = () => {
                     // Something happened in setting up the request that triggered an Error
                     toast.error("An error occured, could not get jobs")
                 }
-                setLoading(false);
+                ldispatch({ type: "loading", payload: false });
             });
     }
 
@@ -161,39 +207,61 @@ const LandingPage = () => {
             {loading ? (
                 <InlineLoader tw="h-96 bg-white m-4 sm:m-12 lg:m-20 shadow-lg rounded-md" />
             ) : (
-                <JobContainer>
-                    {jobs?.length && (
-                        jobs?.map(job => {
-                            return (
-                                <JobCard key={job.pk} >
-                                    <JobCardBody>
-                                        <JobCardTitle>{job.title}</JobCardTitle>
-                                        <JobMeta>
-                                            <p>Company : {job.company_name}</p>
-                                        </JobMeta>
-                                        <JobMeta>
-                                            <p>Lagos,Nigeria</p>
-                                            <p tw="mx-1 md:mx-2">|</p>
-                                            <p>fulltime</p>
-                                            <p tw="mx-1 md:mx-2">|</p>
-                                            <p>$20000000/year</p>
-                                        </JobMeta>
-                                        <JobMeta>
-                                            <p tw="text-center">{job.users_applied ? job.users_applied : 0} applies</p>
-                                            <p tw="mx-1 md:mx-2">|</p>
-                                            <p>Posted {new Date(job.created_date).toLocaleString()}</p>
-                                        </JobMeta>
-                                    </JobCardBody>
-                                    {state.key && job.pk ? (
-                                        <ApplyButton onClick={() => { handleJobApplication(job.pk) }}>Apply</ApplyButton>
-                                    ) : (
-                                        <ApplyButtonLink to="/login">Login To Apply</ApplyButtonLink>
-                                    )}
-                                    <DetailsButton to={"/job/details/" + job.pk}>See Full Details</DetailsButton>
-                                </JobCard>
-                            )
-                        }))}
-                </JobContainer>
+                <>
+                    <JobContainer>
+                        {pageItems?.length && (
+                            pageItems?.map(job => {
+                                return (
+                                    <JobCard key={job.pk} >
+                                        <JobCardBody>
+                                            <JobCardTitle>{job.title}</JobCardTitle>
+                                            <JobMeta>
+                                                <p>Company : {job.company_name}</p>
+                                            </JobMeta>
+                                            <JobMeta>
+                                                <p>Lagos,Nigeria</p>
+                                                <p tw="mx-1 md:mx-2">|</p>
+                                                <p>fulltime</p>
+                                                <p tw="mx-1 md:mx-2">|</p>
+                                                <p>$20000000/year</p>
+                                            </JobMeta>
+                                            <JobMeta>
+                                                <p tw="text-center">{job.users_applied ? job.users_applied : 0} applies</p>
+                                                <p tw="mx-1 md:mx-2">|</p>
+                                                <p>Posted {new Date(job.created_date).toLocaleString()}</p>
+                                            </JobMeta>
+                                        </JobCardBody>
+                                        {state.key && job.pk ? (
+                                            <ApplyButton onClick={() => { handleJobApplication(job.pk) }}>Apply</ApplyButton>
+                                        ) : (
+                                            <ApplyButtonLink to="/login">Login To Apply</ApplyButtonLink>
+                                        )}
+                                        <DetailsButton to={"/job/details/" + job.pk}>See Full Details</DetailsButton>
+                                    </JobCard>
+                                )
+                            }))}
+                    </JobContainer>
+
+                    <div className="mx-auto flex justify-center">
+                        <Pagination
+                            page={page}
+                            totalPages={jobs?.length / 6}
+                            onPageChange={(evt) => {
+                                ldispatch({ type: "changePage", payload: evt });
+                                ldispatch({ type: "paginateItems" });
+                            }}
+                            onNextPage={() => {
+                                ldispatch({ type: "changePage", payload: page + 1 });
+                                ldispatch({ type: "paginateItems" });
+                            }}
+                            onPreviousPage={() => {
+                                ldispatch({ type: "changePage", payload: page - 1 });
+                                ldispatch({ type: "paginateItems" });
+                            }}
+                        />
+
+                    </div>
+                </>
             )}
 
             <p tw="text-center text-3xl text-green-700 font-bold cursor-pointer py-12 flex items-center justify-center" onClick={() => handleRefresh()}>See More Jobs &nbsp; <FiArrowRightCircle /></p>
