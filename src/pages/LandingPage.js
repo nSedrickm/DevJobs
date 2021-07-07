@@ -9,6 +9,7 @@ import { setAuthHeaders } from 'services/auth.service';
 import { FiArrowRightCircle } from 'react-icons/fi';
 import { Loader } from 'components';
 import { useUserContext } from './UserContext';
+import { getLocalJobs, setLocalJobs } from 'services/storage.service';
 
 const Container = tw.div`w-full text-gray-800 bg-primary-lightest`;
 const Header = styled.header`
@@ -42,39 +43,43 @@ const Divider = tw.hr`mx-20 border-gray-300`;
 const LandingPage = () => {
 
     const { state } = useUserContext();
-    const [jobs, setJobs] = useState({})
+    const [jobs, setJobs] = useState(getLocalJobs())
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        setLoading(true);
-        getJobs()
-            .then(response => {
-                setJobs(response.data);
-                setLoading(false);
-            })
-            .catch(error => {
-                if (error.response) {
-                    // The request was made and the server responded with a status code
-                    // that falls out of the range of 2xx
-                    toast.error("An error occured, could not get jobs")
-                } else if (error.request) {
-                    // The request was made but no response was received
-                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                    // http.ClientRequest in node.js
-                    toast.error("An error occured, could not get jobs")
-                } else {
-                    // Something happened in setting up the request that triggered an Error
-                    toast.error("An error occured, could not get jobs")
-                }
-                setLoading(false);
-            });
-    }, []);
+        if (!jobs?.length) {
+            setLoading(true);
+            getJobs()
+                .then(response => {
+                    setJobs(response.data);
+                    setLocalJobs(response.data);
+                    setLoading(false);
+                })
+                .catch(error => {
+                    if (error.response) {
+                        // The request was made and the server responded with a status code
+                        // that falls out of the range of 2xx
+                        toast.error("An error occured, could not get jobs")
+                    } else if (error.request) {
+                        // The request was made but no response was received
+                        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                        // http.ClientRequest in node.js
+                        toast.error("An error occured, could not get jobs")
+                    } else {
+                        // Something happened in setting up the request that triggered an Error
+                        toast.error("An error occured, could not get jobs")
+                    }
+                    setLoading(false);
+                });
+        }
+    }, [jobs]);
 
     const handleRefresh = () => {
         setLoading(true);
         getJobs()
             .then(response => {
                 setJobs(response.data);
+                setLocalJobs(response.data);
                 setLoading(false);
             })
             .catch(error => {
@@ -157,7 +162,7 @@ const LandingPage = () => {
                 <InlineLoader tw="h-96 bg-white m-4 sm:m-12 lg:m-20 shadow-lg rounded-md" />
             ) : (
                 <JobContainer>
-                    {jobs.length && (
+                    {jobs?.length && (
                         jobs?.map(job => {
                             return (
                                 <JobCard key={job.pk} >

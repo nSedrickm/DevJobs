@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useReducer, useState } from "react";
-import { getLocalUserState, setLocalUserState, clearLocalUserState } from "services/storage.service";
+import { getLocalUserState, setLocalUserState, clearLocalUserState, clearLocalJobs } from "services/storage.service";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { Navbar, Footer, Loader } from "components";
 import { getUserProfile, getUserId } from "services/auth.service";
@@ -146,6 +146,7 @@ const UserProvider = () => {
     const handleLogOut = () => {
         dispatch({ type: "LOGOUT" })
         clearLocalUserState();
+        clearLocalJobs();
     }
 
     if (loading) return <Loader />
