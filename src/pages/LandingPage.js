@@ -11,7 +11,7 @@ import { Loader } from 'components';
 import { useUserContext } from './UserContext';
 import { getLocalJobs, setLocalJobs } from 'services/storage.service';
 import { Pagination } from 'evergreen-ui';
-import { paginateFunc } from 'utils/filters';
+import { paginateFunc, filterFunc } from 'utils/filters';
 
 const Container = tw.div`w-full text-gray-800 bg-primary-lightest`;
 const Header = styled.header`
@@ -63,13 +63,20 @@ function reducer(state, action) {
                 ...state,
                 page: action.payload
             };
-        case 'paginateItems':
+        case 'paginateJobs':
             const start = 6 * (state.page - 1)
             const end = start + 6;
             let paginatedItems = paginateFunc(state.jobs, start, end);
             return {
                 ...state,
                 pageItems: paginatedItems
+            };
+        case 'filterJobs':
+            let filtered = filterFunc(state.jobs, action.payload);
+            return {
+                ...state,
+                pageItems: filtered,
+                loading: !state.loading
             };
         case 'loading':
             return {
@@ -86,7 +93,6 @@ const LandingPage = () => {
     const { state } = useUserContext();
     const [lstate, ldispatch] = useReducer(reducer, initialState);
     const { jobs, page, pageItems, loading } = lstate;
-    console.log(jobs.length);
 
     useEffect(() => {
         if (!jobs?.length) {
@@ -94,7 +100,7 @@ const LandingPage = () => {
             getJobs()
                 .then(response => {
                     ldispatch({ type: "setJobs", payload: response.data });
-                    ldispatch({ type: "paginateItems" });
+                    ldispatch({ type: "paginateJobs" });
                     setLocalJobs(response.data);
                     ldispatch({ type: "loading", payload: false });
                 })
@@ -115,7 +121,7 @@ const LandingPage = () => {
                     ldispatch({ type: "loading", payload: false });
                 });
         } else {
-            ldispatch({ type: "paginateItems" });
+            ldispatch({ type: "paginateJobs" });
         }
     }, [jobs]);
 
@@ -124,7 +130,7 @@ const LandingPage = () => {
         getJobs()
             .then(response => {
                 ldispatch({ type: "setJobs", payload: response.data });
-                ldispatch({ type: "paginateItems" });
+                ldispatch({ type: "paginateJobs" });
                 setLocalJobs(response.data);
                 ldispatch({ type: "loading", payload: false });
             })
@@ -191,13 +197,41 @@ const LandingPage = () => {
             <JobNav>
                 <JobNavTitle>Posted Jobs</JobNavTitle>
                 <JobNavUl>
-                    <JobNavLi tw=" bg-green-100 text-green-700">New Jobs</JobNavLi>
+                    <JobNavLi
+                        tw=" bg-green-100 text-green-700"
+                        onClick={() => {
+                            ldispatch({ type: "changePage", payload: (jobs?.length / 6) });
+                            ldispatch({ type: "paginateJobs" });
+                        }}
+                    >
+                        New Jobs
+                    </JobNavLi>
                     <JobNavLi>|</JobNavLi>
-                    <JobNavLi >1 Week Ago</JobNavLi>
+                    <JobNavLi onClick={() => {
+                        ldispatch({ type: "loading", payload: true })
+                        ldispatch({ type: "filterJobs", payload: "1Week" })
+                    }}
+                    >
+                        1 Week Ago
+                    </JobNavLi>
                     <JobNavLi>|</JobNavLi>
-                    <JobNavLi >2 Weeks Ago</JobNavLi>
+                    <JobNavLi
+                        onClick={() => {
+                            ldispatch({ type: "loading", payload: true })
+                            ldispatch({ type: "filterJobs", payload: "2Weeks" })
+                        }}
+                    >
+                        2 Weeks Ago
+                    </JobNavLi>
                     <JobNavLi>|</JobNavLi>
-                    <JobNavLi >1 Month Ago</JobNavLi>
+                    <JobNavLi
+                        onClick={() => {
+                            ldispatch({ type: "loading", payload: true })
+                            ldispatch({ type: "filterJobs", payload: "1Month" })
+                        }}
+                    >
+                        1 Month Ago
+                    </JobNavLi>
                 </JobNavUl>
             </JobNav>
 
@@ -245,18 +279,18 @@ const LandingPage = () => {
                     <div className="mx-auto flex justify-center">
                         <Pagination
                             page={page}
-                            totalPages={jobs?.length / 6}
+                            totalPages={(jobs?.length / 6) + 1}
                             onPageChange={(evt) => {
                                 ldispatch({ type: "changePage", payload: evt });
-                                ldispatch({ type: "paginateItems" });
+                                ldispatch({ type: "paginateJobs" });
                             }}
                             onNextPage={() => {
                                 ldispatch({ type: "changePage", payload: page + 1 });
-                                ldispatch({ type: "paginateItems" });
+                                ldispatch({ type: "paginateJobs" });
                             }}
                             onPreviousPage={() => {
                                 ldispatch({ type: "changePage", payload: page - 1 });
-                                ldispatch({ type: "paginateItems" });
+                                ldispatch({ type: "paginateJobs" });
                             }}
                         />
 
