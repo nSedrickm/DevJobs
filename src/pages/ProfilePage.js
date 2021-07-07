@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { FiUploadCloud, FiEdit3 } from "react-icons/fi";
 import ProfileImage from "images/profile.svg";
 import { useUserContext } from "./UserContext";
@@ -6,13 +6,14 @@ import { useUserContext } from "./UserContext";
 const ProfilePage = () => {
 
     const { getBasicUserProfile, state } = useUserContext();
-    const { userData } = state;
+    const { basicUserData, fullUserData } = state;
+    const [upload, setUpload] = useState("");
 
     useEffect(() => {
-        if (!userData.pk) {
-            getBasicUserProfile()
+        if (!basicUserData.pk) {
+            getBasicUserProfile();
         }
-    }, [userData, getBasicUserProfile]);
+    }, [basicUserData, getBasicUserProfile]);
 
     return (
         <div className="p-8 md:p-20 text-secondary">
@@ -26,16 +27,16 @@ const ProfilePage = () => {
 
             <div className="flex flex-col md:flex-row">
                 <img
-                    src={ProfileImage}
+                    src={fullUserData?.picture || ProfileImage}
                     alt="profile"
                     height={150}
                     width={150}
                 />
                 <div>
-                    <p className="md:ml-8 mb-4"><span className="font-medium">User Name : </span>{userData?.username || "Not provided"}</p>
-                    <p className="md:ml-8 mb-4"><span className="font-medium">First Name : </span>{userData?.first_name || "Not provided"}</p>
-                    <p className="md:ml-8 mb-4"><span className="font-medium">Last Name : </span>{userData?.last_name || "Not provided"}</p>
-                    <p className="md:ml-8 mb-4"><span className="font-medium">email : </span>{userData?.email || "Not provided"}</p>
+                    <p className="md:ml-8 mb-4"><span className="font-medium">User Name : </span>{fullUserData?.user || basicUserData?.username || "N/A"}</p>
+                    <p className="md:ml-8 mb-4"><span className="font-medium">First Name : </span>{fullUserData?.first_name || basicUserData?.first_name || "N/A"}</p>
+                    <p className="md:ml-8 mb-4"><span className="font-medium">Last Name : </span>{fullUserData?.last_name || basicUserData?.last_name || "N/A"}</p>
+                    <p className="md:ml-8 mb-4"><span className="font-medium">email : </span>{fullUserData?.email || basicUserData?.email || "N/A"}</p>
                 </div>
             </div>
 
@@ -44,7 +45,7 @@ const ProfilePage = () => {
 
                 <h2 className="text-2xl font-bold mb-2">About Me</h2>
                 <p className="text-base">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ultricies at tempor non interdum accumsan sit est. Lectus nulla praesent mi est. A purus congue vitae purus dui vulputate quam cursus. Laoreet at adipiscing lacus tellus euismod a ultricies. Convallis hendrerit duis elementum ipsum, lectus aliquam felis quisque suscipit. Amet vulputate ultricies sed proin. Venenatis etiam id integer lacus, sit massa turpis maecenas at. Viverra nisi, etiam dignissim eget diam nisl elementum convallis. Sit.
+                    {fullUserData?.about || "N/A"}
                 </p>
             </div>
 
@@ -54,34 +55,45 @@ const ProfilePage = () => {
             <div className="flex flex-col md:flex-row md:justify-between mb-12">
                 <div className="mb-4 md:mb-0">
                     <h4 className="text-xl font-semibold mb-2">Contact Information</h4>
-                    <p className="mb-4"><span className="font-medium">Email : </span>chynasafs@gmail.com</p>
-                    <p className="mb-4"><span className="font-medium">Twitter : </span>https://dffvsfdsurl</p>
-                    <p className="mb-4"><span className="font-medium">Instagram : </span>https://dffvsdurl</p>
-                    <p className="mb-4"><span className="font-medium">Github : </span>htpps://dffvsdurl</p>
+                    <p className="mb-4"><span className="font-medium">Email : </span> {fullUserData?.email || "N/A"}</p>
+                    <p className="mb-4"><span className="font-medium">Github : </span>{fullUserData?.github || "N/A"}</p>
+                    <p className="mb-4"><span className="font-medium">LinkedIn : </span>{fullUserData?.linkedin_profile || "N/A"}</p>
+                    <p className="mb-4"><span className="font-medium">Twitter : </span>{fullUserData?.twitter || "N/A"}</p>
+                    <p className="mb-4"><span className="font-medium">Instagram : </span>{fullUserData?.instagram || "N/A"}</p>
                 </div>
 
                 <div className="mb-4 md:mb-0">
                     <h4 className="text-xl font-semibold mb-2">Stack/Role Information</h4>
-                    <p className="mb-4"><span className="font-medium">Stack, Dev Role : </span>Fullstack Flutter Dev</p>
-                    <p className="mb-4"><span className="font-medium">Experience Level : </span>2 Years, Intermediate</p>
-                    <p className="mb-4"><span className="font-medium">Salary/Pay Range : </span>$100.00</p>
+                    <p className="mb-4"><span className="font-medium">Stack, Dev Role : </span>{fullUserData?.stack_dev_role || "N/A"}</p>
+                    <p className="mb-4"><span className="font-medium">Experience Level : </span>{fullUserData?.experience_level || "N/A"}</p>
+                    <p className="mb-4"><span className="font-medium">Salary/Pay Range : </span>{fullUserData?.salary || "N/A"}</p>
                 </div>
 
                 <div className="mb-4 md:mb-0">
                     <h4 className="text-xl font-semibold mb-2">Location Information</h4>
-                    <p className="mb-4"><span className="font-medium">Country </span>Nigeria</p>
-                    <p className="mb-4"><span className="font-medium">State </span>Lagos</p>
-                    <p className="mb-4"><span className="font-medium">City </span>Island</p>
+                    <p className="mb-4"><span className="font-medium">Country </span>{fullUserData?.country || "N/A"}</p>
+                    <p className="mb-4"><span className="font-medium">State </span>{fullUserData?.state || "N/A"}</p>
+                    <p className="mb-4"><span className="font-medium">City </span>{fullUserData?.city || "N/A"}</p>
                 </div>
             </div>
 
 
             <form className="bg-green-100  my-8 text-center p-4 sm:p-8">
                 <p className="block text-lg text-center my-3 font-medium">Cv/Resume</p>
-                <p className="text-secondary-lightest text-sm my-6 text-center mx-auto">Name of uploaded file</p>
+                <p className="text-secondary-lightest text-sm my-6 text-center mx-auto">{upload || "Name of uploaded file"}</p>
                 <div className="my-4">
-                    <button className=" inline-flex justify-center items-center px-12 py-2 bg-white font-medium text-primary rounded mx-4">Upload &nbsp; <FiUploadCloud size={20} /></button>
-                    <button className="inline-flex justify-center items-center px-12 py-2 text-center font-mdeium text-primary border border-primary rounded mx-4">Download</button>
+                    <label htmlFor="cv-upload" className="cursor-pointer inline-flex justify-center items-center px-12 py-2 bg-white font-medium text-primary rounded mx-4">
+
+                        Upload &nbsp; <FiUploadCloud size={20} />
+                        <input type='file' id="cv-upload" hidden
+                            onChange={(evt) => setUpload(evt.target.value)} />
+                    </label>
+
+                    <a className={`${fullUserData?.CV ? 'text-primary border-primary' : 'text-secondary-lightest border-secondary-lightest'} border inline-flex justify-center cursor:pointer items-center px-12 py-2 text-center font-medium rounded mx-4`}
+                        href={fullUserData?.CV} download={fullUserData?.CV}
+                    >
+                        Download
+                    </a>
                 </div>
             </form>
 
