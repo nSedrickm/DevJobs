@@ -36,8 +36,7 @@ export const userLogin = async ({ email, password }) => {
 
 
 export const logOut = () => {
-    return axios.get("/dj-rest-auth/logout/")
-        .then(response => response)
+    return axios.get("/dj-rest-auth/logout/").then(response => response)
 }
 
 export const getUserId = async () => {
@@ -47,4 +46,11 @@ export const getUserId = async () => {
 export const getUserProfile = async (pk) => {
     return axios.get(API_URL + "/profile/" + pk).then(response => response)
 };
+
+export const updateUserProfile = async (data) => {
+    return axios.put(API_URL + "/profile/",
+        {
+            first_name: data.first_name
+        }).then(response => response)
+}
 

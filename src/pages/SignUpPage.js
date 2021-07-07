@@ -78,18 +78,18 @@ const SignUpPage = () => {
         <Fragment>
             <section tw="text-secondary md:p-24">
                 <div tw="mx-auto py-12 lg:mx-24 bg-white md:shadow-lg md:rounded-xl">
-                    <header tw="text-center mb-8 p-4">
+                    <header tw="text-center mb-4 p-4">
                         <h1 tw="text-5xl font-bold text-green-600 mb-2">DevJobs</h1>
                         <p tw="text-base">&lt; Ctrl + F Developer Jobs Faster / &gt;</p>
                     </header>
                     <div tw="flex flex-col md:flex-row">
-                        <div tw="w-full md:w-1/2 p-4 text-center">
+                        {/* <div tw="w-full md:w-1/2 p-4 text-center">
                             <p tw="mb-8 text-lg font-bold">Sign Up With</p>
                             <button tw="p-2 rounded-md text-xl bg-gray-200 mb-5 w-5/6 md:w-2/3 mx-auto text-center">Google</button>
                             <button tw="p-2 rounded-md text-xl bg-blue-800 w-5/6 md:w-2/3 mx-auto text-white">facebook</button>
                             <p tw="text-green-600 my-4 text-sm">Terms & Privacy | cookie policy</p>
-                        </div>
-                        <div tw="w-full md:w-1/2 p-4">
+                        </div> */}
+                        <div tw="w-full md:w-2/3 p-4 mx-auto">
                             <form tw="w-5/6 md:w-2/3 mx-auto" onSubmit={handleSubmit(handleSignUp)}>
                                 <Label>User Name</Label>
                                 <Input

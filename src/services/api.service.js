@@ -12,8 +12,8 @@ export const getJobDetails = (pk) => {
     return axios.get(`${API_URL}/job/detail/${pk}`).then(response => response)
 }
 
-export const getDashboard = () => {
-    return axios.get(API_URL + "/job/dashboard/").then(response => response)
+export const getNotifications = () => {
+    return axios.get(API_URL + "/job/notification/").then(response => response)
 }
 
 export const createJob = (data) => {

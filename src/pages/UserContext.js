@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useReducer, useState } from "react";
-import { getLocalUserState, setLocalUserState, clearLocalUserState } from "services/storage.service";
+import { getLocalUserState, setLocalUserState, clearLocalUserState, clearLocalJobs } from "services/storage.service";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { Navbar, Footer, Loader } from "components";
 import { getUserProfile, getUserId } from "services/auth.service";
@@ -7,7 +7,6 @@ import toast from "react-hot-toast";
 import LogInPage from "pages/LogInPage";
 import SignUpPage from "pages/SignUpPage";
 import LandingPage from "pages/LandingPage";
-import Dashboard from "pages/Dashboard";
 import JobSeekerRegistrationPage from "pages/JobSeekerRegistrationPage";
 import EmployerRegistrationPage from "pages/EmployerRegistrationPage";
 import PasswordResetPage from "pages/PasswordResetPage";
@@ -30,18 +29,31 @@ const reducer = (state, action) => {
                 key: action.payload.key
             }
         }
-        case "SETUSERDATA": {
+        case "SETBASICUSERDATA": {
             return {
                 ...state,
-                userData: action.payload
+                basicUserData: action.payload
+            }
+        }
+        case "SETFULLUSERDATA": {
+            return {
+                ...state,
+                fullUserData: action.payload
+            }
+        }
+        case "SETNOTIFICATIONS": {
+            return {
+                ...state,
+                notifications: action.payload
             }
         }
         case "LOGOUT": {
             return {
-                ...state,
                 isAuthorized: notAuthorized,
                 key: "",
-                userData: {}
+                basicUserData: {},
+                fullUserData: {},
+                notifications: {}
             }
         }
         default: {
@@ -55,7 +67,8 @@ let localState = getLocalUserState();
 let initialState = localState || {
     isAuthorized: notAuthorized,
     key: "",
-    userData: {},
+    basicUserData: {},
+    fullUserData: {},
     notifications: {}
 }
 
@@ -69,20 +82,21 @@ const UserProvider = () => {
         initialState = getLocalUserState();
     }, [state])
 
-    const handleGetUserProfile = (pk) => {
+    const getFullUserProfile = (pk) => {
 
         getUserProfile(pk)
             .then(response => {
                 dispatch({
-                    type: "SETUSERDATA",
+                    type: "SETFULLUSERDATA",
                     payload: response.data
                 });
+                console.log(response.data)
             })
             .catch(error => {
                 if (error.response) {
                     // The request was made and the server responded with a status code
                     // that falls out of the range of 2xx
-                    toast.error("Could not get agent details. Please log out and login again");
+                    toast.error("Could not get full user details. Please log out and login again");
                 } else if (error.request) {
                     // The request was made but no response was received
                     // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
@@ -104,9 +118,11 @@ const UserProvider = () => {
             .then(response => {
                 console.log(response.data);
                 dispatch({
-                    type: "SETUSERDATA",
+                    type: "SETBASICUSERDATA",
                     payload: response.data
                 });
+                getFullUserProfile(response.data.pk);
+                setLoading(false);
             })
             .catch(error => {
                 if (error.response) {
@@ -130,6 +146,7 @@ const UserProvider = () => {
     const handleLogOut = () => {
         dispatch({ type: "LOGOUT" })
         clearLocalUserState();
+        clearLocalJobs();
     }
 
     if (loading) return <Loader />
@@ -142,7 +159,7 @@ const UserProvider = () => {
                 dispatch,
                 setLoading,
                 handleLogOut,
-                handleGetUserProfile,
+                getFullUserProfile,
                 getBasicUserProfile
             }}
         >
@@ -164,27 +181,23 @@ const UserProvider = () => {
                     <SignUpPage />
                 </Route>
 
-                <Route exact path="/dashboard">
-                    {state.isAuthorized === Authorized ? <Dashboard /> : <Redirect to="/login" />}
-                </Route>
-
                 <Route exact path="/users/profile">
                     {state.isAuthorized === Authorized ? <ProfilePage /> : <Redirect to="/login" />}
                 </Route>
 
                 <Route exact path="/profile/job-seeker">
-                    {state.isAuthorized === Authorized ? <JobSeekerRegistrationPage /> : <Redirect to="/" />}
+                    {state.isAuthorized === Authorized ? <JobSeekerRegistrationPage /> : <Redirect to="/login" />}
                 </Route>
 
                 <Route exact path="/profile/employer">
-                    {state.isAuthorized === Authorized ? <EmployerRegistrationPage /> : <Redirect to="/" />}
+                    {state.isAuthorized === Authorized ? <EmployerRegistrationPage /> : <Redirect to="/login" />}
                 </Route>
 
                 <Route exact path="/reset-password">
                     <PasswordResetPage />
                 </Route>
                 <Route exact path="/employer/dashboard">
-                    {state.isAuthorized === Authorized ? <DashboardEmployer /> : <Redirect to="/" />}
+                    {state.isAuthorized === Authorized ? <DashboardEmployer /> : <Redirect to="/login" />}
                 </Route>
 
                 <Route>
