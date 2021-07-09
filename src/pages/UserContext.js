@@ -14,6 +14,8 @@ import PasswordResetPage from "pages/PasswordResetPage";
 import JobDetails from "pages/JobDetails";
 import ProfilePage from "pages/ProfilePage";
 import DashboardEmployer from "./EmployerDashboard/DashboardEmployer";
+import ActiveJobs from "./EmployerDashboard/ActiveJobs";
+import ExpiredJobs from "./EmployerDashboard/ExpiredJobs";
 
 const UserContext = createContext();
 const useUserContext = () => useContext(UserContext);

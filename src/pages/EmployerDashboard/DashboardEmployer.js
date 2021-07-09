@@ -64,7 +64,7 @@ const DashboardEmployer =() => {
 
                 <div tw='mt-14 '>
                 <div tw='md:flex block  mx-auto place-content-evenly '>
-                    <JobLi to='/' tw='border-green-800 text-green-800 hover:bg-green-600 hover:text-white'>
+                    <JobLi to='/signup' tw='border-green-800 text-green-800 hover:bg-green-600 hover:text-white'>
                        <p tw='text-base md:text-2xl mb-2 '> Active Job Posts</p>
                         <p>20</p>
                   
