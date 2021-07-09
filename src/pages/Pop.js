@@ -1,4 +1,5 @@
 import React from "react"; 
+import {Link} from "react-dom"
 
 const PopUP = () => {
 
@@ -15,7 +16,20 @@ const PopUP = () => {
         )
         }
 
-
-    
-    
-    export default PopUP;
+                
+        const Pop354 =() => {
+                return (
+                    <section tw="text-gray-600 bg-white md:bg-gray-100 md:py-24 h-screen">
+                        <div tw="mx-auto py-12 md:w-2/3 my-24  bg-white md:shadow-lg md:rounded-xl">
+                            <header>
+                                <h3 tw="text-3xl text-green-600 mb-4 font-bold">Hi Chyna!</h3>
+                                <p tw="text-gray-600"> Are you sure you want to log out</p>
+                            </header>  
+                        <button tw="block w-2/3 sm:w-1/3 mx-auto p-2 bg-green-600  text-center font-bold text-white rounded-md" >Back</button>
+                        <button tw="text-3xl text-red-600 mb-4 font-bold" >Log out</button>
+                        </div>
+                    </section>
+                );
+        }
+        
+        export {PopUP, Pop354};
