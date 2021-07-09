@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import tw from "twin.macro";
 import styled from "styled-components";
 import heroBg from "images/hero.svg";
@@ -9,6 +9,9 @@ import { setAuthHeaders } from 'services/auth.service';
 import { FiArrowRightCircle } from 'react-icons/fi';
 import { Loader } from 'components';
 import { useUserContext } from './UserContext';
+import { getLocalJobs, setLocalJobs } from 'services/storage.service';
+import { Pagination } from 'evergreen-ui';
+import { paginateFunc, filterFunc } from 'utils/filters';
 
 const Container = tw.div`w-full text-gray-800 bg-primary-lightest`;
 const Header = styled.header`
@@ -39,43 +42,97 @@ const ApplyButtonLink = tw(Link)`block text-center w-full p-2 sm:py-1.5 rounded 
 const DetailsButton = tw(Link)`block text-center w-full p-2 sm:py-1.5 rounded font-bold text-sm text-primary border border-primary hocus:bg-green-100`;
 const Divider = tw.hr`mx-20 border-gray-300`;
 
+let cachedJobs = getLocalJobs();
+
+let initialState = {
+    jobs: cachedJobs || [],
+    pageItems: [],
+    page: 1,
+    loading: false
+}
+
+function reducer(state, action) {
+    switch (action.type) {
+        case 'setJobs':
+            return {
+                ...state,
+                jobs: action.payload
+            };
+        case 'changePage':
+            return {
+                ...state,
+                page: action.payload
+            };
+        case 'paginateJobs':
+            const start = 6 * (state.page - 1)
+            const end = start + 6;
+            let paginatedItems = paginateFunc(state.jobs, start, end);
+            return {
+                ...state,
+                pageItems: paginatedItems
+            };
+        case 'filterJobs':
+            let filtered = filterFunc(state.jobs, action.payload);
+            return {
+                ...state,
+                pageItems: filtered,
+                loading: !state.loading
+            };
+        case 'loading':
+            return {
+                ...state,
+                loading: action.payload
+            };
+        default:
+            throw new Error();
+    }
+}
+
 const LandingPage = () => {
 
     const { state } = useUserContext();
-    const [jobs, setJobs] = useState({})
-    const [loading, setLoading] = useState(false);
+    const [lstate, ldispatch] = useReducer(reducer, initialState);
+    const { jobs, page, pageItems, loading } = lstate;
 
     useEffect(() => {
-        setLoading(true);
-        getJobs()
-            .then(response => {
-                setJobs(response.data);
-                setLoading(false);
-            })
-            .catch(error => {
-                if (error.response) {
-                    // The request was made and the server responded with a status code
-                    // that falls out of the range of 2xx
-                    toast.error("An error occured, could not get jobs")
-                } else if (error.request) {
-                    // The request was made but no response was received
-                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                    // http.ClientRequest in node.js
-                    toast.error("An error occured, could not get jobs")
-                } else {
-                    // Something happened in setting up the request that triggered an Error
-                    toast.error("An error occured, could not get jobs")
-                }
-                setLoading(false);
-            });
-    }, []);
+        if (!jobs?.length) {
+            ldispatch({ type: "loading", payload: true });
+            getJobs()
+                .then(response => {
+                    ldispatch({ type: "setJobs", payload: response.data });
+                    ldispatch({ type: "paginateJobs" });
+                    setLocalJobs(response.data);
+                    ldispatch({ type: "loading", payload: false });
+                })
+                .catch(error => {
+                    if (error.response) {
+                        // The request was made and the server responded with a status code
+                        // that falls out of the range of 2xx
+                        toast.error("An error occured, could not get jobs")
+                    } else if (error.request) {
+                        // The request was made but no response was received
+                        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                        // http.ClientRequest in node.js
+                        toast.error("An error occured, could not get jobs")
+                    } else {
+                        // Something happened in setting up the request that triggered an Error
+                        toast.error("An error occured, could not get jobs")
+                    }
+                    ldispatch({ type: "loading", payload: false });
+                });
+        } else {
+            ldispatch({ type: "paginateJobs" });
+        }
+    }, [jobs]);
 
     const handleRefresh = () => {
-        setLoading(true);
+        ldispatch({ type: "loading", payload: true });
         getJobs()
             .then(response => {
-                setJobs(response.data);
-                setLoading(false);
+                ldispatch({ type: "setJobs", payload: response.data });
+                ldispatch({ type: "paginateJobs" });
+                setLocalJobs(response.data);
+                ldispatch({ type: "loading", payload: false });
             })
             .catch(error => {
                 if (error.response) {
@@ -91,17 +148,17 @@ const LandingPage = () => {
                     // Something happened in setting up the request that triggered an Error
                     toast.error("An error occured, could not get jobs")
                 }
-                setLoading(false);
+                ldispatch({ type: "loading", payload: false });
             });
     }
 
     const handleJobApplication = (pk) => {
-        setLoading(true);
+        ldispatch({ type: "loading", payload: true });
         setAuthHeaders(state);
         jobApplication(pk)
             .then(response => {
                 toast.success(response.data.request);
-                setLoading(false);
+                ldispatch({ type: "loading", payload: false });
             })
             .catch(error => {
                 if (error.response) {
@@ -117,7 +174,7 @@ const LandingPage = () => {
                     // Something happened in setting up the request that triggered an Error
                     toast.error("An error occured, could not get jobs")
                 }
-                setLoading(false);
+                ldispatch({ type: "loading", payload: false });
             });
     }
 
@@ -140,13 +197,41 @@ const LandingPage = () => {
             <JobNav>
                 <JobNavTitle>Posted Jobs</JobNavTitle>
                 <JobNavUl>
-                    <JobNavLi tw=" bg-green-100 text-green-700">New Jobs</JobNavLi>
+                    <JobNavLi
+                        tw=" bg-green-100 text-green-700"
+                        onClick={() => {
+                            ldispatch({ type: "changePage", payload: (jobs?.length / 6) });
+                            ldispatch({ type: "paginateJobs" });
+                        }}
+                    >
+                        New Jobs
+                    </JobNavLi>
                     <JobNavLi>|</JobNavLi>
-                    <JobNavLi >1 Week Ago</JobNavLi>
+                    <JobNavLi onClick={() => {
+                        ldispatch({ type: "loading", payload: true })
+                        ldispatch({ type: "filterJobs", payload: "1Week" })
+                    }}
+                    >
+                        1 Week Ago
+                    </JobNavLi>
                     <JobNavLi>|</JobNavLi>
-                    <JobNavLi >2 Weeks Ago</JobNavLi>
+                    <JobNavLi
+                        onClick={() => {
+                            ldispatch({ type: "loading", payload: true })
+                            ldispatch({ type: "filterJobs", payload: "2Weeks" })
+                        }}
+                    >
+                        2 Weeks Ago
+                    </JobNavLi>
                     <JobNavLi>|</JobNavLi>
-                    <JobNavLi >1 Month Ago</JobNavLi>
+                    <JobNavLi
+                        onClick={() => {
+                            ldispatch({ type: "loading", payload: true })
+                            ldispatch({ type: "filterJobs", payload: "1Month" })
+                        }}
+                    >
+                        1 Month Ago
+                    </JobNavLi>
                 </JobNavUl>
             </JobNav>
 
@@ -156,39 +241,61 @@ const LandingPage = () => {
             {loading ? (
                 <InlineLoader tw="h-96 bg-white m-4 sm:m-12 lg:m-20 shadow-lg rounded-md" />
             ) : (
-                <JobContainer>
-                    {jobs.length && (
-                        jobs?.map(job => {
-                            return (
-                                <JobCard key={job.pk} >
-                                    <JobCardBody>
-                                        <JobCardTitle>{job.title}</JobCardTitle>
-                                        <JobMeta>
-                                            <p>Company : {job.company_name}</p>
-                                        </JobMeta>
-                                        <JobMeta>
-                                            <p>Lagos,Nigeria</p>
-                                            <p tw="mx-1 md:mx-2">|</p>
-                                            <p>fulltime</p>
-                                            <p tw="mx-1 md:mx-2">|</p>
-                                            <p>$20000000/year</p>
-                                        </JobMeta>
-                                        <JobMeta>
-                                            <p tw="text-center">{job.users_applied ? job.users_applied : 0} applies</p>
-                                            <p tw="mx-1 md:mx-2">|</p>
-                                            <p>Posted {new Date(job.created_date).toLocaleString()}</p>
-                                        </JobMeta>
-                                    </JobCardBody>
-                                    {state.key && job.pk ? (
-                                        <ApplyButton onClick={() => { handleJobApplication(job.pk) }}>Apply</ApplyButton>
-                                    ) : (
-                                        <ApplyButtonLink to="/login">Login To Apply</ApplyButtonLink>
-                                    )}
-                                    <DetailsButton to={"/job/details/" + job.pk}>See Full Details</DetailsButton>
-                                </JobCard>
-                            )
-                        }))}
-                </JobContainer>
+                <>
+                    <JobContainer>
+                        {pageItems?.length && (
+                            pageItems?.map(job => {
+                                return (
+                                    <JobCard key={job.pk} >
+                                        <JobCardBody>
+                                            <JobCardTitle>{job.title}</JobCardTitle>
+                                            <JobMeta>
+                                                <p>Company : {job.company_name}</p>
+                                            </JobMeta>
+                                            <JobMeta>
+                                                <p>Lagos,Nigeria</p>
+                                                <p tw="mx-1 md:mx-2">|</p>
+                                                <p>fulltime</p>
+                                                <p tw="mx-1 md:mx-2">|</p>
+                                                <p>$20000000/year</p>
+                                            </JobMeta>
+                                            <JobMeta>
+                                                <p tw="text-center">{job.users_applied ? job.users_applied : 0} applies</p>
+                                                <p tw="mx-1 md:mx-2">|</p>
+                                                <p>Posted {new Date(job.created_date).toLocaleString()}</p>
+                                            </JobMeta>
+                                        </JobCardBody>
+                                        {state.key && job.pk ? (
+                                            <ApplyButton onClick={() => { handleJobApplication(job.pk) }}>Apply</ApplyButton>
+                                        ) : (
+                                            <ApplyButtonLink to="/login">Login To Apply</ApplyButtonLink>
+                                        )}
+                                        <DetailsButton to={"/job/details/" + job.pk}>See Full Details</DetailsButton>
+                                    </JobCard>
+                                )
+                            }))}
+                    </JobContainer>
+
+                    <div className="mx-auto flex justify-center">
+                        <Pagination
+                            page={page}
+                            totalPages={(jobs?.length / 6) + 1}
+                            onPageChange={(evt) => {
+                                ldispatch({ type: "changePage", payload: evt });
+                                ldispatch({ type: "paginateJobs" });
+                            }}
+                            onNextPage={() => {
+                                ldispatch({ type: "changePage", payload: page + 1 });
+                                ldispatch({ type: "paginateJobs" });
+                            }}
+                            onPreviousPage={() => {
+                                ldispatch({ type: "changePage", payload: page - 1 });
+                                ldispatch({ type: "paginateJobs" });
+                            }}
+                        />
+
+                    </div>
+                </>
             )}
 
             <p tw="text-center text-3xl text-green-700 font-bold cursor-pointer py-12 flex items-center justify-center" onClick={() => handleRefresh()}>See More Jobs &nbsp; <FiArrowRightCircle /></p>

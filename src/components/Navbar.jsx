@@ -40,118 +40,118 @@ const Navbar = () => {
                 </SearchBar>
                 <Nav>
                     <NavLink to="/" tw="text-primary">Home</NavLink>
-                    {/* <NavLink to="/dashboard">Employer (Post Jobs)</NavLink> */}
-                    {!state.key ? (
+                    <NavLink to="/employer/dashboard">Hire A Professional</NavLink>
+                    {!state.key && (
                         <>
                             <ButtonSignUp to="/signup">Sign Up</ButtonSignUp>
                             <ButtonLogIn to="/login">Log In</ButtonLogIn>
                         </>
-                    ) : (
-                        <>
-                            <Menu as="div" className="relative inline-block text-left z-50">
-                                <div>
-                                    <Menu.Button className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-primary rounded-md hover:bg-opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
-                                        Menu
-                                        <FiChevronDown
-                                            className="w-5 h-5 ml-2 -mr-1"
-                                            aria-hidden="true"
-                                        />
-                                    </Menu.Button>
-                                </div>
-                                <Transition
-                                    as={Fragment}
-                                    enter="transition ease-out duration-100"
-                                    enterFrom="transform opacity-0 scale-95"
-                                    enterTo="transform opacity-100 scale-100"
-                                    leave="transition ease-in duration-75"
-                                    leaveFrom="transform opacity-100 scale-100"
-                                    leaveTo="transform opacity-0 scale-95"
-                                >
-                                    <Menu.Items className="absolute right-0 w-56 mt-2 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                                        <div className="px-1 py-1 ">
-                                            <Menu.Item>
-                                                {({ active }) => (
-                                                    <Link to="/users/profile"
-                                                        className={`${active ? 'text-secondary' : 'text-secondary-light'} group flex rounded-md items-center w-full p-2 mb-2 text-sm`}
-                                                    >
-                                                        <FiUser
-                                                            size={18}
-                                                            className="mr-2"
-                                                            aria-hidden="true"
-                                                        />
-                                                        Profile
-                                                    </Link>
-                                                )}
-                                            </Menu.Item>
-
-                                            <Menu.Item>
-                                                {({ active }) => (
-                                                    <Link to="/user/notifications"
-                                                        className={`${active ? 'text-secondary' : 'text-secondary-light'} group flex rounded-md items-center w-full p-2 mb-2 text-sm`}
-                                                    >
-                                                        <FiBell
-                                                            size={18}
-                                                            className="mr-2"
-                                                            aria-hidden="true"
-                                                        />
-                                                        Notifications
-                                                    </Link>
-                                                )}
-                                            </Menu.Item>
-
-                                            <Menu.Item>
-                                                {({ active }) => (
-                                                    <Link to="/employer/dashboard"
-                                                        className={`${active ? 'text-secondary' : 'text-secondary-light'} group flex rounded-md items-center w-full p-2 mb-2 text-sm`}
-                                                    >
-                                                        <FiGrid
-                                                            size={18}
-                                                            className="mr-2"
-                                                            aria-hidden="true"
-                                                        />
-                                                        Employer/Post Jobs
-                                                    </Link>
-                                                )}
-                                            </Menu.Item>
-
-                                            <Menu.Item>
-                                                {({ active }) => (
-                                                    <Link to="#"
-                                                        className={`${active ? 'text-secondary' : 'text-secondary-light'} group flex rounded-md items-center w-full p-2 mb-2 text-sm`}
-                                                    >
-                                                        <FiInfo
-                                                            size={18}
-                                                            className="mr-2"
-                                                            aria-hidden="true"
-                                                        />
-                                                        Help And Support
-                                                    </Link>
-                                                )}
-                                            </Menu.Item>
-
-                                            <Menu.Item>
-                                                {({ active }) => (
-                                                    <button
-                                                        onClick={() => setIsOpen(true)}
-                                                        className={`${active ? 'text-secondary' : 'text-secondary-light'} group flex rounded-md items-center w-full p-2 mb-2 text-sm`}
-                                                    >
-                                                        <FiLogOut
-                                                            size={18}
-                                                            className="mr-2"
-                                                            aria-hidden="true"
-                                                        />
-                                                        Logout
-                                                    </button>
-                                                )}
-                                            </Menu.Item>
-                                        </div>
-
-                                    </Menu.Items>
-                                </Transition>
-                            </Menu>
-                        </>
                     )}
                 </Nav>
+
+                {state.key && (
+                    <Menu as="div" className="relative inline-block text-left z-50">
+                        <div>
+                            <Menu.Button className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-primary rounded-md hover:bg-opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
+                                Menu
+                                <FiChevronDown
+                                    className="w-5 h-5 ml-2 -mr-1"
+                                    aria-hidden="true"
+                                />
+                            </Menu.Button>
+                        </div>
+                        <Transition
+                            as={Fragment}
+                            enter="transition ease-out duration-100"
+                            enterFrom="transform opacity-0 scale-95"
+                            enterTo="transform opacity-100 scale-100"
+                            leave="transition ease-in duration-75"
+                            leaveFrom="transform opacity-100 scale-100"
+                            leaveTo="transform opacity-0 scale-95"
+                        >
+                            <Menu.Items className="absolute right-0 w-56 mt-2 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                <div className="px-1 py-1 ">
+                                    <Menu.Item>
+                                        {({ active }) => (
+                                            <Link to="/users/profile"
+                                                className={`${active ? 'text-secondary' : 'text-secondary-light'} group flex rounded-md items-center w-full p-2 mb-2 text-sm`}
+                                            >
+                                                <FiUser
+                                                    size={18}
+                                                    className="mr-2"
+                                                    aria-hidden="true"
+                                                />
+                                                Profile
+                                            </Link>
+                                        )}
+                                    </Menu.Item>
+
+                                    <Menu.Item>
+                                        {({ active }) => (
+                                            <Link to="/user/notifications"
+                                                className={`${active ? 'text-secondary' : 'text-secondary-light'} group flex rounded-md items-center w-full p-2 mb-2 text-sm`}
+                                            >
+                                                <FiBell
+                                                    size={18}
+                                                    className="mr-2"
+                                                    aria-hidden="true"
+                                                />
+                                                Notifications
+                                            </Link>
+                                        )}
+                                    </Menu.Item>
+
+                                    <Menu.Item>
+                                        {({ active }) => (
+                                            <Link to="/employer/dashboard"
+                                                className={`${active ? 'text-secondary' : 'text-secondary-light'} group flex rounded-md items-center w-full p-2 mb-2 text-sm`}
+                                            >
+                                                <FiGrid
+                                                    size={18}
+                                                    className="mr-2"
+                                                    aria-hidden="true"
+                                                />
+                                                Employer/Post Jobs
+                                            </Link>
+                                        )}
+                                    </Menu.Item>
+
+                                    <Menu.Item>
+                                        {({ active }) => (
+                                            <Link to="#"
+                                                className={`${active ? 'text-secondary' : 'text-secondary-light'} group flex rounded-md items-center w-full p-2 mb-2 text-sm`}
+                                            >
+                                                <FiInfo
+                                                    size={18}
+                                                    className="mr-2"
+                                                    aria-hidden="true"
+                                                />
+                                                Help And Support
+                                            </Link>
+                                        )}
+                                    </Menu.Item>
+
+                                    <Menu.Item>
+                                        {({ active }) => (
+                                            <button
+                                                onClick={() => setIsOpen(true)}
+                                                className={`${active ? 'text-secondary' : 'text-secondary-light'} group flex rounded-md items-center w-full p-2 mb-2 text-sm`}
+                                            >
+                                                <FiLogOut
+                                                    size={18}
+                                                    className="mr-2"
+                                                    aria-hidden="true"
+                                                />
+                                                Logout
+                                            </button>
+                                        )}
+                                    </Menu.Item>
+                                </div>
+
+                            </Menu.Items>
+                        </Transition>
+                    </Menu>
+                )}
             </DesktopNav>
             <MobileNav>
                 <Brand src={logo} alt="DevJobs logo" />
