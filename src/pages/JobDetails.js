@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import tw from "twin.macro";
 import toast from "react-hot-toast";
 import { getJobDetails, jobApplication } from "services/api.service";
-import { Loader, Navbar, Footer } from 'components';
+import { Loader } from 'components';
 import { useParams, Link, useHistory } from 'react-router-dom';
 import { useUserContext } from './UserContext';
 import { setAuthHeaders } from 'services/auth.service';
