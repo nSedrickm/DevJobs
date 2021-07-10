@@ -87,7 +87,7 @@ const JobDetails = () => {
 
     return (
         <>
-            <Navbar />
+            
             <Container>
                 <Header>
                     <Heading>Job Details</Heading>
@@ -136,7 +136,7 @@ const JobDetails = () => {
                     <ButtonLink to="/login">Login To Apply</ButtonLink>
                 )}
             </Container>
-            <Footer />
+            
         </>
     )
 }
