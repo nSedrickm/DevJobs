@@ -66,7 +66,7 @@ const LogInPage = () => {
     }
 
     return (
-        <section tw="text-gray-600 md:p-24 lg:h-screen">
+        <section tw="text-gray-600 md:p-24">
             <div tw="mx-auto py-12 lg:mx-24 bg-white md:shadow-lg md:rounded-xl">
                 <header tw="text-center mb-4 p-4">
                     <h1 tw="text-5xl font-bold text-green-600 mb-2">DevJobs</h1>

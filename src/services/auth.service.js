@@ -19,7 +19,7 @@ export const registerUser = ({ username, email, password1, password2 }) => {
 }
 
 export const createEmployerProfile = ({ company_name, company_number }) => {
-    return axios.post(API_URL + "/profile/employer/",
+    return axios.post(API_URL + "/employer/new/",
         {
             company_name: company_name,
             company_number: company_number
