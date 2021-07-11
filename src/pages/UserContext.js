@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useReducer, useState } from "react";
+import React, { createContext, useContext, useEffect, useReducer, useState, Fragment } from "react";
 import { getLocalUserState, setLocalUserState, clearLocalUserState, clearLocalJobs } from "services/storage.service";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { Navbar, Footer, Loader } from "components";
@@ -165,7 +165,33 @@ const UserProvider = () => {
                 getBasicUserProfile
             }}
         >
+            <Switch>
+                <Route path="/users">
+                    <UserRoutes />
+                </Route>
+
+                <Route path="/employer">
+                    <EmployerRoutes />
+                </Route>
+
+                {/* This route has to always be last to avoid wrong redirects */}
+                <Route path="/">
+                    <DefaultRoutes />
+                </Route>
+            </Switch>
+
+        </UserContext.Provider>
+    )
+}
+
+const DefaultRoutes = () => {
+
+    const { state } = useUserContext();
+    return (
+        <Fragment>
+
             <Navbar />
+
             <Switch>
                 <Route exact path="/">
                     <LandingPage />
@@ -182,7 +208,22 @@ const UserProvider = () => {
                 <Route exact path="/signup">
                     <SignUpPage />
                 </Route>
+            </Switch>
 
+            <Footer />
+
+        </Fragment>
+    )
+}
+
+const UserRoutes = () => {
+
+    const { state } = useUserContext();
+
+    return (
+        <Fragment>
+
+            <Switch>
                 <Route exact path="/users/profile">
                     {state.isAuthorized === Authorized ? <ProfilePage /> : <Redirect to="/login" />}
                 </Route>
@@ -191,15 +232,8 @@ const UserProvider = () => {
                     {state.isAuthorized === Authorized ? <JobSeekerRegistrationPage /> : <Redirect to="/login" />}
                 </Route>
 
-                <Route exact path="/profile/employer">
-                    {state.isAuthorized === Authorized ? <EmployerRegistrationPage /> : <Redirect to="/login" />}
-                </Route>
-
                 <Route exact path="/reset-password">
                     <PasswordResetPage />
-                </Route>
-                <Route exact path="/employer/dashboard">
-                    {state.isAuthorized === Authorized ? <DashboardEmployer /> : <Redirect to="/login" />}
                 </Route>
 
                 <Route>
@@ -207,8 +241,27 @@ const UserProvider = () => {
                     <Redirect to="/login" />
                 </Route>
             </Switch>
-            <Footer />
-        </UserContext.Provider>
+
+        </Fragment>
+    )
+}
+
+const EmployerRoutes = () => {
+
+    const { state } = useUserContext();
+
+    return (
+        <Fragment>
+
+            <Route exact path="/employer/dashboard">
+                {state.isAuthorized === Authorized ? <DashboardEmployer /> : <Redirect to="/login" />}
+            </Route>
+
+            <Route exact path="/employer/profile">
+                {state.isAuthorized === Authorized ? <EmployerRegistrationPage /> : <Redirect to="/login" />}
+            </Route>
+
+        </Fragment>
     )
 }
 
