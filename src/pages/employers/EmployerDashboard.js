@@ -1,7 +1,6 @@
 import React from 'react';
 import tw from "twin.macro";
 import { Link } from "react-router-dom";
-import { Navbar, Footer } from 'components';
 import { FiSearch } from "react-icons/fi";
 import { MdRefresh, MdAdd } from "react-icons/md";
 
@@ -22,7 +21,6 @@ const EmployerDashboard = () => {
 
     return (
         <Container>
-            <Navbar />
             <Header>
                 <div tw='block'>
                     <Heading>Dashboard Employer</Heading>
@@ -82,8 +80,6 @@ const EmployerDashboard = () => {
                 </div>
 
             </JobContainer>
-
-            <Footer />
 
         </Container>
 
