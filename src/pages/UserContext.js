@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useReducer, useState, Fragment } from "react";
 import { getLocalUserState, setLocalUserState, clearLocalUserState, clearLocalJobs } from "services/storage.service";
 import { Switch, Route, Redirect } from "react-router-dom";
-import { Navbar, UserNavbar, Footer, Loader } from "components";
+import { Navbar, UserNavbar, EmployerNavbar, Footer, DashFooter, Loader } from "components";
 import { getUserProfile, getUserId } from "services/auth.service";
 import toast from "react-hot-toast";
 import LogInPage from "pages/LogInPage";
@@ -271,6 +271,8 @@ const UserRoutes = () => {
 
             </Switch>
 
+            <DashFooter />
+
         </Fragment>
     )
 }
@@ -282,21 +284,29 @@ const EmployerRoutes = () => {
     return (
         <Fragment>
 
-            <Route exact path="/employer/dashboard">
-                {state.isAuthorized === Authorized && state.isEmployer ? <EmployerDashboard /> : <Redirect to="/login" />}
-            </Route>
+            <EmployerNavbar />
 
-            <Route exact path="/employer/profile">
-                {state.isAuthorized === Authorized && state.isEmployer ? <ProfilePage /> : <Redirect to="/login" />}
-            </Route>
+            <Switch>
 
-            <Route exact path="/employer/activejobs">
-                {state.isAuthorized === Authorized && state.isEmployer ? <ActiveJobs /> : <Redirect to="/login" />}
-            </Route>
+                <Route exact path="/employer/dashboard">
+                    {state.isAuthorized === Authorized && state.isEmployer ? <EmployerDashboard /> : <Redirect to="/login" />}
+                </Route>
 
-            <Route exact path="/employer/expiredjobs">
-                {state.isAuthorized === Authorized && state.isEmployer ? <ExpiredJobs /> : <Redirect to="/login" />}
-            </Route>
+                <Route exact path="/employer/profile">
+                    {state.isAuthorized === Authorized && state.isEmployer ? <ProfilePage /> : <Redirect to="/login" />}
+                </Route>
+
+                <Route exact path="/employer/activejobs">
+                    {state.isAuthorized === Authorized && state.isEmployer ? <ActiveJobs /> : <Redirect to="/login" />}
+                </Route>
+
+                <Route exact path="/employer/expiredjobs">
+                    {state.isAuthorized === Authorized && state.isEmployer ? <ExpiredJobs /> : <Redirect to="/login" />}
+                </Route>
+
+            </Switch>
+
+            <DashFooter />
 
         </Fragment>
     )

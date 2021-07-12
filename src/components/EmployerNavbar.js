@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useRef } from "react";
 import tw from "twin.macro";
 import logo from "images/logo-sm.svg";
-import { FiMenu, FiLogOut, FiChevronDown, FiUser, FiBell, FiInfo, FiArrowLeft, FiGrid } from "react-icons/fi";
+import { FiMenu, FiLogOut, FiChevronDown, FiUser, FiInfo, FiArrowLeft, FiGrid } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { useUserContext } from "pages/UserContext";
 import { Menu, Transition, Dialog } from "@headlessui/react";
@@ -14,7 +14,7 @@ const NavLink = tw(Link)`h-16 inline-flex items-center px-4 py-2 mx-auto hocus:t
 const DesktopNav = tw.div`hidden lg:flex items-center justify-between h-16 px-4`;
 const MobileNav = tw.div`lg:hidden flex items-center justify-between h-20 shadow-lg px-4 rounded-b-2xl`;
 
-const Navbar = () => {
+const EmployerNavbar = () => {
 
     const { handleLogOut } = useUserContext();
     let [isOpen, setIsOpen] = useState(false);
@@ -33,7 +33,7 @@ const Navbar = () => {
                             className="mr-2"
                             aria-hidden="true"
                         />
-                        Home
+                        Dashboard
                     </NavLink>
 
                     <NavLink to="/employer/profile">
@@ -43,15 +43,6 @@ const Navbar = () => {
                             aria-hidden="true"
                         />
                         Profile
-                    </NavLink>
-
-                    <NavLink to="/employer/notifications" >
-                        <FiBell
-                            size={18}
-                            className="mr-2"
-                            aria-hidden="true"
-                        />
-                        Notifications
                     </NavLink>
 
                 </Nav>
@@ -79,7 +70,7 @@ const Navbar = () => {
                             <div className="px-1 py-1 ">
                                 <Menu.Item>
                                     {({ active }) => (
-                                        <Link to="/users/profile"
+                                        <Link to="/employer/profile"
                                             className={`${active ? 'text-secondary' : 'text-secondary-light'} group flex rounded-md items-center w-full p-2 mb-2 text-sm`}
                                         >
                                             <FiUser
@@ -94,15 +85,15 @@ const Navbar = () => {
 
                                 <Menu.Item>
                                     {({ active }) => (
-                                        <Link to="/user/notifications"
+                                        <Link to="/employer/dashboard"
                                             className={`${active ? 'text-secondary' : 'text-secondary-light'} group flex rounded-md items-center w-full p-2 mb-2 text-sm`}
                                         >
-                                            <FiBell
+                                            <FiGrid
                                                 size={18}
                                                 className="mr-2"
                                                 aria-hidden="true"
                                             />
-                                            Notifications
+                                            Dashboard
                                         </Link>
                                     )}
                                 </Menu.Item>
@@ -226,8 +217,7 @@ const Navbar = () => {
             </Transition>
         </MainHeader>
 
-
     )
 }
 
-export default Navbar;
+export default EmployerNavbar;
