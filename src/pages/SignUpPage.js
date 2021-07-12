@@ -8,9 +8,11 @@ import * as yup from "yup";
 import { registerUser, setAuthHeaders } from "services/auth.service";
 import { Dialog, Transition } from "@headlessui/react";
 import { Loader } from "components";
+import { useUserContext } from "pages/UserContext";
 
 const Label = tw.label`block text-sm mt-2`;
 const Input = tw.input`border border-green-600 w-full mt-2 mb-2 p-2 px-4 placeholder-gray-400 text-sm rounded bg-opacity-90 hocus:outline-none focus:ring-green-600 focus:border-green-600`;
+const RadioInput = tw.input`border border-green-600 w-6 h-6 mr-4 rounded-full hocus:outline-none focus:ring-0 focus:border-green-600 text-green-600`;
 const ErrorMessage = tw.p`text-sm text-red-500 mb-2`;
 
 const SignupSchema = yup.object().shape({
@@ -23,7 +25,10 @@ const SignupSchema = yup.object().shape({
 
 
 const SignUpPage = () => {
+    const { dispatch } = useUserContext();
     const [isOpen, setIsOpen] = useState(false);
+    const [stage, setStage] = useState(0);
+    const [role, setRole] = useState("");
     const [loading, setLoading] = useState(false);
     const finishButtonRef = useRef(null);
 
@@ -44,7 +49,8 @@ const SignUpPage = () => {
                 toast.success("Registration Successful");
                 setAuthHeaders(response.data);
                 setLoading(false);
-                setIsOpen(true);
+                setStage(2);
+                dispatch({ type: "LOGIN", payload: response.data })
                 toast.success("A confirmation Email has been sent to your email address");
             })
             .catch(error => {
@@ -73,6 +79,42 @@ const SignUpPage = () => {
     }
 
     if (loading) return <Loader />;
+
+
+    if (stage === 2) {
+        return (
+            <section tw="mx-auto p-6 sm:w-2/3 my-16 md:my-24 sm:bg-white md:shadow-lg md:rounded-xl">
+                <header tw="text-center mb-4">
+                    <h1 tw="text-4xl text-green-600 mb-4 font-bold">DevJobs</h1>
+                    <p tw="text-base font-medium">Please Let Us Know How You will Be Using Our Products</p>
+                </header>
+                <form tw="w-full md:w-2/3 lg:w-1/2 p-4 mx-auto">
+                    <label
+                        onClick={() => setRole("user")}
+                        tw="w-full p-3 rounded-md mb-6 inline-flex items-center border border-green-600"
+                    >
+                        <RadioInput type="radio" name="role" />
+                        <span>Job Seeker</span>
+                    </label>
+
+                    <label
+                        onClick={() => setRole("employer")}
+                        tw="w-full p-3 rounded-md mb-6 inline-flex items-center border border-green-600"
+                    >
+                        <RadioInput type="radio" name="role" />
+                        <span>Employer</span>
+                    </label>
+
+                </form>
+                <Link
+                    to={role === "user" ? "/signup/user" : "/signup/employer"}
+                    tw="block w-2/3 sm:w-1/3 mx-auto p-2 bg-green-600 text-center font-bold text-white rounded-md mb-8"
+                >
+                    Next
+                </Link>
+            </section>
+        )
+    }
 
     return (
         <Fragment>
@@ -149,7 +191,7 @@ const SignUpPage = () => {
                             leaveFrom="opacity-100"
                             leaveTo="opacity-0"
                         >
-                            <Dialog.Overlay className="fixed bg-black bg-opacity-25 inset-0" />
+                            <Dialog.Overlay className="fixed inset-0 bg-black bg-opacity-25" />
                         </Transition.Child>
 
                         {/* This element is to trick the browser into centering the modal contents. */}
@@ -168,7 +210,7 @@ const SignUpPage = () => {
                             leaveFrom="opacity-100 scale-100"
                             leaveTo="opacity-0 scale-95"
                         >
-                            <div className="inline-block w-full max-w-2xl p-8 md:py-12 verflow-hidden text-center align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+                            <div className="inline-block w-full max-w-2xl p-8 text-center align-middle transition-all transform bg-white shadow-xl md:py-12 verflow-hidden rounded-2xl">
                                 <Dialog.Title
                                     as="h3"
                                     className="text-3xl font-bold leading-6 text-primary"

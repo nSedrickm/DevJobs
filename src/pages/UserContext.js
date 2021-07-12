@@ -1,20 +1,21 @@
-import React, { createContext, useContext, useEffect, useReducer, useState } from "react";
+import React, { createContext, useContext, useEffect, useReducer, useState, Fragment } from "react";
 import { getLocalUserState, setLocalUserState, clearLocalUserState, clearLocalJobs } from "services/storage.service";
 import { Switch, Route, Redirect } from "react-router-dom";
-import { Navbar, Footer, Loader } from "components";
+import { Navbar, UserNavbar, Footer, Loader } from "components";
 import { getUserProfile, getUserId } from "services/auth.service";
 import toast from "react-hot-toast";
 import LogInPage from "pages/LogInPage";
 import SignUpPage from "pages/SignUpPage";
 import LandingPage from "pages/LandingPage";
-import JobSeekerRegistrationPage from "pages/JobSeekerRegistrationPage";
-import EmployerRegistrationPage from "pages/EmployerRegistrationPage";
+import HomePage from "pages/users/HomePage";
+import UserRegistrationPage from "pages/users/UserRegistrationPage";
+import EmployerRegistrationPage from "pages/employers/EmployerRegistrationPage";
 import PasswordResetPage from "pages/PasswordResetPage";
 import JobDetails from "pages/JobDetails";
 import ProfilePage from "pages/ProfilePage";
-import DashboardEmployer from "./EmployerDashboard/DashboardEmployer";
-import ActiveJobs from "./EmployerDashboard/ActiveJobs";
-import ExpiredJobs from "./EmployerDashboard/ExpiredJobs";
+import EmployerDashboard from "pages/employers/EmployerDashboard";
+import ActiveJobs from "pages/employers/ActiveJobs";
+import ExpiredJobs from "pages/employers/ExpiredJobs";
 
 const UserContext = createContext();
 const useUserContext = () => useContext(UserContext);
@@ -27,8 +28,10 @@ const reducer = (state, action) => {
         case "LOGIN": {
             return {
                 ...state,
+                id: action.payload.user,
+                key: action.payload.key,
                 isAuthorized: Authorized,
-                key: action.payload.key
+                isEmployer: action.payload.employer
             }
         }
         case "SETBASICUSERDATA": {
@@ -51,8 +54,10 @@ const reducer = (state, action) => {
         }
         case "LOGOUT": {
             return {
-                isAuthorized: notAuthorized,
-                key: "",
+                id: null,
+                key: null,
+                isAuthorized: null,
+                isEmployer: null,
                 basicUserData: {},
                 fullUserData: {},
                 notifications: {}
@@ -67,8 +72,10 @@ const reducer = (state, action) => {
 let localState = getLocalUserState();
 
 let initialState = localState || {
+    id: null,
+    key: null,
     isAuthorized: notAuthorized,
-    key: "",
+    isEmployer: null,
     basicUserData: {},
     fullUserData: {},
     notifications: {}
@@ -165,10 +172,37 @@ const UserProvider = () => {
                 getBasicUserProfile
             }}
         >
+            <Switch>
+                <Route path="/users">
+                    <UserRoutes />
+                </Route>
+
+                <Route path="/employer">
+                    <EmployerRoutes />
+                </Route>
+
+                {/* This route has to always be last to avoid wrong redirects */}
+                <Route path="/">
+                    <DefaultRoutes />
+                </Route>
+            </Switch>
+
+        </UserContext.Provider>
+    )
+}
+
+const DefaultRoutes = () => {
+
+    const { state } = useUserContext();
+
+    return (
+        <Fragment>
+
             <Navbar />
+
             <Switch>
                 <Route exact path="/">
-                    <LandingPage />
+                    {state.isAuthorized === Authorized ? <Redirect to="/home" /> : <LandingPage />}
                 </Route>
 
                 <Route exact path="/job/details/:pk">
@@ -176,30 +210,32 @@ const UserProvider = () => {
                 </Route>
 
                 <Route exact path="/login">
-                    {state.isAuthorized === Authorized ? <Redirect to="/" /> : <LogInPage />}
+                    {state.isAuthorized === Authorized ? <Redirect to="/home" /> : <LogInPage />}
                 </Route>
 
                 <Route exact path="/signup">
                     <SignUpPage />
                 </Route>
 
-                <Route exact path="/users/profile">
-                    {state.isAuthorized === Authorized ? <ProfilePage /> : <Redirect to="/login" />}
+                <Route exact path="/signup/user">
+                    {state.isAuthorized === Authorized ? <UserRegistrationPage /> : <Redirect to="/login" />}
+
                 </Route>
 
-                <Route exact path="/profile/job-seeker">
-                    {state.isAuthorized === Authorized ? <JobSeekerRegistrationPage /> : <Redirect to="/login" />}
+                <Route exact path="/signup/employer">
+                    {state.isAuthorized === Authorized ? <EmployerRegistrationPage /> : <Redirect to="/login" />}I
                 </Route>
 
-                <Route exact path="/profile/employer">
-                    {state.isAuthorized === Authorized ? <EmployerRegistrationPage /> : <Redirect to="/login" />}
+                <Route exact path="/home">
+                    {state.isAuthorized === Authorized ? (
+                        state.isEmployer ? <Redirect to="/employer/dashboard" /> : <Redirect to="/users/home" />
+                    ) : (
+                        <Redirect to="/login" />
+                    )}
                 </Route>
 
                 <Route exact path="/reset-password">
                     <PasswordResetPage />
-                </Route>
-                <Route exact path="/employer/dashboard">
-                    {state.isAuthorized === Authorized ? <DashboardEmployer /> : <Redirect to="/login" />}
                 </Route>
 
                 <Route>
@@ -207,8 +243,62 @@ const UserProvider = () => {
                     <Redirect to="/login" />
                 </Route>
             </Switch>
+
             <Footer />
-        </UserContext.Provider>
+
+        </Fragment>
+    )
+}
+
+const UserRoutes = () => {
+
+    const { state } = useUserContext();
+
+    return (
+        <Fragment>
+
+            <UserNavbar />
+
+            <Switch>
+
+                <Route exact path="/users/home">
+                    {state.isAuthorized === Authorized && !state.isEmployer ? <HomePage /> : <Redirect to="/login" />}
+                </Route>
+
+                <Route exact path="/users/profile">
+                    {state.isAuthorized === Authorized && !state.isEmployer ? <ProfilePage /> : <Redirect to="/login" />}
+                </Route>
+
+            </Switch>
+
+        </Fragment>
+    )
+}
+
+const EmployerRoutes = () => {
+
+    const { state } = useUserContext();
+
+    return (
+        <Fragment>
+
+            <Route exact path="/employer/dashboard">
+                {state.isAuthorized === Authorized && state.isEmployer ? <EmployerDashboard /> : <Redirect to="/login" />}
+            </Route>
+
+            <Route exact path="/employer/profile">
+                {state.isAuthorized === Authorized && state.isEmployer ? <ProfilePage /> : <Redirect to="/login" />}
+            </Route>
+
+            <Route exact path="/employer/activejobs">
+                {state.isAuthorized === Authorized && state.isEmployer ? <ActiveJobs /> : <Redirect to="/login" />}
+            </Route>
+
+            <Route exact path="/employer/expiredjobs">
+                {state.isAuthorized === Authorized && state.isEmployer ? <ExpiredJobs /> : <Redirect to="/login" />}
+            </Route>
+
+        </Fragment>
     )
 }
 
