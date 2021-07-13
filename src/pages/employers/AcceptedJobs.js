@@ -86,7 +86,7 @@ const AcceptedJobs = () =>{
                             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                 <div className="flex items-center">
                                     <div className="flex-shrink-0">
-                                        <a href="#" className="block relative">
+                                        <a href="#1" className="block relative">
                                             <img alt="profil" src={ProfileImage}className="mx-auto object-cover rounded-full h-10 w-10 "/>
                                         </a>
                                     </div>
@@ -124,7 +124,7 @@ const AcceptedJobs = () =>{
                             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                 <div className="flex items-center">
                                     <div className="flex-shrink-0">
-                                        <a href="#" className="block relative">
+                                        <a href="#1" className="block relative">
                                         <img alt="profil" src={ProfileImage}className="mx-auto object-cover rounded-full h-10 w-10 "/>
                                         </a>
                                     </div>
@@ -162,7 +162,7 @@ const AcceptedJobs = () =>{
                             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                 <div className="flex items-center">
                                     <div className="flex-shrink-0">
-                                        <a href="#" className="block relative">
+                                        <a href="#1" className="block relative">
                                         <img alt="profil" src={ProfileImage}className="mx-auto object-cover rounded-full h-10 w-10 "/>
                                         </a>
                                     </div>
@@ -200,7 +200,7 @@ const AcceptedJobs = () =>{
                             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                 <div className="flex items-center">
                                     <div className="flex-shrink-0">
-                                        <a href="#" className="block relative">
+                                        <a href="#1" className="block relative">
                                         <img alt="profil" src={ProfileImage}className="mx-auto object-cover rounded-full h-10 w-10 "/>
                                         </a>
                                     </div>
@@ -238,7 +238,7 @@ const AcceptedJobs = () =>{
                             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                 <div className="flex items-center">
                                     <div className="flex-shrink-0">
-                                        <a href="#" className="block relative">
+                                        <a href="#1" className="block relative">
                                         <img alt="profil" src={ProfileImage}className="mx-auto object-cover rounded-full h-10 w-10 "/>
                                         </a>
                                     </div>
@@ -276,7 +276,7 @@ const AcceptedJobs = () =>{
                             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                 <div className="flex items-center">
                                     <div className="flex-shrink-0">
-                                        <a href="#" className="block relative">
+                                        <a href="#1" className="block relative">
                                         <img alt="profil" src={ProfileImage}className="mx-auto object-cover rounded-full h-10 w-10 "/>
                                         </a>
                                     </div>
@@ -314,7 +314,7 @@ const AcceptedJobs = () =>{
                             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                 <div className="flex items-center">
                                     <div className="flex-shrink-0">
-                                        <a href="#" className="block relative">
+                                        <a href="#1" className="block relative">
                                         <img alt="profil" src={ProfileImage}className="mx-auto object-cover rounded-full h-10 w-10 "/>
                                         </a>
                                     </div>
@@ -352,7 +352,7 @@ const AcceptedJobs = () =>{
                             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                 <div className="flex items-center">
                                     <div className="flex-shrink-0">
-                                        <a href="#" className="block relative">
+                                        <a href="#1" className="block relative">
                                         <img alt="profil" src={ProfileImage}className="mx-auto object-cover rounded-full h-10 w-10 "/>
                                         </a>
                                     </div>
