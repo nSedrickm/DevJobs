@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useRef } from "react";
 import tw from "twin.macro";
 import logo from "images/logo-sm.svg";
-import { FiMenu, FiLogOut, FiChevronDown, FiUser, FiInfo, FiArrowLeft, FiGrid } from "react-icons/fi";
+import { FiMenu, FiLogOut, FiChevronDown, FiUser, FiInfo, FiArrowLeft, FiGrid, FiClock, FiPauseCircle } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { useUserContext } from "pages/UserContext";
 import { Menu, Transition, Dialog } from "@headlessui/react";
@@ -10,7 +10,6 @@ const MainHeader = tw.div`bg-white sticky inset-x-0 top-0 shadow-lg z-10`;
 const Brand = tw.img`font-bold text-4xl text-primary ml-2 p-2 mr-auto`;
 const Nav = tw.nav`inline-flex items-center`;
 const NavLink = tw(Link)`h-16 inline-flex items-center px-4 py-2 mx-auto hocus:text-green-700 focus:border`;
-
 const DesktopNav = tw.div`hidden lg:flex items-center justify-between h-16 px-4`;
 const MobileNav = tw.div`lg:hidden flex items-center justify-between h-20 shadow-lg px-4 rounded-b-2xl`;
 
@@ -36,13 +35,22 @@ const EmployerNavbar = () => {
                         Dashboard
                     </NavLink>
 
-                    <NavLink to="/employer/profile">
-                        <FiUser
+                    <NavLink to="/employer/activejobs">
+                        <FiClock
                             size={18}
                             className="mr-2"
                             aria-hidden="true"
                         />
-                        Profile
+                        Active Jobs
+                    </NavLink>
+
+                    <NavLink to="/employer/expiredjobs">
+                        <FiPauseCircle
+                            size={18}
+                            className="mr-2"
+                            aria-hidden="true"
+                        />
+                        Expired Jobs
                     </NavLink>
 
                 </Nav>
