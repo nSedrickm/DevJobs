@@ -32,11 +32,30 @@ const Pop354 =() => {
     );
 }
 
+const Pop360= () => {
+
+    return (
+        <section tw ="bg-white mx-auto  md:mx-auto rounded-xl h-screen">
+            <div tw="mx-auto bg-white text-center">
+                <header tw="text-center mb-4 p-8">
+                    <h2 tw="text-gray-600 font-bold mb-4">CV/Resume</h2>
+                </header>
+                <main tw="text-center mb-4" > 
+                    <p tw="text-gray-600 font-bold">Upload From Local Storage</p>
+                    <p tw="text-gray-300 font-bold">*Name of Company*</p>
+                    <button tw="text-center bg-green-600 text-white rounded-md font-bold">Continue</button>
+                    <button tw="text-center bg-white text-red-600 rounded-md font-bold">Cancel</button>
+                </main>
+            </div>
+        </section>
+    )
+}
 
 
 
 
-export {PopUP, Pop354};
+
+export {PopUP, Pop354, Pop360};
 
 
 
