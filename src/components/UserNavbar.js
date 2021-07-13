@@ -36,7 +36,7 @@ const Navbar = () => {
                         Home
                     </NavLink>
 
-                    <NavLink to="/employer/profile">
+                    <NavLink to="/users/profile">
                         <FiUser
                             size={18}
                             className="mr-2"
@@ -45,7 +45,7 @@ const Navbar = () => {
                         Profile
                     </NavLink>
 
-                    <NavLink to="/employer/notifications" >
+                    <NavLink to="/users/notifications" >
                         <FiBell
                             size={18}
                             className="mr-2"

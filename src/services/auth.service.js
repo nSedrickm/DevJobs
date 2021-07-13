@@ -34,23 +34,47 @@ export const userLogin = async ({ email, password }) => {
         }).then(response => response)
 };
 
-
 export const logOut = () => {
     return axios.get("/dj-rest-auth/logout/").then(response => response)
 }
 
-export const getUserId = async () => {
-    return axios.get(API_URL + "/dj-rest-auth/user/").then(response => response)
-};
-
 export const getUserProfile = async (pk) => {
-    return axios.get(API_URL + "/profile/" + pk).then(response => response)
+    return axios.get(`${API_URL}/profile/${pk}/`).then(response => response)
 };
 
-export const updateUserProfile = async (data) => {
-    return axios.put(API_URL + "/profile/",
+export const updateUserProfile = async (pk, data) => {
+    return axios.patch(`${API_URL}/profile/${pk}/`,
         {
-            first_name: data.first_name
+            user: data.user,
+            first_name: data.first_name,
+            last_name: data.last_name,
+            email: data.email,
+            about: data.about,
+            country: data.country,
+            state: data.state,
+            city: data.city,
+            experience_level: data.experience_level,
+            salary: data.salary,
+            stack_dev_role: data.stack_dev_role,
+            github: data.github,
+            twitter: data.twitter,
+            linkedIn_profile: data.linkedIn_profile
+        }).then(response => response)
+}
+
+export const updateCV = async (pk, data) => {
+    return axios.patch(`${API_URL}/profile/${pk}/`, data).then(response => response)
+}
+
+export const getEmployerProfile = async (pk) => {
+    return axios.get(`${API_URL}/employer/profile/${pk}/`).then(response => response)
+};
+
+export const updateEmployerProfile = async (pk, data) => {
+    return axios.patch(`${API_URL}/employer/profile/${pk}/`,
+        {
+            company_name: data.company_name,
+            company_number: data.company_number,
         }).then(response => response)
 }
 

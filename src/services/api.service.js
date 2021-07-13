@@ -35,3 +35,8 @@ export const createJob = (data) => {
 export const jobApplication = (pk) => {
     return axios.post(API_URL + "/job/apply/?pk=" + pk).then(response => response)
 }
+
+
+export const getEmployerDashboard = () => {
+    return axios.get(API_URL + "/job/employer/dashboard/").then(response => response)
+}
