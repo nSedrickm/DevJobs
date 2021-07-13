@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useReducer, useState, Frag
 import { getLocalUserState, setLocalUserState, clearLocalUserState, clearLocalJobs } from "services/storage.service";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { Navbar, UserNavbar, EmployerNavbar, Footer, DashFooter, Loader } from "components";
-import { getUserProfile, getUserId } from "services/auth.service";
+import { getUserProfile, getEmployerProfile, setAuthHeaders } from "services/auth.service";
 import toast from "react-hot-toast";
 import LogInPage from "pages/LogInPage";
 import SignUpPage from "pages/SignUpPage";
@@ -12,7 +12,8 @@ import UserRegistrationPage from "pages/users/UserRegistrationPage";
 import EmployerRegistrationPage from "pages/employers/EmployerRegistrationPage";
 import PasswordResetPage from "pages/PasswordResetPage";
 import JobDetails from "pages/JobDetails";
-import ProfilePage from "pages/ProfilePage";
+import UserProfilePage from "pages/users/UserProfilePage";
+import EmployerProfilePage from "pages/employers/EmployerProfilePage";
 import EmployerDashboard from "pages/employers/EmployerDashboard";
 import ActiveJobs from "pages/employers/ActiveJobs";
 import ExpiredJobs from "pages/employers/ExpiredJobs";
@@ -34,16 +35,10 @@ const reducer = (state, action) => {
                 isEmployer: action.payload.employer
             }
         }
-        case "SETBASICUSERDATA": {
+        case "SETUSERDATA": {
             return {
                 ...state,
-                basicUserData: action.payload
-            }
-        }
-        case "SETFULLUSERDATA": {
-            return {
-                ...state,
-                fullUserData: action.payload
+                userData: action.payload
             }
         }
         case "SETNOTIFICATIONS": {
@@ -58,8 +53,7 @@ const reducer = (state, action) => {
                 key: null,
                 isAuthorized: null,
                 isEmployer: null,
-                basicUserData: {},
-                fullUserData: {},
+                userData: {},
                 notifications: {}
             }
         }
@@ -76,8 +70,7 @@ let initialState = localState || {
     key: null,
     isAuthorized: notAuthorized,
     isEmployer: null,
-    basicUserData: {},
-    fullUserData: {},
+    userData: {},
     notifications: {}
 }
 
@@ -91,21 +84,20 @@ const UserProvider = () => {
         initialState = getLocalUserState();
     }, [state])
 
-    const getFullUserProfile = (pk) => {
-
-        getUserProfile(pk)
+    const handleGetUserProfile = () => {
+        setAuthHeaders(state);
+        getUserProfile(state.id)
             .then(response => {
                 dispatch({
-                    type: "SETFULLUSERDATA",
+                    type: "SETUSERDATA",
                     payload: response.data
                 });
-                console.log(response.data)
             })
             .catch(error => {
                 if (error.response) {
                     // The request was made and the server responded with a status code
                     // that falls out of the range of 2xx
-                    toast.error("Could not get full user details. Please log out and login again");
+                    toast.error("An error occured. We could not get your details. Please log out and login again");
                 } else if (error.request) {
                     // The request was made but no response was received
                     // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
@@ -119,26 +111,20 @@ const UserProvider = () => {
             });
     }
 
-    const getBasicUserProfile = () => {
-
-        setLoading(true);
-
-        getUserId()
+    const handleGetEmployerProfile = () => {
+        setAuthHeaders(state);
+        getEmployerProfile(state.id)
             .then(response => {
-                console.log(response.data);
                 dispatch({
-                    type: "SETBASICUSERDATA",
+                    type: "SETUSERDATA",
                     payload: response.data
                 });
-                getFullUserProfile(response.data.pk);
-                setLoading(false);
             })
             .catch(error => {
                 if (error.response) {
                     // The request was made and the server responded with a status code
                     // that falls out of the range of 2xx
-                    toast.error("An error occured could not get user ID");
-
+                    toast.error("An error occured. We could not get your details. Please log out and login again");
                 } else if (error.request) {
                     // The request was made but no response was received
                     // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
@@ -168,8 +154,8 @@ const UserProvider = () => {
                 dispatch,
                 setLoading,
                 handleLogOut,
-                getFullUserProfile,
-                getBasicUserProfile
+                handleGetUserProfile,
+                handleGetEmployerProfile
             }}
         >
             <Switch>
@@ -266,7 +252,7 @@ const UserRoutes = () => {
                 </Route>
 
                 <Route exact path="/users/profile">
-                    {state.isAuthorized === Authorized && !state.isEmployer ? <ProfilePage /> : <Redirect to="/login" />}
+                    {state.isAuthorized === Authorized && !state.isEmployer ? <UserProfilePage /> : <Redirect to="/login" />}
                 </Route>
 
             </Switch>
@@ -293,7 +279,7 @@ const EmployerRoutes = () => {
                 </Route>
 
                 <Route exact path="/employer/profile">
-                    {state.isAuthorized === Authorized && state.isEmployer ? <ProfilePage /> : <Redirect to="/login" />}
+                    {state.isAuthorized === Authorized && state.isEmployer ? <EmployerProfilePage /> : <Redirect to="/login" />}
                 </Route>
 
                 <Route exact path="/employer/activejobs">
