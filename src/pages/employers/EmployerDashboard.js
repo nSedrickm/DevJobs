@@ -175,11 +175,11 @@ const EmployerDashboard = () => {
 
                     </div>
                     <div tw='md:flex block mx-auto place-content-evenly'>
-                        <JobLi to='/' tw='border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-white'>
+                        <JobLi to='/employer/pendingjobs' tw='border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-white'>
                             <p tw='text-base md:text-2xl mb-2'> Pending Applications</p>
                         </JobLi>
-                        <JobLi to='/' tw='border-green-400 text-primary hover:bg-green-400 hover:text-white' >
-                            <p tw=' mb-2 text-base md:text-2xl'> Active Applications</p>
+                        <JobLi to='/employer/acceptedjobs' tw='border-green-400 text-primary hover:bg-green-400 hover:text-white' >
+                            <p tw=' mb-2 text-base md:text-2xl'> Accepted Applications</p>
                         </JobLi>
 
                     </div>

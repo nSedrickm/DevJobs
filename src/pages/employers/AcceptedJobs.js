@@ -1,7 +1,5 @@
 import React from 'react';
 import tw from "twin.macro";
-import { Navbar } from 'components';
-import { Link } from "react-router-dom";
 import ProfileImage from "images/profile.svg";
 import { FiSearch, FiArrowLeft, FiArrowRight } from "react-icons/fi";
 
@@ -13,7 +11,7 @@ const Heading = tw.h1` text-xl font-bold`;
 const Divider = tw.span`hidden md:inline-flex px-1 py-1 lg:px-2 lg:py-2 text-green-600 mb-2`;
 const Input = tw.input`border border-green-600 w-full my-2 p-1.5 px-8 rounded-md bg-opacity-90 hocus:outline-none focus:ring-green-600 focus:border-green-600`;
 
-const AcceptedPage = () =>{
+const AcceptedJobs = () =>{
     return(
         <>
         <Header>
@@ -403,4 +401,4 @@ const AcceptedPage = () =>{
                 </>
     )
 }
-export default AcceptedPage;
+export default AcceptedJobs;
