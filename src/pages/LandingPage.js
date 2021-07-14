@@ -4,9 +4,7 @@ import styled from "styled-components";
 import heroBg from "images/hero.svg";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
-import { getJobs, jobApplication } from "services/api.service";
-import { setAuthHeaders } from 'services/auth.service';
-import { FiArrowRightCircle } from 'react-icons/fi';
+import { getJobs } from "services/api.service";
 import { Loader } from 'components';
 import { useUserContext } from './UserContext';
 import { getLocalJobs, setLocalJobs } from 'services/storage.service';
@@ -15,7 +13,7 @@ import { paginateFunc, filterFunc } from 'utils/filters';
 
 const Container = tw.div`w-full text-gray-800 bg-primary-lightest`;
 const Header = styled.header`
-  ${tw`pt-24 md:pt-32 text-center md:h-screen md:relative bg-white bg-cover md:bg-contain md:bg-center`}
+  ${tw`pt-24 text-center bg-white bg-cover md:pt-32 md:h-screen md:relative md:bg-contain md:bg-center`}
   background-image: url(${heroBg});
   background-repeat: no-repeat;
 `;
@@ -26,6 +24,8 @@ const ButtonRow = tw.div`mt-4 flex flex-col md:flex-row md:justify-between`;
 const Button = tw(Link)`px-24 py-3 mx-4 rounded-lg font-bold text-primary-lightest mt-5 hover:bg-green-700`;
 const ButtonPrimary = tw(Button)`bg-primary`;
 const ButtonOutline = tw(Button)`border border-primary text-primary hover:bg-green-100`;
+const RefreshButton = tw.button`px-12 py-3 mx-auto rounded-lg font-bold text-primary-lightest mt-5 bg-green-700`;
+
 const InlineLoader = tw(props => <Loader {...props} />)``;
 
 const JobContainer = tw.div`p-4 sm:p-12 lg:p-20 justify-center grid md:grid-cols-2 lg:grid-cols-3 gap-6 place-items-center place-content-center`;
@@ -36,8 +36,7 @@ const JobNavLi = tw.li`font-semibold text-sm sm:text-base cursor-pointer p-2 py-
 const JobCard = tw.div`p-5 mx-auto w-full rounded-xl shadow-lg  bg-white text-gray-500 border hover:border-primary hover:shadow-none`;
 const JobCardTitle = tw.h3`font-bold text-xl md:text-2xl mb-4 text-gray-700`;
 const JobCardBody = tw.div`mb-4`;
-const JobMeta = tw.div`flex flex-row md:inline-flex text-sm lg:text-base py-2`;
-const ApplyButton = tw.button`block w-full p-2 sm:py-1.5 rounded font-bold text-sm border border-primary bg-primary hocus:bg-green-700 text-primary-lightest mb-3`;
+const JobMeta = tw.div`text-sm lg:text-base py-2`;
 const ApplyButtonLink = tw(Link)`block text-center w-full p-2 sm:py-1.5 rounded font-bold text-sm border border-primary bg-primary hocus:bg-green-700 text-primary-lightest mb-3`;
 const DetailsButton = tw(Link)`block text-center w-full p-2 sm:py-1.5 rounded font-bold text-sm text-primary border border-primary hocus:bg-green-100`;
 const Divider = tw.hr`mx-20 border-gray-300`;
@@ -129,6 +128,7 @@ const LandingPage = () => {
         ldispatch({ type: "loading", payload: true });
         getJobs()
             .then(response => {
+                console.log(response.data)
                 ldispatch({ type: "setJobs", payload: response.data });
                 ldispatch({ type: "paginateJobs" });
                 setLocalJobs(response.data);
@@ -152,34 +152,9 @@ const LandingPage = () => {
             });
     }
 
-    const handleJobApplication = (pk) => {
-        ldispatch({ type: "loading", payload: true });
-        setAuthHeaders(state);
-        jobApplication(pk)
-            .then(response => {
-                toast.success(response.data.request);
-                ldispatch({ type: "loading", payload: false });
-            })
-            .catch(error => {
-                if (error.response) {
-                    // The request was made and the server responded with a status code
-                    // that falls out of the range of 2xx
-                    toast.error("An error occured, could not get jobs")
-                } else if (error.request) {
-                    // The request was made but no response was received
-                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                    // http.ClientRequest in node.js
-                    toast.error("An error occured, could not get jobs")
-                } else {
-                    // Something happened in setting up the request that triggered an Error
-                    toast.error("An error occured, could not get jobs")
-                }
-                ldispatch({ type: "loading", payload: false });
-            });
-    }
 
     return (
-        <Container>
+        <Container>lg
             {!state.key && (
                 <Header>
                     <HeaderContent>
@@ -242,41 +217,38 @@ const LandingPage = () => {
                 <InlineLoader tw="h-96 bg-white m-4 sm:m-12 lg:m-20 shadow-lg rounded-md" />
             ) : (
                 <>
-                    <JobContainer>
-                        {pageItems?.length && (
-                            pageItems?.map(job => {
+                    {pageItems?.length === 0 && (
+                        <div tw="h-96 bg-white m-4 sm:m-12 lg:mx-20 shadow-lg rounded-md grid place-items-center text-center">
+                            <div>
+                                <p tw="text-2xl mx-auto mb-2 font-bold text-secondary-lightest">Sorry there are no available jobs</p>
+                                <RefreshButton onClick={() => handleRefresh()}>Refresh</RefreshButton>
+                            </div>
+                        </div>
+                    )}
+
+                    {pageItems?.length > 0 && (
+                        <JobContainer>
+                            {pageItems?.map(job => {
                                 return (
                                     <JobCard key={job.pk} >
                                         <JobCardBody>
                                             <JobCardTitle>{job.title}</JobCardTitle>
                                             <JobMeta>
-                                                <p>Company : {job.company_name}</p>
-                                            </JobMeta>
-                                            <JobMeta>
-                                                <p>Lagos,Nigeria</p>
-                                                <p tw="mx-1 md:mx-2">|</p>
-                                                <p>fulltime</p>
-                                                <p tw="mx-1 md:mx-2">|</p>
-                                                <p>$20000000/year</p>
-                                            </JobMeta>
-                                            <JobMeta>
-                                                <p tw="text-center">{job.users_applied ? job.users_applied : 0} applies</p>
-                                                <p tw="mx-1 md:mx-2">|</p>
-                                                <p>Posted {new Date(job.created_date).toLocaleString()}</p>
+                                                <p tw="mb-1"><span tw="font-bold text-secondary-light">Company : </span>{job.company_name}</p>
+                                                <p tw="mb-1"><span tw="font-bold text-secondary-light">Expected Salary: </span>{job.expected_salary}</p>
+                                                <p tw="mb-1"><span tw="font-bold text-secondary-light">Experience Level: </span>{job.experience_level}</p>
+                                                <p tw="mb-1"><span tw="font-bold text-secondary-light">Posted: </span>{new Date(job.created_date).toLocaleString()}</p>
                                             </JobMeta>
                                         </JobCardBody>
-                                        {state.key && job.pk ? (
-                                            <ApplyButton onClick={() => { handleJobApplication(job.pk) }}>Apply</ApplyButton>
-                                        ) : (
-                                            <ApplyButtonLink to="/login">Login To Apply</ApplyButtonLink>
-                                        )}
+                                        <ApplyButtonLink to="/login">Login To Apply</ApplyButtonLink>
                                         <DetailsButton to={"/job/details/" + job.pk}>See Full Details</DetailsButton>
                                     </JobCard>
                                 )
-                            }))}
-                    </JobContainer>
+                            })}
+                        </JobContainer>
+                    )}
 
-                    <div className="mx-auto flex justify-center">
+                    <div className="flex justify-center mx-auto">
                         <Pagination
                             page={page}
                             totalPages={(jobs?.length / 6) + 1}
@@ -298,22 +270,14 @@ const LandingPage = () => {
                 </>
             )}
 
-            <p tw="text-center text-3xl text-green-700 font-bold cursor-pointer py-12 flex items-center justify-center" onClick={() => handleRefresh()}>See More Jobs &nbsp; <FiArrowRightCircle /></p>
-
-            {!state.key && (
-                <>
-                    <Divider />
-
-                    <HeaderContent tw="py-24 text-center">
-                        <h4 tw="text-gray-500 text-2xl font-bold">To see And Post More Job Offers</h4>
-                        <ButtonRow>
-                            <ButtonOutline to="/login">Log In</ButtonOutline>
-                            <ButtonPrimary to="/signup">Sign Up</ButtonPrimary>
-                        </ButtonRow>
-                        <p tw="my-8 text-gray-500">You need to have an account to register/post jobs</p>
-                    </HeaderContent>
-                </>
-            )}
+            <HeaderContent tw="py-20 text-center">
+                <h4 tw="text-gray-500 text-2xl font-bold">To see And Post Jobs</h4>
+                <ButtonRow>
+                    <ButtonOutline to="/login">Log In</ButtonOutline>
+                    <ButtonPrimary to="/signup">Sign Up</ButtonPrimary>
+                </ButtonRow>
+                <p tw="my-8 text-gray-500">You need to have an account to register/post jobs</p>
+            </HeaderContent>
         </Container>
     )
 }
