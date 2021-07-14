@@ -266,8 +266,8 @@ const UserProfilePage = () => {
                                 {...register("gender")}
                             >
                                 <option value="" hidden>please select your gender</option>
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
+                                <option value="M">Male</option>
+                                <option value="F">Female</option>
                             </Select>
                             {errors.gender && <ErrorMessage>{errors.gender.message}</ErrorMessage>}
 

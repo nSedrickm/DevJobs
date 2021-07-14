@@ -13,9 +13,9 @@ const Container = tw.div`w-full h-full pb-24 text-gray-800 bg-primary-lightest h
 const Header = tw.div`mx-auto flex flex-col md:flex-row items-center justify-center md:justify-between mb-10 md:relative p-8 `;
 const Heading = tw.h1`text-2xl font-bold text-primary`;
 const RefreshButton = tw.button`px-12 py-3 mx-auto rounded-lg font-bold text-primary-lightest mt-5 bg-green-700`;
-const ButtonPending = tw.button`inline-flex mx-2 bg-transparent items-center justify-center font-bold text-warning border border-warning text-center text-sm px-4 py-2 shadow-md hover:bg-warning hover:text-white `;
-const ButtonAccepted = tw.button`inline-flex mx-2 bg-transparent items-center justify-center font-bold text-primary border border-primary text-center text-sm px-4 py-2 shadow-md hover:bg-primary hover:text-white `;
-const ButtonRejected = tw.button`inline-flex mx-2 bg-transparent items-center justify-center font-bold text-danger text-center text-sm px-4 py-2 shadow-md bg-danger-light `;
+const ButtonPending = tw.button`inline-flex rounded-md mx-2 bg-transparent items-center justify-center font-bold text-warning border border-warning text-center text-sm px-4 py-2 shadow-md hocus:bg-warning hocus:text-white `;
+const ButtonAccepted = tw.button`inline-flex rounded-md mx-2 bg-transparent items-center justify-center font-bold text-primary border border-primary text-center text-sm px-4 py-2 shadow-md hocus:bg-primary hocus:text-white `;
+const ButtonRejected = tw.button`inline-flex rounded-md mx-2 bg-transparent items-center justify-center font-bold text-danger border border-danger text-center text-sm px-4 py-2 shadow-md hocus:bg-danger hocus:text-white`;
 
 const PendingJobs = () => {
 
