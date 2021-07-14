@@ -33,6 +33,23 @@ export const createJob = (data) => {
     }).then(response => response)
 }
 
+export const updateJob = (data) => {
+    return axios.patch(`${API_URL}/job/update/${data.pk}/`, {
+        company_id: data.company_number,
+        company_email: data.company_email,
+        country: data.country,
+        state: data.state,
+        city: data.city,
+        title: data.title,
+        company_name: data.company_name,
+        company_website: data.company_website,
+        experience_level: data.experience_level,
+        expected_salary: data.expected_salary,
+        description: data.description,
+        closing_date: data.closing_date
+    }).then(response => response)
+}
+
 export const jobApplication = (pk) => {
     return axios.post(API_URL + "/job/apply/?pk=" + pk).then(response => response)
 }
