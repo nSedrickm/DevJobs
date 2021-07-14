@@ -67,7 +67,7 @@ const ActiveJobs = () => {
       .then(response => {
         toast.success("Job posted succesfully");
         setIsShown(false)
-        getEmployerDashboard();
+        handleRefresh();
         setLoading(false);
       })
       .catch(error => {

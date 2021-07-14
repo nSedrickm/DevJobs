@@ -101,7 +101,7 @@ const EmployerDashboard = () => {
             .then(response => {
                 toast.success("Job posted succesfully");
                 setIsShown(false);
-                getEmployerDashboard();
+                handleRefresh();
                 setLoading(false);
             })
             .catch(error => {
@@ -252,8 +252,8 @@ const EmployerDashboard = () => {
                                 placeholder="job title"
                                 {...register("title")}
                             />
-               
-             <Label>Description</Label>
+
+                            <Label>Description</Label>
                             <TextArea
                                 rows="3"
                                 {...register("description")}>
