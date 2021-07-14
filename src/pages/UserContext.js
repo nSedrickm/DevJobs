@@ -19,6 +19,8 @@ import ActiveJobs from "pages/employers/ActiveJobs";
 import ExpiredJobs from "pages/employers/ExpiredJobs";
 import PendingJobs from "pages/employers/PendingJobs";
 import AcceptedJobs from "pages/employers/AcceptedJobs";
+import EmployerJobDetails from "pages/employers/EmployerJobDetails";
+import ApplicantProfilePage from "pages/employers/ApplicantProfilePage";
 
 
 const UserContext = createContext();
@@ -293,12 +295,20 @@ const EmployerRoutes = () => {
                     {state.isAuthorized === Authorized && state.isEmployer ? <ExpiredJobs /> : <Redirect to="/login" />}
                 </Route>
 
-                <Route exact path="/employer/pendingjobs">
+                <Route exact path="/employer/pendingjobs/:pk">
                     {state.isAuthorized === Authorized && state.isEmployer ? <PendingJobs /> : <Redirect to="/login" />}
                 </Route>
 
                 <Route exact path="/employer/acceptedjobs">
                     {state.isAuthorized === Authorized && state.isEmployer ? <AcceptedJobs /> : <Redirect to="/login" />}
+                </Route>
+
+                <Route exact path="/employer/jobdetails/:pk">
+                    {state.isAuthorized === Authorized && state.isEmployer ? <EmployerJobDetails /> : <Redirect to="/login" />}
+                </Route>
+
+                <Route exact path="/employer/applicant/:pk">
+                    {state.isAuthorized === Authorized && state.isEmployer ? <ApplicantProfilePage /> : <Redirect to="/login" />}
                 </Route>
 
             </Switch>
