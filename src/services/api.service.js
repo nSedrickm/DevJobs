@@ -40,3 +40,7 @@ export const jobApplication = (pk) => {
 export const getEmployerDashboard = () => {
     return axios.get(API_URL + "/job/employer/dashboard/").then(response => response)
 }
+
+export const getApplications = (pk) => {
+    return axios.get(API_URL + "/job/applications/?pk=" + pk).then(response => response)
+}
