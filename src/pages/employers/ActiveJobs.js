@@ -118,11 +118,10 @@ const ActiveJobs = () => {
 
   return (
     <Container>
-
       <Header>
         <div tw='text-center md:text-left'>
           <Heading>Posted Jobs</Heading>
-          <p tw='mt-2 text-base inline-block mb-4 md:mb-0'><span tw="text-warning font-bold">{total_jobs_posted || "N/A"}</span> | Total Job(s)</p>
+          <p tw='mt-2 text-base inline-block mb-4 md:mb-0'><span tw="text-warning font-bold">{total_jobs_posted || "N/A"}</span> | Total Job(s)</p>I
         </div>
 
         <div tw=''>
@@ -165,7 +164,7 @@ const ActiveJobs = () => {
                   view details
                 </Link>
 
-                <Link to={"/employer/pendingjobs/" + item.pk}
+                <Link to={`/employer/pendingjobs/${item.pk}/${item.title}`}
                   className="inline-flex items-center justify-center px-4 py-2 mr-1 text-center border rounded-md text-warning w-max text-bold border-warning md:mt-0 md:ml-8 hover:-translate-y-8 hover:shadow-lg">
                   view applications
                 </Link>

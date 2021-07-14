@@ -295,7 +295,7 @@ const EmployerRoutes = () => {
                     {state.isAuthorized === Authorized && state.isEmployer ? <ExpiredJobs /> : <Redirect to="/login" />}
                 </Route>
 
-                <Route exact path="/employer/pendingjobs/:pk">
+                <Route exact path="/employer/pendingjobs/:pk/:title">
                     {state.isAuthorized === Authorized && state.isEmployer ? <PendingJobs /> : <Redirect to="/login" />}
                 </Route>
 
