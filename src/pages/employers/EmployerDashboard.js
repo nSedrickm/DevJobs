@@ -43,13 +43,17 @@ const JobSchema = yup.object().shape({
 
 const EmployerDashboard = () => {
 
-    const { state, dispatch } = useUserContext();
+    const { state, dispatch, handleGetEmployerProfile } = useUserContext();
     const { userData, notifications } = state;
     const { total_jobs_posted, active_jobs, expired_jobs } = notifications;
     const [loading, setLoading] = useState(false);
     const [isShown, setIsShown] = useState(false);
 
     useEffect(() => {
+
+        if (!state.userData.company_name) {
+            handleGetEmployerProfile();
+        }
         if (!state.notifications) {
             setAuthHeaders(state);
             getEmployerDashboard()
@@ -75,7 +79,7 @@ const EmployerDashboard = () => {
                     setLoading(false);
                 });
         }
-    }, [state, dispatch]);
+    }, [state, dispatch, handleGetEmployerProfile]);
 
     const {
         register,
