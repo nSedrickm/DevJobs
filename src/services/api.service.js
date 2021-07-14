@@ -40,3 +40,15 @@ export const jobApplication = (pk) => {
 export const getEmployerDashboard = () => {
     return axios.get(API_URL + "/job/employer/dashboard/").then(response => response)
 }
+
+export const getApplications = (pk) => {
+    return axios.get(API_URL + "/job/applications/?pk=" + pk).then(response => response)
+}
+
+export const acceptApplication = (pk, user_id) => {
+    return axios.post(`${API_URL}/job/accept/?pk=${pk}&user_id=${user_id}`).then(response => response)
+}
+
+export const rejectApplication = (pk, user_id) => {
+    return axios.post(`${API_URL}/job/reject/?pk=${pk}&user_id=${user_id}`).then(response => response)
+}

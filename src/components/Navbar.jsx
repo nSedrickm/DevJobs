@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useRef } from "react";
 import tw from "twin.macro";
 import logo from "images/logo-sm.svg";
-import { FiMenu, FiSearch, FiLogOut, FiChevronDown, FiUser, FiBell, FiInfo, FiGrid, FiArrowLeft } from "react-icons/fi";
+import { FiMenu, FiLogOut, FiChevronDown, FiUser, FiBell, FiInfo, FiGrid, FiArrowLeft } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { useUserContext } from "pages/UserContext";
 import { Menu, Transition, Dialog } from "@headlessui/react";
@@ -10,12 +10,9 @@ const MainHeader = tw.div`bg-white sticky inset-x-0 top-0 shadow-lg z-10`;
 const Brand = tw.img`font-bold text-4xl text-primary ml-2 p-2 mr-auto`;
 const Nav = tw.nav`inline-flex`;
 const NavLink = tw(Link)`inline-flex px-4 py-2 hocus:text-green-700`;
-const Input = tw.input`border border-primary w-96 my-2 p-1.5 px-8 rounded-md bg-opacity-90 hocus:outline-none focus:ring-primary focus:border-primary`;
 const Button = tw(Link)`inline-flex px-4 py-2 mx-2 rounded-md font-bold hover:bg-green-700`;
 const ButtonSignUp = tw(Button)`bg-primary text-white`;
 const ButtonLogIn = tw(Button)`border border-primary text-primary  hover:bg-green-100`;
-const SearchBar = tw.div`relative mx-auto`;
-const SearchIcon = tw(FiSearch)`absolute left-2 inset-y-5`;
 const DesktopNav = tw.div`hidden lg:flex items-center justify-between h-16 px-4`;
 const MobileNav = tw.div`lg:hidden flex items-center justify-between h-20 shadow-lg px-4 rounded-b-2xl`;
 
@@ -31,13 +28,6 @@ const Navbar = () => {
                 <Link to="/">
                     <Brand src={logo} alt="DevJobs logo" />
                 </Link>
-                <SearchBar>
-                    <Input
-                        type="search"
-                        placeholder="Search jobs"
-                    />
-                    <SearchIcon />
-                </SearchBar>
                 <Nav>
                     <NavLink to="/" tw="text-primary">Home</NavLink>
                     <NavLink to="/employer/dashboard">Hire A Professional</NavLink>
@@ -50,9 +40,9 @@ const Navbar = () => {
                 </Nav>
 
                 {state.key && (
-                    <Menu as="div" className="relative inline-block text-left z-50">
+                    <Menu as="div" className="relative z-50 inline-block text-left">
                         <div>
-                            <Menu.Button className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-primary rounded-md hover:bg-opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
+                            <Menu.Button className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-white rounded-md bg-primary hover:bg-opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
                                 Menu
                                 <FiChevronDown
                                     className="w-5 h-5 ml-2 -mr-1"
@@ -176,7 +166,7 @@ const Navbar = () => {
                             leaveFrom="opacity-100"
                             leaveTo="opacity-0"
                         >
-                            <Dialog.Overlay className="fixed bg-black bg-opacity-25 inset-0" />
+                            <Dialog.Overlay className="fixed inset-0 bg-black bg-opacity-25" />
                         </Transition.Child>
 
                         {/* This element is to trick the browser into centering the modal contents. */}
@@ -208,10 +198,10 @@ const Navbar = () => {
                                     </p>
                                 </div>
 
-                                <div className="mt-4 flex flex-col mx-auto justify-center">
+                                <div className="flex flex-col justify-center mx-auto mt-4">
                                     <button
                                         type="button"
-                                        className="inline-flex w-1/2 mx-auto justify-center text-sm font-medium text-white p-2 mb-4 bg-primary border border-transparent rounded-md hover:bg-green-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                                        className="inline-flex justify-center w-1/2 p-2 mx-auto mb-4 text-sm font-medium text-white border border-transparent rounded-md bg-primary hover:bg-green-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
                                         ref={cancelButtonRef}
                                         onClick={() => setIsOpen(false)}
                                     >
@@ -220,7 +210,7 @@ const Navbar = () => {
 
                                     <button
                                         type="button"
-                                        className="inline-flex w-1/2 mx-auto justify-center text-sm font-medium text-danger p-2 mb-4  border border-danger-light rounded-md hover:bg-danger hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                                        className="inline-flex justify-center w-1/2 p-2 mx-auto mb-4 text-sm font-medium border rounded-md text-danger border-danger-light hover:bg-danger hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
                                         onClick={() => {
                                             setIsOpen(false);
                                             handleLogOut()

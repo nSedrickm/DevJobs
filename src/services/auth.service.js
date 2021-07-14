@@ -48,6 +48,7 @@ export const updateUserProfile = async (pk, data) => {
             user: data.user,
             first_name: data.first_name,
             last_name: data.last_name,
+            gender: data.gender,
             email: data.email,
             about: data.about,
             country: data.country,

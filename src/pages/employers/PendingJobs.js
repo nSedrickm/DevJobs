@@ -1,402 +1,311 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import tw from "twin.macro";
-import ProfileImage from "images/profile.svg";
-import { FiSearch, FiArrowLeft, FiArrowRight } from "react-icons/fi";
+import toast from "react-hot-toast";
+import { FiAlertCircle, FiArrowLeftCircle, FiUser } from "react-icons/fi";
+import { Link, useHistory, useParams } from "react-router-dom";
+import { Loader } from "components";
+import { getApplications } from 'services/api.service';
+import { setAuthHeaders } from 'services/auth.service';
+import { useUserContext } from 'pages/UserContext';
 
 
-const SearchBar = tw.div`relative  `;
-const SearchIcon = tw(FiSearch)`absolute left-2 inset-y-5`;
-const Header = tw.div`flex mb-10 md:relative  p-8 `;
-const Heading = tw.h1` text-xl font-bold`;
-const Divider = tw.span`hidden md:inline-flex px-1 py-1 lg:px-2 lg:py-2 text-green-600 mb-2`;
-const Input = tw.input`border border-green-600 w-full my-2 p-1.5 px-8 rounded-md bg-opacity-90 hocus:outline-none focus:ring-green-600 focus:border-green-600`;
+const Container = tw.div`w-full h-full pb-24 text-gray-800 bg-primary-lightest h-full`;
+const Header = tw.div`mx-auto flex flex-col md:flex-row items-center justify-center md:justify-between mb-10 md:relative p-8 `;
+const Heading = tw.h1`text-2xl font-bold text-primary`;
+const RefreshButton = tw.button`px-12 py-3 mx-auto rounded-lg font-bold text-primary-lightest mt-5 bg-green-700`;
+const ButtonPending = tw.button`inline-flex rounded-md mx-2 bg-transparent items-center justify-center font-bold text-warning border border-warning text-center text-sm px-4 py-2 shadow-md hocus:bg-warning hocus:text-white `;
+const ButtonAccepted = tw.button`inline-flex rounded-md mx-2 bg-transparent items-center justify-center font-bold text-primary border border-primary text-center text-sm px-4 py-2 shadow-md hocus:bg-primary hocus:text-white `;
+const ButtonRejected = tw.button`inline-flex rounded-md mx-2 bg-transparent items-center justify-center font-bold text-danger border border-danger text-center text-sm px-4 py-2 shadow-md hocus:bg-danger hocus:text-white`;
 
-const PendingJobs = () =>{
-    return(
-        <>
-        <Header>
-                <div tw='block'>
-                    <Heading>List of Pending Application</Heading>
-                    <div>
-                    <p>Dashboard <FiArrowRight size={18} /> Pending Application</p>
+const PendingJobs = () => {
+
+    const { state } = useUserContext();
+    const [details, setdetails] = useState({})
+    const [loading, setLoading] = useState(true);
+    const [page, setPage] = useState(0);
+    const { pk, title } = useParams()
+    const history = useHistory();
+
+    useEffect(() => {
+        setLoading(true);
+        setAuthHeaders(state);
+        getApplications(pk)
+            .then(response => {
+                console.log(response.data);
+                setdetails(response.data);
+                setLoading(false);
+            })
+            .catch(error => {
+                if (error.response) {
+                    // The request was made and the server responded with a status code
+                    // that falls out of the range of 2xx
+                    toast.error("An error occured, could not get details please check your network and try again")
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                    // http.ClientRequest in node.js
+                    toast.error("An error occured, could not get details please check your network and try again")
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    toast.error("An error occured, could not get details please check your network and try again")
+                }
+                setLoading(false);
+            });
+    }, [state, pk]);
+
+    if (loading) return <Loader />
+
+    return (
+        <Container>
+
+
+            <Header>
+                <div tw='text-center md:text-left'>
+                    <div className="flex items-center mb-4 cursor-pointer" onClick={() => history.goBack()}>
+                        <FiArrowLeftCircle size={24} /> &nbsp; Back
                     </div>
-                   
-                <div tw='flex '>
-                <p tw='mt-2 text-sm'>10 New</p>
-                <Divider>|</Divider>
-                <p tw='mt-2 text-sm'><strong>24</strong>Total Applications</p>
+                    <Heading>{title || "Job title N/A"}</Heading>
+                    <p tw='mt-2 text-base inline-block mb-4 md:mb-0'><span tw="text-warning font-bold">
+                        {details[0]?.user_applied.length + details[0]?.user_accepted.length + details[0]?.user_rejected.length || "N/A"}</span> | Total Application(s)
+                    </p>
                 </div>
-                
-                <SearchBar>
-                    <Input
-                        type="search"
-                        placeholder="Search by name or date"
-                    />
-                    <SearchIcon />
-                </SearchBar>
-                {/* <div tw='flex  flex-col md:flex-row md:absolute md:right-10 md:top-24 '>
-                    <ButtonNewJobs> <MdAdd size={24}/> Post new jobs</ButtonNewJobs>
-                    <ButtonRefresh> <MdRefresh size={24}/> Refresh</ButtonRefresh>
-                    </div> */}
+                <div tw=''>
+                    <ButtonPending onClick={() => setPage(0)}>Pending</ButtonPending>
+                    <ButtonAccepted onClick={() => setPage(1)}>Accepted</ButtonAccepted>
+                    <ButtonRejected onClick={() => setPage(2)}>Declined</ButtonRejected>
                 </div>
-                
-                    
-                
-                
-
-                
-                
             </Header>
-        {/* <h2 className="text-primary text-2xl font-bold">List of Pending Application</h2>
-        <p tw='mt-2 text-sm'>10 New</p>
-                <Divider>|</Divider>
-                <p tw='mt-2 text-sm'><strong>24</strong>Total Applications</p>
-        
-        <SearchBar>
-                    <Input
-                        type="search"
-                        placeholder="Search by name or date"
-                    />
-                    <SearchIcon />
-                </SearchBar> */}
-                
-<div class="container mx-auto px-4 sm:px-8 max-w-3xl">
-    <div class="py-8">
-        <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
-            <div class="inline-block min-w-full shadow rounded-lg overflow-hidden">
-                <table class="min-w-full leading-normal">
-                    <thead>
-                        <tr>
-                            <th scope="col" class="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal">
-                                Developers Name
-                            </th>
-                            <th scope="col" class="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal">
-                                Date Applied
-                            </th>
-                            <th scope="col" class="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal">
-                                Time Applied
-                            </th>
-                            <th scope="col" class="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal">
-                                Application status
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <div class="flex items-center">
-                                    <div class="flex-shrink-0">
-                                        <a href="#5" class="block relative">
-                                            <img alt="profil" src={ProfileImage}class="mx-auto object-cover rounded-full h-10 w-10 "/>
-                                        </a>
-                                    </div>
-                                    <div class="ml-3">
-                                        <p class="text-gray-900 whitespace-no-wrap">
-                                            Jean marc
-                                        </p>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <p class="text-gray-900 whitespace-no-wrap">
-                                12/09/2020
-                                </p>
-                            </td>
-                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <p class="text-gray-900 whitespace-no-wrap">
-                                    4:15am
-                                </p>
-                            </td>
-                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <span class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-                                    <span aria-hidden="true" class="absolute inset-0 bg-green-200 opacity-50 rounded-full">
-                                    </span>
-                                    <span class="relative">
-                                        Pending
-                                    </span>
-                                    <span class="relative">
-                                        See Profile
-                                    </span>
-                                </span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <div class="flex items-center">
-                                    <div class="flex-shrink-0">
-                                        <a href="#1" class="block relative">
-                                        <img alt="profil" src={ProfileImage}class="mx-auto object-cover rounded-full h-10 w-10 "/>
-                                        </a>
-                                    </div>
-                                    <div class="ml-3">
-                                        <p class="text-gray-900 whitespace-no-wrap">
-                                            Marcus coco
-                                        </p>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <p class="text-gray-900 whitespace-no-wrap">
-                                01/10/2012
-                                </p>
-                            </td>
-                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <p class="text-gray-900 whitespace-no-wrap">
-                                    5:36pm
-                                </p>
-                            </td>
-                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <span class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-                                    <span aria-hidden="true" class="absolute inset-0 bg-green-200 opacity-50 rounded-full">
-                                    </span>
-                                    <span class="relative">
-                                        Pending
-                                    </span>
-                                    <span class="relative">
-                                        See Profile
-                                    </span>
-                                </span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <div class="flex items-center">
-                                    <div class="flex-shrink-0">
-                                        <a href="#1" class="block relative">
-                                        <img alt="profil" src={ProfileImage}class="mx-auto object-cover rounded-full h-10 w-10 "/>
-                                        </a>
-                                    </div>
-                                    <div class="ml-3">
-                                        <p class="text-gray-900 whitespace-no-wrap">
-                                            Ecric marc
-                                        </p>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <p class="text-gray-900 whitespace-no-wrap">
-                                02/10/2018
-                                </p>
-                            </td>
-                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <p class="text-gray-900 whitespace-no-wrap">
-                                    11:49pm
-                                </p>
-                            </td>
-                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <span class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-                                    <span aria-hidden="true" class="absolute inset-0 bg-green-200 opacity-50 rounded-full">
-                                    </span>
-                                    <span class="relative">
-                                        Pending
-                                    </span>
-                                    <span class="relative">
-                                        See Profile
-                                    </span>
-                                </span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <div class="flex items-center">
-                                    <div class="flex-shrink-0">
-                                        <a href="#3" class="block relative">
-                                        <img alt="profil" src={ProfileImage}class="mx-auto object-cover rounded-full h-10 w-10 "/>
-                                        </a>
-                                    </div>
-                                    <div class="ml-3">
-                                        <p class="text-gray-900 whitespace-no-wrap">
-                                            Julien Huger
-                                        </p>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <p class="text-gray-900 whitespace-no-wrap">
-                                23/09/2010
-                                </p>
-                            </td>
-                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <p class="text-gray-900 whitespace-no-wrap">
-                                    07:15pm
-                                </p>
-                            </td>
-                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <span class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-                                    <span aria-hidden="true" class="absolute inset-0 bg-green-200 opacity-50 rounded-full">
-                                    </span>
-                                    <span class="relative">
-                                        Pending
-                                    </span>
-                                    <span class="relative">
-                                        See Profile
-                                    </span>
-                                </span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <div class="flex items-center">
-                                    <div class="flex-shrink-0">
-                                        <a href="#2" class="block relative">
-                                        <img alt="profil" src={ProfileImage}class="mx-auto object-cover rounded-full h-10 w-10 "/>
-                                        </a>
-                                    </div>
-                                    <div class="ml-3">
-                                        <p class="text-gray-900 whitespace-no-wrap">
-                                            Chinanu Queen
-                                        </p>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <p class="text-gray-900 whitespace-no-wrap">
-                                05/02/2010
-                                </p>
-                            </td>
-                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <p class="text-gray-900 whitespace-no-wrap">
-                                    08:20am
-                                </p>
-                            </td>
-                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <span class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-                                    <span aria-hidden="true" class="absolute inset-0 bg-green-200 opacity-50 rounded-full">
-                                    </span>
-                                    <span class="relative">
-                                        Pending
-                                    </span>
-                                    <span class="relative">
-                                        See Profile
-                                    </span>
-                                </span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <div class="flex items-center">
-                                    <div class="flex-shrink-0">
-                                        <a href="#3" class="block relative">
-                                        <img alt="profil" src={ProfileImage}class="mx-auto object-cover rounded-full h-10 w-10 "/>
-                                        </a>
-                                    </div>
-                                    <div class="ml-3">
-                                        <p class="text-gray-900 whitespace-no-wrap">
-                                            Adediwura Emmanuel
-                                        </p>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <p class="text-gray-900 whitespace-no-wrap">
-                                23/04/2021
-                                </p>
-                            </td>
-                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <p class="text-gray-900 whitespace-no-wrap">
-                                    06:05pm
-                                </p>
-                            </td>
-                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <span class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-                                    <span aria-hidden="true" class="absolute inset-0 bg-green-200 opacity-50 rounded-full">
-                                    </span>
-                                    <span class="relative">
-                                        Pending
-                                    </span>
-                                    <span class="relative">
-                                        See Profile
-                                    </span>
-                                </span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <div class="flex items-center">
-                                    <div class="flex-shrink-0">
-                                        <a href="#4" class="block relative">
-                                        <img alt="profil" src={ProfileImage}class="mx-auto object-cover rounded-full h-10 w-10 "/>
-                                        </a>
-                                    </div>
-                                    <div class="ml-3">
-                                        <p class="text-gray-900 whitespace-no-wrap">
-                                            Egorp David
-                                        </p>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <p class="text-gray-900 whitespace-no-wrap">
-                                08/07/2021
-                                </p>
-                            </td>
-                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <p class="text-gray-900 whitespace-no-wrap">
-                                    03:30pm
-                                </p>
-                            </td>
-                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <span class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-                                    <span aria-hidden="true" class="absolute inset-0 bg-green-200 opacity-50 rounded-full">
-                                    </span>
-                                    <span class="relative">
-                                        Pending
-                                    </span>
-                                    <span class="relative">
-                                        See Profile
-                                    </span>
-                                </span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <div class="flex items-center">
-                                    <div class="flex-shrink-0">
-                                        <a href="#5" class="block relative">
-                                        <img alt="profil" src={ProfileImage}class="mx-auto object-cover rounded-full h-10 w-10 "/>
-                                        </a>
-                                    </div>
-                                    <div class="ml-3">
-                                        <p class="text-gray-900 whitespace-no-wrap">
-                                            Tolulope Christabel
-                                        </p>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <p class="text-gray-900 whitespace-no-wrap">
-                                16/12/2010
-                                </p>
-                            </td>
-                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <p class="text-gray-900 whitespace-no-wrap">
-                                    07:50am
-                                </p>
-                            </td>
-                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <span class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-                                    <span aria-hidden="true" class="absolute inset-0 bg-green-200 opacity-50 rounded-full">
-                                    </span>
-                                    <span class="relative">
-                                        Pending
-                                    </span>
-                                    <span class="relative">
-                                        See Profile
-                                    </span>
-                                </span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <FiArrowLeft size={18} />
-                <p>1 of 5</p>
-                <FiArrowRight size={18} />
-            </div>
-        </div>
-    </div>
-</div>
 
-                </>
+            <div className="container w-full px-4 mx-auto sm:px-8">
+                <div className="px-4 py-4 -mx-4 overflow-x-auto sm:-mx-8 sm:px-8">
+                    <div className="inline-block min-w-full overflow-hidden rounded-lg shadow">
+                        <table className="min-w-full leading-normal">
+                            <thead>
+                                <tr>
+                                    <th scope="col" className="px-5 py-3 text-sm font-normal text-left text-gray-800 uppercase bg-white border-b border-gray-200">
+                                        Developers Name
+                                    </th>
+                                    <th scope="col" className="px-5 py-3 text-sm font-normal text-left text-gray-800 uppercase bg-white border-b border-gray-200">
+                                        Date Applied
+                                    </th>
+                                    <th scope="col" className="px-5 py-3 text-sm font-normal text-left text-gray-800 uppercase bg-white border-b border-gray-200">
+                                        Time Applied
+                                    </th>
+
+                                    <th scope="col" className="px-5 py-3 text-sm font-normal text-left text-gray-800 uppercase bg-white border-b border-gray-200">
+                                        Status
+                                    </th>
+                                    <th scope="col" className="px-5 py-3 text-sm font-normal text-left text-gray-800 uppercase bg-white border-b border-gray-200">
+                                        Actions
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                {details?.length === 0 && (
+                                    <div tw="h-96 bg-white m-4 sm:m-12 lg:mx-20 shadow-lg rounded-md grid place-items-center text-center">
+                                        <div>
+                                            <p tw="text-2xl mx-auto mb-2 font-bold text-secondary-lightest">Sorry there are no available jobs</p>
+                                            <RefreshButton onClick={() => history.goBack()}>Refresh</RefreshButton>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {details?.length > 0 && (
+                                    <>
+                                        {page === 0 && (
+                                            <>
+                                                {!details[0]?.user_applied.length && (
+                                                    <tr>
+                                                        <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
+                                                            <div className="flex items-center">
+                                                                <div className="flex-shrink-0">
+                                                                    <FiAlertCircle size={24} />
+                                                                </div>
+                                                                <div className="ml-3">
+                                                                    <p className="text-gray-900 whitespace-no-wrap">
+                                                                        No Available Data
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                )}
+
+                                                {details[0]?.user_applied?.map((item) =>
+                                                    <tr key={item.pk}>
+                                                        <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
+                                                            <div className="flex items-center">
+                                                                <div className="flex-shrink-0">
+                                                                    <FiUser size={24} />
+                                                                </div>
+                                                                <div className="ml-3">
+                                                                    <p className="text-gray-900 whitespace-no-wrap">
+                                                                        {`${item.first_name} ${item.last_name}` || "N/A"}
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
+                                                            <p className="text-gray-900 whitespace-no-wrap">
+                                                                {new Date(details[0].date_applied).toLocaleDateString()}
+                                                            </p>
+                                                        </td>
+                                                        <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
+                                                            <p className="text-gray-900 whitespace-no-wrap">
+                                                                {new Date(details[0].date_applied).toLocaleTimeString()}
+                                                            </p>
+                                                        </td>
+
+                                                        <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
+                                                            <p className="whitespace-no-wrap text-warning">
+                                                                Pending
+                                                            </p>
+                                                        </td>
+
+                                                        <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
+                                                            <Link to={`/employer/applicant/${item.pk}/${details[0].job}`} className="whitespace-no-wrap text-primary">
+                                                                See profile
+                                                            </Link>
+                                                        </td>
+                                                    </tr>
+
+                                                )}
+                                            </>
+                                        )}
+
+
+                                        {page === 1 && (
+                                            <>
+
+                                                {!details[0]?.user_accepted.length && (
+                                                    <tr>
+                                                        <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
+                                                            <div className="flex items-center">
+                                                                <div className="flex-shrink-0">
+                                                                    <FiAlertCircle size={24} />
+                                                                </div>
+                                                                <div className="ml-3">
+                                                                    <p className="text-gray-900 whitespace-no-wrap">
+                                                                        No Available Data
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                )}
+
+                                                {details[0]?.user_accepted?.map((item) =>
+                                                    <tr key={item.pk}>
+                                                        <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
+                                                            <div className="flex items-center">
+                                                                <div className="flex-shrink-0">
+                                                                    <FiUser size={24} />
+                                                                </div>
+                                                                <div className="ml-3">
+                                                                    <p className="text-gray-900 whitespace-no-wrap">
+                                                                        {`${item.first_name} ${item.last_name}` || "N/A"}
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
+                                                            <p className="text-gray-900 whitespace-no-wrap">
+                                                                {new Date(details[0].date_applied).toLocaleDateString()}
+                                                            </p>
+                                                        </td>
+                                                        <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
+                                                            <p className="text-gray-900 whitespace-no-wrap">
+                                                                {new Date(details[0].date_applied).toLocaleTimeString()}
+                                                            </p>
+                                                        </td>
+
+                                                        <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
+                                                            <p className="whitespace-no-wrap text-warning">
+                                                                Pending
+                                                            </p>
+                                                        </td>
+
+                                                        <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
+                                                            <Link to={`/employer/applicant/${item.pk}/${details[0].job}`} className="whitespace-no-wrap text-primary">
+                                                                See profile
+                                                            </Link>
+                                                        </td>
+                                                    </tr>
+
+                                                )}
+                                            </>
+                                        )}
+
+                                        {page === 2 && (
+                                            <>
+                                                {!details[0]?.user_rejected.length && (
+                                                    <tr>
+                                                        <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
+                                                            <div className="flex items-center">
+                                                                <div className="flex-shrink-0">
+                                                                    <FiAlertCircle size={24} />
+                                                                </div>
+                                                                <div className="ml-3">
+                                                                    <p className="text-gray-900 whitespace-no-wrap">
+                                                                        No Available Data
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                )}
+
+                                                {details[0]?.user_rejected?.map((item) =>
+                                                    <tr key={item.pk}>
+                                                        <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
+                                                            <div className="flex items-center">
+                                                                <div className="flex-shrink-0">
+                                                                    <FiUser size={24} />
+                                                                </div>
+                                                                <div className="ml-3">
+                                                                    <p className="text-gray-900 whitespace-no-wrap">
+                                                                        {`${item.first_name} ${item.last_name}` || "N/A"}
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
+                                                            <p className="text-gray-900 whitespace-no-wrap">
+                                                                {new Date(details[0].date_applied).toLocaleDateString()}
+                                                            </p>
+                                                        </td>
+                                                        <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
+                                                            <p className="text-gray-900 whitespace-no-wrap">
+                                                                {new Date(details[0].date_applied).toLocaleTimeString()}
+                                                            </p>
+                                                        </td>
+
+                                                        <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
+                                                            <p className="whitespace-no-wrap text-warning">
+                                                                Pending
+                                                            </p>
+                                                        </td>
+
+                                                        <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
+                                                            <Link to={`/employer/applicant/${item.pk}/${details[0].job}`} className="whitespace-no-wrap text-primary">
+                                                                See profile
+                                                            </Link>
+                                                        </td>
+                                                    </tr>
+
+                                                )}
+                                            </>
+                                        )}
+                                    </>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </Container>
     )
 }
 export default PendingJobs;
