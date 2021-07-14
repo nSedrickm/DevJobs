@@ -19,8 +19,8 @@ const Heading = tw.h1`text-2xl font-bold text-primary`;
 const Input = tw.input`border border-primary w-full my-2 p-1.5 px-8 rounded-md bg-opacity-90 hocus:outline-none focus:ring-primary focus:border-primary`;
 const JobContainer = tw.div`w-11/12 shadow-lg rounded bg-white mx-auto p-8`
 const JobLi = tw(Link)` block w-full md:w-5/12  mb-12  p-14 border  text-center   rounded-md mt-2`;
-const ButtonNewJobs = tw.button`inline-flex mx-2 bg-primary items-center justify-center text-white border border-primary text-center text-sm p-2 hover:bg-transparent hover:text-primary hover:border hover:border-primary`;
-const ButtonRefresh = tw.button`inline-flex mx-2 bg-transparent items-center justify-center text-primary border border-primary text-center text-sm p-2 hover:bg-primary hover:text-white `;
+const ButtonNewJobs = tw.button`inline-flex shadow-md mx-2 bg-primary items-center justify-center text-white border border-primary text-center text-sm p-2 hover:bg-transparent hover:text-primary hover:border hover:border-primary`;
+const ButtonRefresh = tw.button`inline-flex shadow-md mx-2 bg-transparent items-center justify-center text-primary border border-primary text-center text-sm p-2 hover:bg-primary hover:text-white `;
 const Label = tw.label`block text-sm`;
 const TextArea = tw.textarea`w-full rounded mt-2 mb-2 hocus:outline-none focus:ring-green-600 focus:border-green-600`;
 const ErrorMessage = tw.p`text-sm text-red-500 mb-2`;
@@ -45,7 +45,7 @@ const EmployerDashboard = () => {
 
     const { state, dispatch, handleGetEmployerProfile } = useUserContext();
     const { userData, notifications } = state;
-    const { total_jobs_posted, active_jobs, expired_jobs } = notifications;
+    const { total_jobs_posted, expired_jobs } = notifications;
     const [loading, setLoading] = useState(false);
     const [isShown, setIsShown] = useState(false);
 
@@ -54,7 +54,7 @@ const EmployerDashboard = () => {
         if (!state.userData.company_name) {
             handleGetEmployerProfile();
         }
-        if (!state.notifications) {
+        if (!state.notifications.total_jobs_posted) {
             setAuthHeaders(state);
             getEmployerDashboard()
                 .then(response => {
@@ -150,7 +150,7 @@ const EmployerDashboard = () => {
         <Container>
             <Header>
                 <div tw='text-center md:text-left'>
-                    <Heading>Employer Dashboard</Heading>
+                    <h1 tw="font-bold text-3xl">Welcome, <span tw="font-normal ml-2">{userData?.company_name || "Company Name"}</span></h1>
                     <p tw='mt-2 text-sm inline-block'>Manage all jobs and applications</p>
                 </div>
 
@@ -161,31 +161,27 @@ const EmployerDashboard = () => {
             </Header>
 
             <JobContainer tw='font-bold text-base md:text-2xl font-semibold'>
-                <div tw='text-center text-gray-400 '>
-                    <h2 >Total Jobs Posted {total_jobs_posted?.length || "N/A"}</h2>
+                <div tw='text-center text-secondary-light'>
+                    <Heading>Employer Dashboard</Heading>
+                    <p tw='mt-2 text-sm inline-block'>Manage all jobs and applications</p>
                 </div>
 
                 <div tw='mt-14 '>
-                    <div tw='md:flex block  mx-auto place-content-evenly '>
-                        <JobLi to='/employer/activejobs' tw='border-green-800 text-green-800 hover:bg-primary hover:text-white'>
-                            <p tw='text-base md:text-2xl mb-2 '> Active Job Posts</p>
-                            <p>{active_jobs?.length || "N/A"}</p>
-
+                    <div tw='md:flex block mx-auto place-content-evenly '>
+                        <JobLi to='/employer/activejobs' tw='border-primary text-primary hover:bg-primary hover:text-white'>
+                            <p tw='text-base md:text-2xl mb-2 '>Total Jobs posted : {total_jobs_posted || "N/A"}</p>
                         </JobLi>
-                        <JobLi to='/employer/expiredjobs' tw='border-red-800 text-red-800 hover:bg-red-600 hover:text-white'>
-                            <p tw=' mb-2 text-base md:text-2xl'> Expired Job Posts</p>
-                            <p>{expired_jobs?.length || "N/A"}</p>
+                        <JobLi to='/employer/activejobs' tw='border-danger text-danger hover:bg-danger hover:text-white'>
+                            <p tw=' mb-2 text-base md:text-2xl'> Expired Job Posts : {expired_jobs || "N/A"}</p>
                         </JobLi>
-
                     </div>
                     <div tw='md:flex block mx-auto place-content-evenly'>
-                        <JobLi to='/employer/pendingjobs' tw='border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-white'>
+                        <JobLi to='/employer/activejobs' tw='border-warning text-warning hover:bg-warning hover:text-white'>
                             <p tw='text-base md:text-2xl mb-2'> Pending Applications</p>
                         </JobLi>
-                        <JobLi to='/employer/acceptedjobs' tw='border-green-400 text-primary hover:bg-green-400 hover:text-white' >
+                        <JobLi to='/employer/activejobs' tw='border-primary text-primary hover:bg-primary hover:text-white' >
                             <p tw=' mb-2 text-base md:text-2xl'> Accepted Applications</p>
                         </JobLi>
-
                     </div>
                 </div>
 
