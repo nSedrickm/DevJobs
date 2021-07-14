@@ -1,276 +1,288 @@
-import React from 'react';
+import React, { useState } from 'react';
 import tw from "twin.macro";
-import { FiSearch } from "react-icons/fi";
-
+import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
+import { FiEdit3 } from "react-icons/fi";
 import { MdRefresh, MdAdd } from "react-icons/md";
-import { Link } from 'react-router-dom';
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { setAuthHeaders } from 'services/auth.service';
+import { getEmployerDashboard, createJob } from "services/api.service";
+import { useUserContext } from 'pages/UserContext';
+import { Dialog } from "evergreen-ui";
+import { Loader } from 'components';
+
+const Container = tw.div`w-full h-full pb-24 text-gray-800 bg-primary-lightest`;
+const Header = tw.div`mx-auto flex flex-col md:flex-row items-center justify-center md:justify-between mb-10 md:relative p-8 `;
+const Heading = tw.h1`text-2xl font-bold text-primary`;
+const ButtonActive = tw.button`inline-flex mx-2 bg-transparent items-center justify-center font-bold text-primary border border-primary text-center text-sm px-4 py-2 shadow-md hover:bg-primary hover:text-white `;
+const ButtonExpired = tw.button`inline-flex mx-2 bg-transparent items-center justify-center font-bold text-danger text-center text-sm px-4 py-2 shadow-md bg-danger-light `;
+const ButtonNewJobs = tw.button`inline-flex shadow-md mx-2 bg-primary items-center justify-center text-white border border-primary text-center text-sm p-2 hover:bg-transparent hover:text-primary hover:border hover:border-primary`;
+const ButtonRefresh = tw.button`inline-flex shadow-md mx-2 bg-transparent items-center justify-center text-primary border border-primary text-center text-sm p-2 hover:bg-primary hover:text-white `;
+const Input = tw.input`border border-primary w-full my-2 p-1.5 px-8 rounded-md bg-opacity-90 hocus:outline-none focus:ring-primary focus:border-primary`;
+const Label = tw.label`block text-sm`;
+const TextArea = tw.textarea`w-full rounded mt-2 mb-2 hocus:outline-none focus:ring-green-600 focus:border-green-600`;
+const ErrorMessage = tw.p`text-sm text-red-500 mb-2`;
+const SubmitButton = tw.button`block w-full md:w-2/3 mx-auto p-2 bg-green-600 text-center font-bold text-white rounded-md mt-2`;
 
 
+const JobSchema = yup.object().shape({
+  company_number: yup.string().required('Company Number is required'),
+  company_name: yup.string().required('Company Name is required'),
+  company_email: yup.string().email("Please enter a valid email address").required('Email is required'),
+  company_website: yup.string().required('Website address is required'),
+  country: yup.string().required('Country is required'),
+  state: yup.string().required(),
+  city: yup.string().required('City is Required'),
+  title: yup.string().required('Title is Required'),
+  description: yup.string().required('Please provide a job description'),
+  experience_level: yup.string(),
+});
 
-const Container = tw.div`w-full h-full pb-24 text-gray-800 bg-green-100`;
-const SearchBar = tw.div`relative  `;
-const SearchIcon = tw(FiSearch)`absolute left-2 inset-y-5`;
-const Header = tw.div`flex mb-10 md:relative  p-8 `;
-const Heading = tw.h1` text-xl font-bold`;
-const Divider = tw.span`hidden md:inline-flex px-1 py-1 lg:px-2 lg:py-2 text-green-600 mb-2`;
-const Input = tw.input`border border-green-600 w-full my-2 p-1.5 px-8 rounded-md bg-opacity-90 hocus:outline-none focus:ring-green-600 focus:border-green-600`;
-const ButtonNewJobs = tw.button` flex  bg-green-600 items-center justify-center text-white  text-center  m-2  text-sm p-2 hover:bg-transparent hover:text-green-600 hover:border hover:border-green-600`;
-const ButtonRefresh = tw.button` flex bg-transparent items-center justify-center text-green-600 border border-green-600 text-center text-sm m-2 p-2 hover:bg-green-600 hover:text-white `;
-const ButtonExpired= tw(Link)` flex  bg-red-400 items-center justify-center text-white  text-center  m-2  text-sm p-2 hover:bg-transparent hover:text-green-600 hover:border hover:border-green-600`;
-const ButtoneJobs = tw(Link)` flex bg-transparent items-center justify-center text-green-600 border border-green-600 text-center text-sm m-2 p-2 hover:bg-green-600 hover:text-white `;
+const ActiveJobs = () => {
 
+  const { state, dispatch } = useUserContext();
+  const { userData, notifications } = state;
+  const { total_jobs_posted, active_jobs, expired_jobs, job } = notifications;
+  const [loading, setLoading] = useState(false);
+  const [isShown, setIsShown] = useState(false);
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({
+    resolver: yupResolver(JobSchema)
+  });
 
+  const handleCreateJob = (data) => {
+    setLoading(true)
+    setAuthHeaders(state)
+    createJob(data)
+      .then(response => {
+        toast.success("Job posted succesfully");
+        setIsShown(false)
+        getEmployerDashboard();
+        setLoading(false);
+      })
+      .catch(error => {
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          toast.error("An error occurred Please check your network and try again");
 
+        } else if (error.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http16000.ClientRequest in node.js
+          toast.error("An error occurred Please check your network and try again");
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          toast.error("An error occurred Please check your network and try again");
+        }
+        setLoading(false);
 
+      });
+  }
 
+  const handleRefresh = () => {
+    setLoading(true);
+    setAuthHeaders(state);
+    getEmployerDashboard()
+      .then(response => {
+        dispatch({ type: "SETNOTIFICATIONS", payload: response.data })
+        setLoading(false);
+      })
+      .catch(error => {
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          toast.error("An error occured, could not get jobs")
+        } else if (error.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          toast.error("An error occured, could not get jobs")
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          toast.error("An error occured, could not get jobs")
+        }
+        setLoading(false);
+      });
+  }
 
-
-
-
-
-const ActiveJobs =() => {
-  const dummyData= [
-    {
-      id: 1,
-      title: 'Web Designer',
-      location:'Lagos/Nigeria',
-      type:'Full time',
-      pay:'$20000',
-      company:'Google',
-      posted:'11/05/2021',
-      deadline:'01/10/2021',
-      applications:'20',
-
-    },
-    {
-      id: 2,
-      title: 'Junior react dev',
-      location:'sydney/Austrailia',
-      type:'Remote',
-      pay:'$70000',
-      company:'Avalon',
-      posted:'1/04/2021',
-      deadline:'21/10/2021',
-      applications:'12',
-
-    },
-    
-    {
-      id: 3,
-      title: 'UI/UX Designer',
-      location:'Capetown/South Africa',
-      type:'Full time',
-      pay:'$15000',
-      company:'Kodak',
-      posted:'1/02/2021',
-      deadline:'30/05/2021',
-      applications:'4',
-
-    },
-    
-    {
-      id: 4,
-      title: 'Web intern',
-      location:'Lagos/Nigeria',
-      type:'Internship',
-      pay:'$200',
-      company:'Kuda',
-      posted:'11/05/2021',
-      deadline:'01/10/2021',
-      applications:'7',
-
-    },
-    
-    {
-      id: 5,
-      title: 'Senior Backend ',
-      location:'Lagos/Nigeria',
-      type:'Full time',
-      pay:'$20000',
-      company:'Google',
-      posted:'11/05/2021',
-      deadline:'01/10/2021',
-      applications:'9',
-
-    },
-    
-    
-  ];
-
-
+  if (loading) return <Loader />
 
   return (
-      <Container>
-          <Header>
-              <div tw='block'>
-                  <Heading>Active Jobs</Heading>
-              <div tw='flex '>
-              <p tw='mt-2 text-sm'>10 New</p>
-              <Divider>|</Divider>
-              <p tw='mt-2 text-sm'><strong>24</strong>Total Applications</p>
-              </div>
-              
-              <SearchBar>
-                  <Input
-                      type="search"
-                      placeholder="Search by name or date"
-                  />
-                  <SearchIcon />
-              </SearchBar>
-              <div tw='flex  flex-col md:flex-row md:absolute md:right-10 md:top-24 '>
-                  <ButtonNewJobs> <MdAdd size={24}/> Post new jobs</ButtonNewJobs>
-                  <ButtonRefresh> <MdRefresh size={24}/> Refresh</ButtonRefresh>
-                  </div>
-                  <div tw='flex  flex-col md:flex-row md:absolute w-full'>
-                     <div tw='mx-auto flex'>
-                     <ButtoneJobs to='/ActiveJobs'>  Active Jobs</ButtoneJobs>
-                  <ButtonExpired tw='ml-8 ' to='/ExpiredJobs'>  Expired jobs</ButtonExpired>
-                     </div>
-                  </div>
-              
-                  
-              </div>
-              
-                  
-              
-              
+    <Container>
 
-              
-              
-          </Header>
-
-
-         
-<div
-								class="container mb-2 flex mx-auto w-full items-center bg-danger-light  justify-center"
-							>
-								<ul class="flex flex-col p-4">
-                {
-          dummyData.map((item) =>
-          
-<li class="border-gray-400  flex flex-row mt-4" key={item.id}>
-<div
-  class=" select-none bg-primary-light md:flex  items-center p-4 transition duration-500 ease-in-out transform hover:-translate-y-1 rounded-2xl border-2 p-6 hover:shadow-xl border-red-400"
->
-  <div class=" flex flex-col pl-1 mr-16">
-    <div class="font-medium">
-      <div className='flex flex-col md:flex-row '>
-     <div className=' '> <h2 className='font-bold text-lg w-max'>{item.title}</h2></div>
-      <div className="flex flex-row  w-full ">
-        <p className="md:ml-10">{item.location}</p>
-        <p className="ml-2">{item.type}</p>
-        <p className="ml-2">{item.pay}</p>
-      </div>
-      </div>
-      
-      <div className="flex flex-col md:flex-row mt-2 md:mt-0 ">
-        <p>Company:{item.company}</p>
-        <div className="flex flex-row w-full md:ml-10">
-          <p>Date posted: {item.posted}</p>
-          <p>Deadline:{item.deadline}</p>
+      <Header>
+        <div tw='text-center md:text-left'>
+          <Heading>Posted Jobs</Heading>
+          <p tw='mt-2 text-base inline-block mb-4 md:mb-0'><span tw="text-warning font-bold">{total_jobs_posted || "N/A"}</span> | Total Job(s)</p>
         </div>
-      </div>
-    </div>
-  </div>
-  <div>
-    <Link class=" w-max text-center flex text-white text-bold flex-col rounded-md bg-primary justify-center items-center mr-8 md:mt-0 mt-4 md:ml-8 p-2 hover:-translate-y-8 hover:shadow-lg ">
-    See more
-  </Link>
-  </div>
-  <p className='text-warning'>{item.applications} Applications</p>
-    <span class="text-xs px-2 font-medium bg-yellow-500 text-white rounded-full py-0.5 ml-4">
-              !
-    </span>
 
- 
-</div>
+        <div tw=''>
+          <ButtonActive>Active Jobs ({active_jobs})</ButtonActive>
+          <ButtonExpired>Expired Jobs ({expired_jobs})</ButtonExpired>
+        </div>
 
-</li>
+        <div tw=''>
+          <ButtonNewJobs onClick={() => setIsShown(true)}> <MdAdd size={24} /> Post new jobs</ButtonNewJobs>
+          <ButtonRefresh onClick={() => handleRefresh()}> <MdRefresh size={24} /> Refresh</ButtonRefresh>
+        </div>
+      </Header>
 
 
-           
-          )
+      <ul className="p-4 bg-green-100 md:p-24">
+        {job?.map((item) =>
+          <li className="items-center justify-between w-full p-6 mb-4 transition duration-500 ease-in-out transform select-none bg-primary-lightest md:flex hover:-translate-y-1 rounded-2xl hover:shadow-xl" key={item.pk}>
+            <div className="mb-2 md:mb-0">
+              <h2 className='text-lg font-bold text-primary'>{item.title}</h2>
+              <p>Company : {item.company_name}</p>
+            </div>
+
+            <div className="mb-2 md:mb-0">
+              <p className="">Country: {item.country}</p>
+              <p className="">State: {item.state}</p>
+            </div>
+            <div className="mb-2 md:mb-0">
+              <p className="">Expected Salary: </p>
+              <p>{item.expected_salary || "N/A"}</p>
+            </div>
+            <div className="mb-2 md:mb-0">
+              <p className="">Date posted: {new Date(item.created_date).toLocaleDateString()}</p>
+              <p className="">Deadline:{new Date(item.closing_date).toLocaleDateString()}</p>
+            </div>
+
+            <div className="mb-2 md:mb-0">
+              <Link to={"/employer/jobdetails/" + item.pk}
+                className="inline-flex items-center justify-center px-4 py-2 mr-1 text-center text-white rounded-md w-max text-bold bg-primary md:mt-0 md:ml-8 hover:-translate-y-8 hover:shadow-lg">
+                view details
+              </Link>
+
+              <Link to={"/employer/pendingjobs/" + item.pk}
+                className="inline-flex items-center justify-center px-4 py-2 mr-1 text-center border rounded-md text-warning w-max text-bold border-warning md:mt-0 md:ml-8 hover:-translate-y-8 hover:shadow-lg">
+                view applications
+              </Link>
+            </div>
+          </li>
+        )
         }
-               
-               
-
-
-
-
-			
-								</ul>
-							</div>
-         
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-          
-         
-
-          
-
-      </Container>
-      
+      </ul>
+
+      <Dialog
+        isShown={isShown}
+        hasFooter={false}
+        onCloseComplete={() => setIsShown(false)}
+      >
+        <>
+          <header tw="w-full flex justify-center items-center my-4">
+            <FiEdit3 size={36} tw="mr-4 text-green-600" />
+            <h1 tw="text-2xl  font-bold ">Post New Job</h1>
+          </header>
+          <form
+            tw="w-full mx-auto mb-12"
+            onSubmit={handleSubmit(handleCreateJob)}
+          >
+            <div tw="p-4 sm:p-8 mb-8 bg-white">
+              <Label>Company Name</Label>
+              <Input
+                type="text"
+                placeholder="Company"
+                defaultValue={userData?.company_name}
+                {...register("company_name")}
+              />
+              {errors.company_name && <ErrorMessage>{errors.company_name.message}</ErrorMessage>}
+
+              <Label>Company Identification Number</Label>
+              <Input
+                type="text"
+                placeholder="CPN-234"
+                defaultValue={userData?.company_number}
+                {...register("company_number")}
+              />
+              {errors.company_number && <ErrorMessage>{errors.company_number.message}</ErrorMessage>}
+
+              <Label>Company Email</Label>
+              <Input
+                type="email"
+                placeholder="email@company.com"
+                {...register("company_email")}
+              />
+              {errors.company_email && <ErrorMessage>{errors.company_email.message}</ErrorMessage>}
+
+
+              <Label>Website Link</Label>
+              <Input
+                type="text"
+                placeholder="https://company.com"
+                {...register("company_website")}
+              />
+              {errors.company_website && <ErrorMessage>{errors.company_website.message}</ErrorMessage>}
+
+              <Label>Job Title</Label>
+              <Input
+                type="text"
+                placeholder="job title"
+                {...register("title")}
+              />
+              {errors.title && <ErrorMessage>{errors.title.message}</ErrorMessage>}
+
+              <Label>Description</Label>
+              <TextArea
+                rows="3"
+                {...register("description")}>
+              </TextArea>
+              {errors.description && <ErrorMessage>{errors.description.message}</ErrorMessage>}
+
+              <Label>Country</Label>
+              <Input
+                type="text"
+                placeholder="Country"
+                {...register("country")}
+              />
+              {errors.country && <ErrorMessage>{errors.country.message}</ErrorMessage>}
+
+              <Label>State</Label>
+              <Input
+                type="text"
+                placeholder="State"
+                {...register("state")}
+              />
+              {errors.state && <ErrorMessage>{errors.state.message}</ErrorMessage>}
+
+              <Label>City</Label>
+              <Input
+                type="text"
+                placeholder="City"
+                {...register("city")}
+              />
+              {errors.city && <ErrorMessage>{errors.city.message}</ErrorMessage>}
+
+              <Label>Experience Level</Label>
+              <Input
+                type="text"
+                placeholder="2 years"
+                {...register("experience_level")}
+              />
+              {errors.experience_level && <ErrorMessage>{errors.experience_level.message}</ErrorMessage>}
+
+              <Label>Expected Salary</Label>
+              <Input
+                type="number"
+                placeholder="250000"
+              />
+              {errors.expected_salary && <ErrorMessage>{errors.expected_salary.message}</ErrorMessage>}
+            </div>
+
+            <SubmitButton type="submit"> Post Job</SubmitButton>
+          </form>
+        </>
+      </Dialog>
+    </Container>
   )
 }
 
-export default  ActiveJobs
+export default ActiveJobs
