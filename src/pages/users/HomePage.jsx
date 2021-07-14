@@ -21,11 +21,12 @@ const JobNavLi = tw.li`font-semibold text-sm sm:text-base cursor-pointer p-2 py-
 const JobCard = tw.div`p-5 mx-auto w-full rounded-xl shadow-lg  bg-white text-gray-500 border hover:border-primary hover:shadow-none`;
 const JobCardTitle = tw.h3`font-bold text-xl md:text-2xl mb-4 text-gray-700`;
 const JobCardBody = tw.div`mb-4`;
-const JobMeta = tw.div`flex flex-row md:inline-flex text-sm lg:text-base py-2`;
-const ApplyButton = tw.button`block w-full p-2 sm:py-1.5 rounded font-bold text-sm border border-primary bg-primary hocus:bg-green-700 text-primary-lightest mb-3`;
+const JobMeta = tw.div`text-sm lg:text-base py-2`;
 const ApplyButtonLink = tw(Link)`block text-center w-full p-2 sm:py-1.5 rounded font-bold text-sm border border-primary bg-primary hocus:bg-green-700 text-primary-lightest mb-3`;
 const DetailsButton = tw(Link)`block text-center w-full p-2 sm:py-1.5 rounded font-bold text-sm text-primary border border-primary hocus:bg-green-100`;
 const Divider = tw.hr`mx-20 border-gray-300`;
+const ApplyButton = tw.button`block w-full p-2 sm:py-1.5 rounded font-bold text-sm border border-primary bg-primary hocus:bg-green-700 text-primary-lightest mb-3`;
+const RefreshButton = tw.button`px-12 py-3 mx-auto rounded-lg font-bold text-primary-lightest mt-5 bg-green-700`;
 
 let cachedJobs = getLocalJobs();
 
@@ -214,27 +215,27 @@ const LandingPage = () => {
                 <InlineLoader tw="h-96 bg-white m-4 sm:m-12 lg:m-20 shadow-lg rounded-md" />
             ) : (
                 <>
-                    <JobContainer>
-                        {pageItems?.length && (
-                            pageItems?.map(job => {
+                    {pageItems?.length === 0 && (
+                        <div tw="h-96 bg-white m-4 sm:m-12 lg:mx-20 shadow-lg rounded-md grid place-items-center text-center">
+                            <div>
+                                <p tw="text-2xl mx-auto mb-2 font-bold text-secondary-lightest">Sorry there are no available jobs</p>
+                                <RefreshButton onClick={() => handleRefresh()}>Refresh</RefreshButton>
+                            </div>
+                        </div>
+                    )}
+
+                    {pageItems?.length > 0 && (
+                        <JobContainer>
+                            {pageItems?.map(job => {
                                 return (
                                     <JobCard key={job.pk} >
                                         <JobCardBody>
                                             <JobCardTitle>{job.title}</JobCardTitle>
                                             <JobMeta>
-                                                <p>Company : {job.company_name}</p>
-                                            </JobMeta>
-                                            <JobMeta>
-                                                <p>Lagos,Nigeria</p>
-                                                <p tw="mx-1 md:mx-2">|</p>
-                                                <p>fulltime</p>
-                                                <p tw="mx-1 md:mx-2">|</p>
-                                                <p>$20000000/year</p>
-                                            </JobMeta>
-                                            <JobMeta>
-                                                <p tw="text-center">{job.users_applied ? job.users_applied : 0} applies</p>
-                                                <p tw="mx-1 md:mx-2">|</p>
-                                                <p>Posted {new Date(job.created_date).toLocaleString()}</p>
+                                                <p tw="mb-1"><span tw="font-bold text-secondary-light">Company : </span>{job.company_name}</p>
+                                                <p tw="mb-1"><span tw="font-bold text-secondary-light">Expected Salary: </span>{job.expected_salary}</p>
+                                                <p tw="mb-1"><span tw="font-bold text-secondary-light">Experience Level: </span>{job.experience_level}</p>
+                                                <p tw="mb-1"><span tw="font-bold text-secondary-light">Posted: </span>{new Date(job.created_date).toLocaleString()}</p>
                                             </JobMeta>
                                         </JobCardBody>
                                         {state.key && job.pk ? (
@@ -245,8 +246,9 @@ const LandingPage = () => {
                                         <DetailsButton to={"/job/details/" + job.pk}>See Full Details</DetailsButton>
                                     </JobCard>
                                 )
-                            }))}
-                    </JobContainer>
+                            })}
+                        </JobContainer>
+                    )}
 
                     <div className="flex justify-center mx-auto">
                         <Pagination
@@ -265,11 +267,9 @@ const LandingPage = () => {
                                 ldispatch({ type: "paginateJobs" });
                             }}
                         />
-
                     </div>
                 </>
             )}
-
             <p tw="text-center text-3xl text-green-700 font-bold cursor-pointer py-12 flex items-center justify-center" onClick={() => handleRefresh()}>See More Jobs &nbsp; <FiArrowRightCircle /></p>
 
         </Container>
