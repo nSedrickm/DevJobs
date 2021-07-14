@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { setAuthHeaders } from 'services/auth.service';
-import { getEmployerDashboard, createJob } from "services/api.service";
+import { getEmployerDashboard, createJob, deleteJob } from "services/api.service";
 import { useUserContext } from 'pages/UserContext';
 import { Dialog } from "evergreen-ui";
 import { Loader } from 'components';
@@ -67,6 +67,35 @@ const ActiveJobs = () => {
       .then(response => {
         toast.success("Job posted succesfully");
         setIsShown(false)
+        handleRefresh();
+        setLoading(false);
+      })
+      .catch(error => {
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          toast.error("An error occurred Please check your network and try again");
+
+        } else if (error.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http16000.ClientRequest in node.js
+          toast.error("An error occurred Please check your network and try again");
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          toast.error("An error occurred Please check your network and try again");
+        }
+        setLoading(false);
+
+      });
+  }
+
+  const handleDeleteJob = (pk) => {
+    setLoading(true)
+    setAuthHeaders(state);
+    deleteJob(pk)
+      .then(response => {
+        toast.success("Job deleted succesfully");
         handleRefresh();
         setLoading(false);
       })
@@ -201,6 +230,7 @@ const ActiveJobs = () => {
 
               <div className="mb-2 md:mb-0">
                 <button
+                  onClick={() => handleDeleteJob(item.pk)}
                   className="inline-flex items-center justify-center px-4 py-2 mr-1 text-center text-white rounded-md w-max text-bold bg-danger md:mt-0 md:ml-8 hover:-translate-y-8 hover:shadow-lg">
                   delete
                 </button>

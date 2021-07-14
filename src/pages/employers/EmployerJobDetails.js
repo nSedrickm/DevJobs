@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { setAuthHeaders } from 'services/auth.service';
-import { getJobDetails, updateJob } from "services/api.service";
+import { getJobDetails, updateJob, deleteJob } from "services/api.service";
 import { Loader } from 'components';
 import { useParams, useHistory } from 'react-router-dom';
 import { FiArrowLeftCircle, FiEdit3 } from 'react-icons/fi';
@@ -89,9 +89,38 @@ const EmployerJobDetails = () => {
         setAuthHeaders(state);
         updateJob(data)
             .then(response => {
-                toast.success("Job posted succesfully");
+                toast.success("Job Updated succesfully");
                 setIsShown(false);
                 window.location.reload();
+                setLoading(false);
+            })
+            .catch(error => {
+                if (error.response) {
+                    // The request was made and the server responded with a status code
+                    // that falls out of the range of 2xx
+                    toast.error("An error occurred Please check your network and try again");
+
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                    // http16000.ClientRequest in node.js
+                    toast.error("An error occurred Please check your network and try again");
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    toast.error("An error occurred Please check your network and try again");
+                }
+                setLoading(false);
+
+            });
+    }
+
+    const handleDeleteJob = () => {
+        setLoading(true)
+        setAuthHeaders(state);
+        deleteJob(pk)
+            .then(response => {
+                toast.success("Job deleted succesfully");
+                window.location.replace("/employer/activejobs")
                 setLoading(false);
             })
             .catch(error => {
@@ -172,7 +201,7 @@ const EmployerJobDetails = () => {
                         Update
                     </button>
                     <button
-                        onClick={() => console.log("update")}
+                        onClick={() => handleDeleteJob()}
 
                         className="inline-flex items-center justify-center px-8 py-2 text-white border rounded-md bg-danger">
                         Delete

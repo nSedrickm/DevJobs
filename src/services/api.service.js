@@ -50,10 +50,13 @@ export const updateJob = (data) => {
     }).then(response => response)
 }
 
+export const deleteJob = (pk) => {
+    return axios.delete(`${API_URL}/job/delete/${pk}/`).then(response => response)
+}
+
 export const jobApplication = (pk) => {
     return axios.post(API_URL + "/job/apply/?pk=" + pk).then(response => response)
 }
-
 
 export const getEmployerDashboard = () => {
     return axios.get(API_URL + "/job/employer/dashboard/").then(response => response)
