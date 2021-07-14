@@ -164,7 +164,7 @@ const PendingJobs = () => {
                                                         </td>
 
                                                         <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
-                                                            <Link to={"/employer/applicant/" + item.pk} className="whitespace-no-wrap text-primary">
+                                                            <Link to={`/employer/applicant/${item.pk}/${details[0].job}`} className="whitespace-no-wrap text-primary">
                                                                 See profile
                                                             </Link>
                                                         </td>
@@ -227,7 +227,7 @@ const PendingJobs = () => {
                                                         </td>
 
                                                         <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
-                                                            <Link to={"/employer/applicant/" + item.pk} className="whitespace-no-wrap text-primary">
+                                                            <Link to={`/employer/applicant/${item.pk}/${details[0].job}`} className="whitespace-no-wrap text-primary">
                                                                 See profile
                                                             </Link>
                                                         </td>
@@ -288,7 +288,7 @@ const PendingJobs = () => {
                                                         </td>
 
                                                         <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
-                                                            <Link to={"/employer/applicant/" + item.pk} className="whitespace-no-wrap text-primary">
+                                                            <Link to={`/employer/applicant/${item.pk}/${details[0].job}`} className="whitespace-no-wrap text-primary">
                                                                 See profile
                                                             </Link>
                                                         </td>

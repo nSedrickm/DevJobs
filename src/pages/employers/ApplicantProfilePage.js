@@ -5,6 +5,7 @@ import ProfileImage from "images/profile.svg";
 import { useUserContext } from "pages/UserContext";
 import { Loader } from "components";
 import { setAuthHeaders, getUserProfile } from "services/auth.service";
+import { acceptApplication, rejectApplication } from "services/api.service";
 import { useParams, useHistory } from "react-router-dom";
 
 
@@ -13,13 +14,13 @@ const ApplicantProfilePage = () => {
     const { state } = useUserContext();
     const [userData, setUserData] = useState();
     const [loading, setLoading] = useState(false);
-    const { pk } = useParams()
+    const { user_id, job_id } = useParams()
     const history = useHistory();
 
     useEffect(() => {
         setLoading(true);
         setAuthHeaders(state);
-        getUserProfile(pk)
+        getUserProfile(user_id)
             .then(response => {
                 setUserData(response.data);
                 setLoading(false);
@@ -40,7 +41,65 @@ const ApplicantProfilePage = () => {
                 }
                 setLoading(false);
             });
-    }, [state, pk]);
+    }, [state, user_id]);
+
+    const handleAcceptApplication = () => {
+        setLoading(true)
+        setAuthHeaders(state)
+        acceptApplication(job_id, user_id)
+            .then(response => {
+                toast.success(response.data.request);
+                setLoading(false);
+                history.goBack();
+            })
+            .catch(error => {
+                if (error.response) {
+                    // The request was made and the server responded with a status code
+                    // that falls out of the range of 2xx
+                    toast.error("An error occurred Please check your network and try again");
+
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                    // http16000.ClientRequest in node.js
+                    toast.error("An error occurred Please check your network and try again");
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    toast.error("An error occurred Please check your network and try again");
+                }
+                setLoading(false);
+
+            });
+    }
+
+    const handleRejectApplication = () => {
+        setLoading(true)
+        setAuthHeaders(state)
+        rejectApplication(job_id, user_id)
+            .then(response => {
+                toast.success(response.data.request);
+                setLoading(false);
+                history.goBack();
+            })
+            .catch(error => {
+                if (error.response) {
+                    // The request was made and the server responded with a status code
+                    // that falls out of the range of 2xx
+                    toast.error("An error occurred Please check your network and try again");
+
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                    // http16000.ClientRequest in node.js
+                    toast.error("An error occurred Please check your network and try again");
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    toast.error("An error occurred Please check your network and try again");
+                }
+                setLoading(false);
+
+            });
+    }
 
 
     if (loading) return <Loader />;
@@ -54,15 +113,18 @@ const ApplicantProfilePage = () => {
                 <h1 className="mb-4 text-3xl font-bold text-center md:text-left text-primary md:mb-0">Applicant Profile</h1>
                 <div className="">
                     <button
+                        onClick={() => handleAcceptApplication()}
                         className="inline-flex items-center justify-center px-6 py-2 mr-2 text-white border rounded-md bg-primary">
                         Accept
                     </button>
                     <button
+                        onClick={() => handleRejectApplication()}
                         className="inline-flex items-center justify-center px-6 py-2 text-white border rounded-md bg-danger">
                         Reject
                     </button>
                 </div>
             </div>
+
             <hr className="mb-12 border border-gray-300" />
 
             <div className="flex flex-col md:flex-row">
