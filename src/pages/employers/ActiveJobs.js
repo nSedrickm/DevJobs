@@ -38,6 +38,8 @@ const JobSchema = yup.object().shape({
   title: yup.string().required('Title is Required'),
   description: yup.string().required('Please provide a job description'),
   experience_level: yup.string(),
+  expected_salary: yup.string().required('Please enter an expected salary'),
+  closing_date: yup.string().required('Please Enter a closing date')
 });
 
 const ActiveJobs = () => {
@@ -59,6 +61,7 @@ const ActiveJobs = () => {
 
   const handleCreateJob = (data) => {
     setLoading(true)
+    data.closing_date = (new Date(data.closing_date).toISOString());
     setAuthHeaders(state)
     createJob(data)
       .then(response => {
@@ -308,8 +311,17 @@ const ActiveJobs = () => {
               <Input
                 type="number"
                 placeholder="250000"
+                {...register("expected_salary")}
               />
               {errors.expected_salary && <ErrorMessage>{errors.expected_salary.message}</ErrorMessage>}
+
+              <Label>Closing Date</Label>
+              <Input
+                type="date"
+                defaultValue={new Date()}
+                {...register("closing_date")}
+              />
+              {errors.closing_date && <ErrorMessage>{errors.closing_date.message}</ErrorMessage>}
             </div>
 
             <SubmitButton type="submit"> Post Job</SubmitButton>

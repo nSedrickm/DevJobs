@@ -28,7 +28,8 @@ export const createJob = (data) => {
         company_website: data.company_website,
         experience_level: data.experience_level,
         expected_salary: data.expected_salary,
-        description: data.description
+        description: data.description,
+        closing_date: data.closing_date
     }).then(response => response)
 }
 
