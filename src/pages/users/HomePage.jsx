@@ -2,11 +2,9 @@ import React, { useEffect, useReducer } from 'react';
 import tw from "twin.macro";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
-import { getJobs, jobApplication } from "services/api.service";
-import { setAuthHeaders } from 'services/auth.service';
+import { getJobs } from "services/api.service";
 import { FiArrowRightCircle } from 'react-icons/fi';
-import { Loader } from 'components';
-import { useUserContext } from 'pages/UserContext';
+import { Loader} from 'components';
 import { getLocalJobs, setLocalJobs } from 'services/storage.service';
 import { Pagination } from 'evergreen-ui';
 import { paginateFunc, filterFunc } from 'utils/filters';
@@ -22,10 +20,8 @@ const JobCard = tw.div`p-5 mx-auto w-full rounded-xl shadow-lg  bg-white text-gr
 const JobCardTitle = tw.h3`font-bold text-xl md:text-2xl mb-4 text-gray-700`;
 const JobCardBody = tw.div`mb-4`;
 const JobMeta = tw.div`text-sm lg:text-base py-2`;
-const ApplyButtonLink = tw(Link)`block text-center w-full p-2 sm:py-1.5 rounded font-bold text-sm border border-primary bg-primary hocus:bg-green-700 text-primary-lightest mb-3`;
-const DetailsButton = tw(Link)`block text-center w-full p-2 sm:py-1.5 rounded font-bold text-sm text-primary border border-primary hocus:bg-green-100`;
+const DetailsButton = tw(Link)`block text-center w-full p-2 sm:py-1.5 rounded font-bold text-sm border border-primary bg-primary hocus:bg-green-700 text-primary-lightest mb-3`;
 const Divider = tw.hr`mx-20 border-gray-300`;
-const ApplyButton = tw.button`block w-full p-2 sm:py-1.5 rounded font-bold text-sm border border-primary bg-primary hocus:bg-green-700 text-primary-lightest mb-3`;
 const RefreshButton = tw.button`px-12 py-3 mx-auto rounded-lg font-bold text-primary-lightest mt-5 bg-green-700`;
 
 let cachedJobs = getLocalJobs();
@@ -82,7 +78,6 @@ function reducer(state, action) {
 
 const LandingPage = () => {
 
-    const { state } = useUserContext();
     const [lstate, ldispatch] = useReducer(reducer, initialState);
     const { jobs, page, pageItems, loading, active } = lstate;
 
@@ -126,32 +121,6 @@ const LandingPage = () => {
                 setLocalJobs(response.data);
                 ldispatch({ type: "loading", payload: false });
                 ldispatch({ type: "setActive", payload: 0 });
-            })
-            .catch(error => {
-                if (error.response) {
-                    // The request was made and the server responded with a status code
-                    // that falls out of the range of 2xx
-                    toast.error("An error occured, could not get jobs")
-                } else if (error.request) {
-                    // The request was made but no response was received
-                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                    // http.ClientRequest in node.js
-                    toast.error("An error occured, could not get jobs")
-                } else {
-                    // Something happened in setting up the request that triggered an Error
-                    toast.error("An error occured, could not get jobs")
-                }
-                ldispatch({ type: "loading", payload: false });
-            });
-    }
-
-    const handleJobApplication = (pk) => {
-        ldispatch({ type: "loading", payload: true });
-        setAuthHeaders(state);
-        jobApplication(pk)
-            .then(response => {
-                toast.success(response.data.request);
-                ldispatch({ type: "loading", payload: false });
             })
             .catch(error => {
                 if (error.response) {
@@ -253,11 +222,6 @@ const LandingPage = () => {
                                                 <p tw="mb-1"><span tw="font-bold text-secondary-light">Posted: </span>{new Date(job.created_date).toLocaleString()}</p>
                                             </JobMeta>
                                         </JobCardBody>
-                                        {state.key && job.pk ? (
-                                            <ApplyButton onClick={() => { handleJobApplication(job.pk) }}>Apply</ApplyButton>
-                                        ) : (
-                                            <ApplyButtonLink to="/login">Login To Apply</ApplyButtonLink>
-                                        )}
                                         <DetailsButton to={"/job/details/" + job.pk}>See Full Details</DetailsButton>
                                     </JobCard>
                                 )

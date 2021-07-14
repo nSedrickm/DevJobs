@@ -37,8 +37,7 @@ const JobCard = tw.div`p-5 mx-auto w-full rounded-xl shadow-lg  bg-white text-gr
 const JobCardTitle = tw.h3`font-bold text-xl md:text-2xl mb-4 text-gray-700`;
 const JobCardBody = tw.div`mb-4`;
 const JobMeta = tw.div`text-sm lg:text-base py-2`;
-const ApplyButtonLink = tw(Link)`block text-center w-full p-2 sm:py-1.5 rounded font-bold text-sm border border-primary bg-primary hocus:bg-green-700 text-primary-lightest mb-3`;
-const DetailsButton = tw(Link)`block text-center w-full p-2 sm:py-1.5 rounded font-bold text-sm text-primary border border-primary hocus:bg-green-100`;
+const DetailsButton = tw(Link)`block text-center w-full p-2 sm:py-1.5 rounded font-bold text-sm border border-primary bg-primary hocus:bg-green-700 text-primary-lightest mb-3`;
 const Divider = tw.hr`mx-20 border-gray-300`;
 
 let cachedJobs = getLocalJobs();
@@ -161,7 +160,7 @@ const LandingPage = () => {
 
 
     return (
-        <Container>lg
+        <Container>
             {!state.key && (
                 <Header>
                     <HeaderContent>
@@ -255,7 +254,6 @@ const LandingPage = () => {
                                                 <p tw="mb-1"><span tw="font-bold text-secondary-light">Posted: </span>{new Date(job.created_date).toLocaleString()}</p>
                                             </JobMeta>
                                         </JobCardBody>
-                                        <ApplyButtonLink to="/login">Login To Apply</ApplyButtonLink>
                                         <DetailsButton to={"/job/details/" + job.pk}>See Full Details</DetailsButton>
                                     </JobCard>
                                 )
