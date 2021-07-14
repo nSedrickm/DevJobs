@@ -41,7 +41,6 @@ const Footer = () => {
             <ul tw="md:inline-flex items-center text-base md:text-lg  mx-auto my-4">
                 <Brand src={logo} alt="DevJobs logo" />
                 <span> Copyright &copy; {new Date().getFullYear()}</span>
-                <li tw="cursor-pointer px-4 py-1 mx-auto text-green-600 ">DevJobs.com</li>
             </ul>
         </FooterContainer>
     )
