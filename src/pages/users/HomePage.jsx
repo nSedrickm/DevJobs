@@ -34,7 +34,8 @@ let initialState = {
     jobs: cachedJobs || [],
     pageItems: [],
     page: 1,
-    loading: false
+    loading: false,
+    active: 0
 }
 
 function reducer(state, action) {
@@ -69,6 +70,11 @@ function reducer(state, action) {
                 ...state,
                 loading: action.payload
             };
+        case 'setActive':
+            return {
+                ...state,
+                active: action.payload
+            };
         default:
             throw new Error();
     }
@@ -78,7 +84,7 @@ const LandingPage = () => {
 
     const { state } = useUserContext();
     const [lstate, ldispatch] = useReducer(reducer, initialState);
-    const { jobs, page, pageItems, loading } = lstate;
+    const { jobs, page, pageItems, loading, active } = lstate;
 
     useEffect(() => {
         if (!jobs?.length) {
@@ -119,6 +125,7 @@ const LandingPage = () => {
                 ldispatch({ type: "paginateJobs" });
                 setLocalJobs(response.data);
                 ldispatch({ type: "loading", payload: false });
+                ldispatch({ type: "setActive", payload: 0 });
             })
             .catch(error => {
                 if (error.response) {
@@ -171,36 +178,44 @@ const LandingPage = () => {
                 <JobNavTitle>Posted Jobs</JobNavTitle>
                 <JobNavUl>
                     <JobNavLi
-                        tw=" bg-green-100 text-green-700"
+                        className={`${active === 0 && 'bg-green-100 text-green-700'}`}
                         onClick={() => {
                             ldispatch({ type: "changePage", payload: (jobs?.length / 6) });
                             ldispatch({ type: "paginateJobs" });
+                            ldispatch({ type: "setActive", payload: 0 });
                         }}
                     >
                         New Jobs
                     </JobNavLi>
                     <JobNavLi>|</JobNavLi>
-                    <JobNavLi onClick={() => {
-                        ldispatch({ type: "loading", payload: true })
-                        ldispatch({ type: "filterJobs", payload: "1Week" })
-                    }}
+                    <JobNavLi
+                        className={`${active === 1 && 'bg-green-100 text-green-700'}`}
+                        onClick={() => {
+                            ldispatch({ type: "loading", payload: true })
+                            ldispatch({ type: "filterJobs", payload: "1Week" })
+                            ldispatch({ type: "setActive", payload: 1 })
+                        }}
                     >
                         1 Week Ago
                     </JobNavLi>
                     <JobNavLi>|</JobNavLi>
                     <JobNavLi
+                        className={`${active === 2 && 'bg-green-100 text-green-700'}`}
                         onClick={() => {
                             ldispatch({ type: "loading", payload: true })
                             ldispatch({ type: "filterJobs", payload: "2Weeks" })
+                            ldispatch({ type: "setActive", payload: 2 })
                         }}
                     >
                         2 Weeks Ago
                     </JobNavLi>
                     <JobNavLi>|</JobNavLi>
                     <JobNavLi
+                        className={`${active === 3 && 'bg-green-100 text-green-700'}`}
                         onClick={() => {
                             ldispatch({ type: "loading", payload: true })
                             ldispatch({ type: "filterJobs", payload: "1Month" })
+                            ldispatch({ type: "setActive", payload: 3 })
                         }}
                     >
                         1 Month Ago
@@ -218,7 +233,7 @@ const LandingPage = () => {
                     {pageItems?.length === 0 && (
                         <div tw="h-96 bg-white m-4 sm:m-12 lg:mx-20 shadow-lg rounded-md grid place-items-center text-center">
                             <div>
-                                <p tw="text-2xl mx-auto mb-2 font-bold text-secondary-lightest">Sorry there are no available jobs</p>
+                                <p tw="text-2xl mx-auto mb-2 font-bold text-secondary-lightest">Sorry there are no available jobs for this period</p>
                                 <RefreshButton onClick={() => handleRefresh()}>Refresh</RefreshButton>
                             </div>
                         </div>
