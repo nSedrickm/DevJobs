@@ -21,6 +21,7 @@ import PendingJobs from "pages/employers/PendingJobs";
 import AcceptedJobs from "pages/employers/AcceptedJobs";
 import EmployerJobDetails from "pages/employers/EmployerJobDetails";
 import ApplicantProfilePage from "pages/employers/ApplicantProfilePage";
+import UserNotificationPage from "pages/users/UserNotificationPage";
 
 
 const UserContext = createContext();
@@ -258,6 +259,10 @@ const UserRoutes = () => {
 
                 <Route exact path="/users/profile">
                     {state.isAuthorized === Authorized && !state.isEmployer ? <UserProfilePage /> : <Redirect to="/login" />}
+                </Route>
+
+                <Route exact path="/users/notifications">
+                    {state.isAuthorized === Authorized && !state.isEmployer ? <UserNotificationPage /> : <Redirect to="/login" />}
                 </Route>
 
             </Switch>
