@@ -214,8 +214,8 @@ const EmployerDashboard = () => {
 
                             <Label>Company Identification Number</Label>
                             <Input
-                                type="number"
-                                placeholder="123456"
+                                type="text"
+                                placeholder="CPN-234"
                                 defaultValue={userData?.company_number}
                                 {...register("company_number")}
                             />
