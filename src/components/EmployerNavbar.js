@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useRef } from "react";
 import tw from "twin.macro";
 import logo from "images/logo-sm.svg";
-import { FiMenu, FiLogOut, FiChevronDown, FiUser, FiInfo, FiArrowLeft, FiGrid, FiClock, FiPauseCircle } from "react-icons/fi";
+import { FiMenu, FiLogOut, FiChevronDown, FiUser, FiInfo, FiArrowLeft, FiGrid, FiFilePlus } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { useUserContext } from "pages/UserContext";
 import { Menu, Transition, Dialog } from "@headlessui/react";
@@ -36,23 +36,13 @@ const EmployerNavbar = () => {
                     </NavLink>
 
                     <NavLink to="/employer/activejobs">
-                        <FiClock
+                        <FiFilePlus
                             size={18}
                             className="mr-2"
                             aria-hidden="true"
                         />
-                        Active Jobs
+                        Jobs Posts
                     </NavLink>
-
-                    <NavLink to="/employer/expiredjobs">
-                        <FiPauseCircle
-                            size={18}
-                            className="mr-2"
-                            aria-hidden="true"
-                        />
-                        Expired Jobs
-                    </NavLink>
-
                 </Nav>
 
                 <Menu as="div" className="relative z-50 inline-block text-left">
