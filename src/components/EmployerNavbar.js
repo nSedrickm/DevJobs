@@ -41,7 +41,7 @@ const EmployerNavbar = () => {
                             className="mr-2"
                             aria-hidden="true"
                         />
-                        Jobs Posts
+                        Job Posts
                     </NavLink>
                 </Nav>
 

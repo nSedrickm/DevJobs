@@ -47,6 +47,7 @@ const ActiveJobs = () => {
   const { total_jobs_posted, active_jobs, expired_jobs, job } = notifications;
   const [loading, setLoading] = useState(false);
   const [isShown, setIsShown] = useState(false);
+  const [page, setPage] = useState(0);
 
   const {
     register,
@@ -114,6 +115,7 @@ const ActiveJobs = () => {
 
   if (loading) return <Loader />
 
+
   return (
     <Container>
 
@@ -124,8 +126,8 @@ const ActiveJobs = () => {
         </div>
 
         <div tw=''>
-          <ButtonActive>Active Jobs ({active_jobs})</ButtonActive>
-          <ButtonExpired>Expired Jobs ({expired_jobs})</ButtonExpired>
+          <ButtonActive onClick={() => setPage(0)}>Active Jobs ({active_jobs})</ButtonActive>
+          <ButtonExpired onClick={() => setPage(2)}>Expired Jobs ({expired_jobs})</ButtonExpired>
         </div>
 
         <div tw=''>
@@ -135,42 +137,76 @@ const ActiveJobs = () => {
       </Header>
 
 
-      <ul className="p-4 bg-green-100 md:p-24">
-        {job?.map((item) =>
-          <li className="items-center justify-between w-full p-6 mb-4 transition duration-500 ease-in-out transform select-none bg-primary-lightest md:flex hover:-translate-y-1 rounded-2xl hover:shadow-xl" key={item.pk}>
-            <div className="mb-2 md:mb-0">
-              <h2 className='text-lg font-bold text-primary'>{item.title}</h2>
-              <p>Company : {item.company_name}</p>
-            </div>
+      {page === 0 && (
+        <ul className="p-4 bg-green-100 md:p-24">
+          {job?.map((item) =>
+            <li className="items-center justify-between w-full p-6 mb-4 transition duration-500 ease-in-out transform select-none bg-primary-lightest md:flex hover:-translate-y-1 rounded-2xl hover:shadow-xl" key={item.pk}>
+              <div className="mb-2 md:mb-0">
+                <h2 className='text-lg font-bold text-primary'>{item.title}</h2>
+                <p>Company : {item.company_name}</p>
+              </div>
 
-            <div className="mb-2 md:mb-0">
-              <p className="">Country: {item.country}</p>
-              <p className="">State: {item.state}</p>
-            </div>
-            <div className="mb-2 md:mb-0">
-              <p className="">Expected Salary: </p>
-              <p>{item.expected_salary || "N/A"}</p>
-            </div>
-            <div className="mb-2 md:mb-0">
-              <p className="">Date posted: {new Date(item.created_date).toLocaleDateString()}</p>
-              <p className="">Deadline:{new Date(item.closing_date).toLocaleDateString()}</p>
-            </div>
+              <div className="mb-2 md:mb-0">
+                <p className="">Country: {item.country}</p>
+                <p className="">State: {item.state}</p>
+              </div>
+              <div className="mb-2 md:mb-0">
+                <p className="">Expected Salary: </p>
+                <p>{item.expected_salary || "N/A"}</p>
+              </div>
+              <div className="mb-2 md:mb-0">
+                <p className="">Date posted: {new Date(item.created_date).toLocaleDateString()}</p>
+                <p className="">Deadline:{new Date(item.closing_date).toLocaleDateString()}</p>
+              </div>
 
-            <div className="mb-2 md:mb-0">
-              <Link to={"/employer/jobdetails/" + item.pk}
-                className="inline-flex items-center justify-center px-4 py-2 mr-1 text-center text-white rounded-md w-max text-bold bg-primary md:mt-0 md:ml-8 hover:-translate-y-8 hover:shadow-lg">
-                view details
-              </Link>
+              <div className="mb-2 md:mb-0">
+                <Link to={"/employer/jobdetails/" + item.pk}
+                  className="inline-flex items-center justify-center px-4 py-2 mr-1 text-center text-white rounded-md w-max text-bold bg-primary md:mt-0 md:ml-8 hover:-translate-y-8 hover:shadow-lg">
+                  view details
+                </Link>
 
-              <Link to={"/employer/pendingjobs/" + item.pk}
-                className="inline-flex items-center justify-center px-4 py-2 mr-1 text-center border rounded-md text-warning w-max text-bold border-warning md:mt-0 md:ml-8 hover:-translate-y-8 hover:shadow-lg">
-                view applications
-              </Link>
-            </div>
-          </li>
-        )
-        }
-      </ul>
+                <Link to={"/employer/pendingjobs/" + item.pk}
+                  className="inline-flex items-center justify-center px-4 py-2 mr-1 text-center border rounded-md text-warning w-max text-bold border-warning md:mt-0 md:ml-8 hover:-translate-y-8 hover:shadow-lg">
+                  view applications
+                </Link>
+              </div>
+            </li>
+          )}
+        </ul>
+      )}
+
+      {page === 2 && (
+        <ul className="p-4 bg-red-100 md:p-24">
+          {job?.map((item) =>
+            <li className="items-center justify-between w-full p-6 mb-4 transition duration-500 ease-in-out transform select-none bg-primary-lightest md:flex hover:-translate-y-1 rounded-2xl hover:shadow-xl" key={item.pk}>
+              <div className="mb-2 md:mb-0">
+                <h2 className='text-lg font-bold text-primary'>{item.title}</h2>
+                <p>Company : {item.company_name}</p>
+              </div>
+
+              <div className="mb-2 md:mb-0">
+                <p className="">Country: {item.country}</p>
+                <p className="">State: {item.state}</p>
+              </div>
+              <div className="mb-2 md:mb-0">
+                <p className="">Expected Salary: </p>
+                <p>{item.expected_salary || "N/A"}</p>
+              </div>
+              <div className="mb-2 md:mb-0">
+                <p className="">Date posted: {new Date(item.created_date).toLocaleDateString()}</p>
+                <p className="">Deadline:{new Date(item.closing_date).toLocaleDateString()}</p>
+              </div>
+
+              <div className="mb-2 md:mb-0">
+                <button
+                  className="inline-flex items-center justify-center px-4 py-2 mr-1 text-center text-white rounded-md w-max text-bold bg-danger md:mt-0 md:ml-8 hover:-translate-y-8 hover:shadow-lg">
+                  delete
+                </button>
+              </div>
+            </li>
+          )}
+        </ul>
+      )}
 
       <Dialog
         isShown={isShown}
@@ -281,7 +317,7 @@ const ActiveJobs = () => {
           </form>
         </>
       </Dialog>
-    </Container>
+    </Container >
   )
 }
 
