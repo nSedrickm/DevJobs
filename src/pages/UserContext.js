@@ -23,6 +23,7 @@ import AcceptedJobs from "pages/employers/AcceptedJobs";
 import EmployerJobDetails from "pages/employers/EmployerJobDetails";
 import ApplicantProfilePage from "pages/employers/ApplicantProfilePage";
 import UserNotificationPage from "pages/users/UserNotificationPage";
+import NotFoundPage from "pages/NotFoundPage";
 
 
 const UserContext = createContext();
@@ -232,8 +233,8 @@ const DefaultRoutes = () => {
                 </Route>
 
                 <Route>
-                    {/* Redirect users to login if they hit a missing route*/}
-                    <Redirect to="/login" />
+                    {/* show 404 if user hits a missing route*/}
+                    <NotFoundPage />
                 </Route>
             </Switch>
 
@@ -264,6 +265,11 @@ const UserRoutes = () => {
 
                 <Route exact path="/users/notifications">
                     {state.isAuthorized === Authorized && !state.isEmployer ? <UserNotificationPage /> : <Redirect to="/login" />}
+                </Route>
+
+                <Route>
+                    {/* show 404 if user hits a missing route*/}
+                    <NotFoundPage />
                 </Route>
 
             </Switch>
@@ -315,6 +321,11 @@ const EmployerRoutes = () => {
 
                 <Route exact path="/employer/applicant">
                     {state.isAuthorized === Authorized && state.isEmployer ? <ApplicantProfilePage /> : <Redirect to="/login" />}
+                </Route>
+
+                <Route>
+                    {/* show 404 if user hits a missing route*/}
+                    <NotFoundPage />
                 </Route>
 
             </Switch>
