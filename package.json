@@ -1,0 +1,76 @@
+{
+  "name": "devjobs-fe-pjt-71",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@headlessui/react": "^1.3.0",
+    "@hookform/resolvers": "^2.6.0",
+    "@tailwindcss/forms": "^0.3.3",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "autoprefixer": "^10.2.6",
+    "axios": "^0.21.1",
+    "evergreen-ui": "^6.0.1",
+    "postcss": "^8.3.5",
+    "postcss-cli": "^8.3.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-hook-form": "^7.9.0",
+    "react-hot-toast": "^2.0.0",
+    "react-icons": "^4.2.0",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "4.0.3",
+    "styled-components": "^5.3.0",
+    "tailwindcss": "^2.2.2",
+    "twin.macro": "^2.5.0",
+    "web-vitals": "^0.2.4",
+    "workbox-background-sync": "^5.1.3",
+    "workbox-broadcast-update": "^5.1.3",
+    "workbox-cacheable-response": "^5.1.3",
+    "workbox-core": "^5.1.3",
+    "workbox-expiration": "^5.1.3",
+    "workbox-google-analytics": "^5.1.3",
+    "workbox-navigation-preload": "^5.1.3",
+    "workbox-precaching": "^5.1.3",
+    "workbox-range-requests": "^5.1.3",
+    "workbox-routing": "^5.1.3",
+    "workbox-strategies": "^5.1.3",
+    "workbox-streams": "^5.1.3",
+    "yup": "^0.32.9"
+  },
+  "scripts": {
+    "prestart": "npm run watch:css",
+    "prebuild": "npm run watch:css",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "watch:css": "postcss src/styles/tailwind.css -o src/styles/output.css"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "babelMacros": {
+    "twin": {
+      "config": "./tailwind.config.js",
+      "styled": "styled-components",
+      "format": "auto"
+    }
+  }
+}
