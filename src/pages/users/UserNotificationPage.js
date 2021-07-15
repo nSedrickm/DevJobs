@@ -17,7 +17,6 @@ const UserNotificationPage = () => {
   const { applied, pending, rejected } = notifications;
   const [loading, setLoading] = useState(false);
 
-
   useEffect(() => {
     if (!state.notifications.applied) {
       setLoading(true);
@@ -102,34 +101,28 @@ const UserNotificationPage = () => {
             </div>
           )}
           {applied?.map((item) =>
-            <li className="items-center justify-between w-full p-6 mb-4 transition duration-500 ease-in-out transform select-none bg-primary-lightest md:flex hover:-translate-y-1 rounded-2xl hover:shadow-xl" key={item.pk}>
+            <li className="items-center justify-between w-full p-6 mb-4 transition duration-500 ease-in-out transform select-none bg-primary-lightest md:flex hover:-translate-y-1 rounded-2xl hover:shadow-xl" key={item.job.pk}>
               <div className="mb-2 md:mb-0">
-                <h2 className='text-lg font-bold text-primary'>{item.title}</h2>
-                <p>Company : {item.company_name}</p>
+                <h2 className='text-lg font-bold text-primary'>{item.job.title}</h2>
+                <p>Company : {item.job.company_name}</p>
               </div>
 
               <div className="mb-2 md:mb-0">
-                <p className="">Country: {item.country}</p>
-                <p className="">State: {item.state}</p>
+                <p className="">Country: {item.job.country}</p>
+                <p className="">State: {item.job.state}</p>
               </div>
               <div className="mb-2 md:mb-0">
                 <p className="">Expected Salary: </p>
-                <p>{item.expected_salary || "N/A"}</p>
+                <p>{item.job.expected_salary || "N/A"}</p>
               </div>
               <div className="mb-2 md:mb-0">
-                <p className="">Date posted: {new Date(item.created_date).toLocaleDateString()}</p>
-                <p className="">Deadline:{new Date(item.closing_date).toLocaleDateString()}</p>
+                <p className="">Date posted: {new Date(item.job.created_date).toLocaleDateString()}</p>
               </div>
 
               <div className="mb-2 md:mb-0">
-                <Link to={"/employer/jobdetails/" + item.pk}
+                <Link to={"/job/details/" + item.job.pk}
                   className="inline-flex items-center justify-center px-4 py-2 mr-1 text-center text-white rounded-md w-max text-bold bg-primary md:mt-0 md:ml-8 hover:-translate-y-8 hover:shadow-lg">
                   view details
-                </Link>
-
-                <Link to={`/employer/pendingjobs/${item.pk}/${item.title}`}
-                  className="inline-flex items-center justify-center px-4 py-2 mr-1 text-center border rounded-md text-warning w-max text-bold border-warning md:mt-0 md:ml-8 hover:-translate-y-8 hover:shadow-lg">
-                  view applications
                 </Link>
               </div>
             </li>
@@ -150,34 +143,28 @@ const UserNotificationPage = () => {
             </div>
           )}
           {pending?.map((item) =>
-            <li className="items-center justify-between w-full p-6 mb-4 transition duration-500 ease-in-out transform select-none bg-primary-lightest md:flex hover:-translate-y-1 rounded-2xl hover:shadow-xl" key={item.pk}>
+            <li className="items-center justify-between w-full p-6 mb-4 transition duration-500 ease-in-out transform select-none bg-primary-lightest md:flex hover:-translate-y-1 rounded-2xl hover:shadow-xl" key={item.job.pk}>
               <div className="mb-2 md:mb-0">
-                <h2 className='text-lg font-bold text-primary'>{item.title}</h2>
-                <p>Company : {item.company_name}</p>
+                <h2 className='text-lg font-bold text-primary'>{item.job.title}</h2>
+                <p>Company : {item.job.company_name}</p>
               </div>
 
               <div className="mb-2 md:mb-0">
-                <p className="">Country: {item.country}</p>
-                <p className="">State: {item.state}</p>
+                <p className="">Country: {item.job.country}</p>
+                <p className="">State: {item.job.state}</p>
               </div>
               <div className="mb-2 md:mb-0">
                 <p className="">Expected Salary: </p>
-                <p>{item.expected_salary || "N/A"}</p>
+                <p>{item.job.expected_salary || "N/A"}</p>
               </div>
               <div className="mb-2 md:mb-0">
-                <p className="">Date posted: {new Date(item.created_date).toLocaleDateString()}</p>
-                <p className="">Deadline:{new Date(item.closing_date).toLocaleDateString()}</p>
+                <p className="">Date posted: {new Date(item.job.created_date).toLocaleDateString()}</p>
               </div>
 
               <div className="mb-2 md:mb-0">
-                <Link to={"/employer/jobdetails/" + item.pk}
+                <Link to={"/employer/jobdetails/" + item.job.pk}
                   className="inline-flex items-center justify-center px-4 py-2 mr-1 text-center text-white rounded-md w-max text-bold bg-primary md:mt-0 md:ml-8 hover:-translate-y-8 hover:shadow-lg">
                   view details
-                </Link>
-
-                <Link to={`/employer/pendingjobs/${item.pk}/${item.title}`}
-                  className="inline-flex items-center justify-center px-4 py-2 mr-1 text-center border rounded-md text-warning w-max text-bold border-warning md:mt-0 md:ml-8 hover:-translate-y-8 hover:shadow-lg">
-                  view applications
                 </Link>
               </div>
             </li>
@@ -198,34 +185,28 @@ const UserNotificationPage = () => {
             </div>
           )}
           {rejected?.map((item) =>
-            <li className="items-center justify-between w-full p-6 mb-4 transition duration-500 ease-in-out transform select-none bg-primary-lightest md:flex hover:-translate-y-1 rounded-2xl hover:shadow-xl" key={item.pk}>
+            <li className="items-center justify-between w-full p-6 mb-4 transition duration-500 ease-in-out transform select-none bg-primary-lightest md:flex hover:-translate-y-1 rounded-2xl hover:shadow-xl" key={item.job.pk}>
               <div className="mb-2 md:mb-0">
-                <h2 className='text-lg font-bold text-primary'>{item.title}</h2>
-                <p>Company : {item.company_name}</p>
+                <h2 className='text-lg font-bold text-primary'>{item.job.title}</h2>
+                <p>Company : {item.job.company_name}</p>
               </div>
 
               <div className="mb-2 md:mb-0">
-                <p className="">Country: {item.country}</p>
-                <p className="">State: {item.state}</p>
+                <p className="">Country: {item.job.country}</p>
+                <p className="">State: {item.job.state}</p>
               </div>
               <div className="mb-2 md:mb-0">
                 <p className="">Expected Salary: </p>
-                <p>{item.expected_salary || "N/A"}</p>
+                <p>{item.job.expected_salary || "N/A"}</p>
               </div>
               <div className="mb-2 md:mb-0">
-                <p className="">Date posted: {new Date(item.created_date).toLocaleDateString()}</p>
-                <p className="">Deadline:{new Date(item.closing_date).toLocaleDateString()}</p>
+                <p className="">Date posted: {new Date(item.job.created_date).toLocaleDateString()}</p>
               </div>
 
               <div className="mb-2 md:mb-0">
-                <Link to={"/employer/jobdetails/" + item.pk}
+                <Link to={"/employer/jobdetails/" + item.job.pk}
                   className="inline-flex items-center justify-center px-4 py-2 mr-1 text-center text-white rounded-md w-max text-bold bg-primary md:mt-0 md:ml-8 hover:-translate-y-8 hover:shadow-lg">
                   view details
-                </Link>
-
-                <Link to={`/employer/pendingjobs/${item.pk}/${item.title}`}
-                  className="inline-flex items-center justify-center px-4 py-2 mr-1 text-center border rounded-md text-warning w-max text-bold border-warning md:mt-0 md:ml-8 hover:-translate-y-8 hover:shadow-lg">
-                  view applications
                 </Link>
               </div>
             </li>
