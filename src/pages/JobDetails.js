@@ -6,6 +6,7 @@ import { Loader } from 'components';
 import { useParams, Link, useHistory } from 'react-router-dom';
 import { useUserContext } from './UserContext';
 import { setAuthHeaders } from 'services/auth.service';
+import { FiArrowLeftCircle } from 'react-icons/fi';
 
 const Container = tw.div`w-full text-gray-800 bg-white p-8 md:p-12`;
 const Header = tw.div`text-center md:h-64 md:relative bg-green-100 p-8 rounded-lg`;
@@ -83,12 +84,18 @@ const JobDetails = () => {
             });
     }
 
-    if (loading) return <Loader className="bg-white text-gray-600" />;
+    if (loading) return <Loader className="text-gray-600 bg-white" />;
 
     return (
         <>
-            
+
             <Container>
+
+                {(state.key && pk) && (
+                    <div className="flex items-center mb-2 cursor-pointer" onClick={() => history.goBack()}>
+                        <FiArrowLeftCircle size={24} /> &nbsp; Back
+                    </div>
+                )}
                 <Header>
                     <Heading>Job Details</Heading>
                     <Description tw="my-4 text-xl">{details?.title || "not provided"}</Description>
@@ -136,7 +143,7 @@ const JobDetails = () => {
                     <ButtonLink to="/login">Login To Apply</ButtonLink>
                 )}
             </Container>
-            
+
         </>
     )
 }

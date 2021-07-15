@@ -19,8 +19,8 @@ const Heading = tw.h1`text-2xl font-bold text-primary`;
 const Input = tw.input`border border-primary w-full my-2 p-1.5 px-8 rounded-md bg-opacity-90 hocus:outline-none focus:ring-primary focus:border-primary`;
 const JobContainer = tw.div`w-11/12 shadow-lg rounded bg-white mx-auto p-8`
 const JobLi = tw(Link)` block w-full md:w-5/12  mb-12  p-14 border  text-center   rounded-md mt-2`;
-const ButtonNewJobs = tw.button`inline-flex shadow-md mx-2 bg-primary items-center justify-center text-white border border-primary text-center text-sm p-2 hover:bg-transparent hover:text-primary hover:border hover:border-primary`;
-const ButtonRefresh = tw.button`inline-flex shadow-md mx-2 bg-transparent items-center justify-center text-primary border border-primary text-center text-sm p-2 hover:bg-primary hover:text-white `;
+const ButtonNewJobs = tw.button`inline-flex shadow rounded-md mx-2 bg-primary items-center justify-center text-white border border-primary text-center text-sm p-2 hover:bg-transparent hover:text-primary hover:border hover:border-primary`;
+const ButtonRefresh = tw.button`inline-flex shadow rounded-md mx-2 bg-transparent items-center justify-center text-primary border border-primary text-center text-sm p-2 hover:bg-primary hover:text-white `;
 const Label = tw.label`block text-sm`;
 const TextArea = tw.textarea`w-full rounded mt-2 mb-2 hocus:outline-none focus:ring-green-600 focus:border-green-600`;
 const ErrorMessage = tw.p`text-sm text-red-500 mb-2`;
@@ -38,6 +38,8 @@ const JobSchema = yup.object().shape({
     title: yup.string().required('Title is Required'),
     description: yup.string().required('Please provide a job description'),
     experience_level: yup.string(),
+    expected_salary: yup.string().required('Please enter an expected salary'),
+    closing_date: yup.string().required('Please Enter a closing date')
 });
 
 
@@ -48,6 +50,7 @@ const EmployerDashboard = () => {
     const { total_jobs_posted, expired_jobs } = notifications;
     const [loading, setLoading] = useState(false);
     const [isShown, setIsShown] = useState(false);
+
 
     useEffect(() => {
 
@@ -90,12 +93,15 @@ const EmployerDashboard = () => {
     });
 
     const handleCreateJob = (data) => {
+
         setLoading(true)
+        data.closing_date = (new Date(data.closing_date).toISOString());
         setAuthHeaders(state)
         createJob(data)
             .then(response => {
                 toast.success("Job posted succesfully");
-                setIsShown(false)
+                setIsShown(false);
+                handleRefresh();
                 setLoading(false);
             })
             .catch(error => {
@@ -221,6 +227,8 @@ const EmployerDashboard = () => {
                             />
                             {errors.company_number && <ErrorMessage>{errors.company_number.message}</ErrorMessage>}
 
+
+
                             <Label>Company Email</Label>
                             <Input
                                 type="email"
@@ -244,7 +252,6 @@ const EmployerDashboard = () => {
                                 placeholder="job title"
                                 {...register("title")}
                             />
-                            {errors.title && <ErrorMessage>{errors.title.message}</ErrorMessage>}
 
                             <Label>Description</Label>
                             <TextArea
@@ -263,6 +270,7 @@ const EmployerDashboard = () => {
 
                             <Label>State</Label>
                             <Input
+
                                 type="text"
                                 placeholder="State"
                                 {...register("state")}
@@ -289,8 +297,17 @@ const EmployerDashboard = () => {
                             <Input
                                 type="number"
                                 placeholder="250000"
+                                {...register("expected_salary")}
                             />
                             {errors.expected_salary && <ErrorMessage>{errors.expected_salary.message}</ErrorMessage>}
+
+                            <Label>Closing Date</Label>
+                            <Input
+                                type="date"
+                                defaultValue={new Date()}
+                                {...register("closing_date")}
+                            />
+                            {errors.closing_date && <ErrorMessage>{errors.closing_date.message}</ErrorMessage>}
                         </div>
 
                         <SubmitButton type="submit"> Post Job</SubmitButton>

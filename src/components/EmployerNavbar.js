@@ -26,7 +26,7 @@ const EmployerNavbar = () => {
                     <Brand src={logo} alt="DevJobs logo" />
                 </Link>
                 <Nav>
-                    <NavLink to="/home" tw="text-primary">
+                    <NavLink to="/home">
                         <FiGrid
                             size={18}
                             className="mr-2"

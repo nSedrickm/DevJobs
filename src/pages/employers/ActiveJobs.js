@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { setAuthHeaders } from 'services/auth.service';
-import { getEmployerDashboard, createJob } from "services/api.service";
+import { getEmployerDashboard, createJob, deleteJob } from "services/api.service";
 import { useUserContext } from 'pages/UserContext';
 import { Dialog } from "evergreen-ui";
 import { Loader } from 'components';
@@ -16,10 +16,10 @@ import { Loader } from 'components';
 const Container = tw.div`w-full h-full pb-24 text-gray-800 bg-primary-lightest`;
 const Header = tw.div`mx-auto flex flex-col md:flex-row items-center justify-center md:justify-between mb-10 md:relative p-8 `;
 const Heading = tw.h1`text-2xl font-bold text-primary`;
-const ButtonActive = tw.button`inline-flex mx-2 bg-transparent items-center justify-center font-bold text-primary border border-primary text-center text-sm px-4 py-2 shadow-md hover:bg-primary hover:text-white `;
-const ButtonExpired = tw.button`inline-flex mx-2 bg-transparent items-center justify-center font-bold text-danger text-center text-sm px-4 py-2 shadow-md bg-danger-light `;
-const ButtonNewJobs = tw.button`inline-flex shadow-md mx-2 bg-primary items-center justify-center text-white border border-primary text-center text-sm p-2 hover:bg-transparent hover:text-primary hover:border hover:border-primary`;
-const ButtonRefresh = tw.button`inline-flex shadow-md mx-2 bg-transparent items-center justify-center text-primary border border-primary text-center text-sm p-2 hover:bg-primary hover:text-white `;
+const ButtonActive = tw.button`inline-flex rounded-md mx-2 bg-transparent items-center justify-center font-bold text-primary border border-primary text-center text-sm px-4 py-2 shadow hocus:bg-primary hocus:text-white `;
+const ButtonNewJobs = tw.button`inline-flex rounded-md mx-2 bg-transparent items-center justify-center font-bold text-primary border border-primary text-center text-sm px-4 py-2 shadow hocus:bg-primary hocus:text-white `;
+const ButtonExpired = tw.button`inline-flex rounded-md mx-2 bg-transparent items-center justify-center font-bold text-danger border border-danger text-center text-sm px-4 py-2 shadow hocus:bg-danger hocus:text-white`;
+const ButtonRefresh = tw.button`inline-flex shadow rounded-md mx-2 bg-transparent items-center justify-center text-primary border border-primary text-center text-sm p-2 hover:bg-primary hover:text-white `;
 const Input = tw.input`border border-primary w-full my-2 p-1.5 px-8 rounded-md bg-opacity-90 hocus:outline-none focus:ring-primary focus:border-primary`;
 const Label = tw.label`block text-sm`;
 const TextArea = tw.textarea`w-full rounded mt-2 mb-2 hocus:outline-none focus:ring-green-600 focus:border-green-600`;
@@ -38,6 +38,8 @@ const JobSchema = yup.object().shape({
   title: yup.string().required('Title is Required'),
   description: yup.string().required('Please provide a job description'),
   experience_level: yup.string(),
+  expected_salary: yup.string().required('Please enter an expected salary'),
+  closing_date: yup.string().required('Please Enter a closing date')
 });
 
 const ActiveJobs = () => {
@@ -59,12 +61,42 @@ const ActiveJobs = () => {
 
   const handleCreateJob = (data) => {
     setLoading(true)
+    data.closing_date = (new Date(data.closing_date).toISOString());
     setAuthHeaders(state)
     createJob(data)
       .then(response => {
         toast.success("Job posted succesfully");
         setIsShown(false)
-        getEmployerDashboard();
+        handleRefresh();
+        setLoading(false);
+      })
+      .catch(error => {
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          toast.error("An error occurred Please check your network and try again");
+
+        } else if (error.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http16000.ClientRequest in node.js
+          toast.error("An error occurred Please check your network and try again");
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          toast.error("An error occurred Please check your network and try again");
+        }
+        setLoading(false);
+
+      });
+  }
+
+  const handleDeleteJob = (pk) => {
+    setLoading(true)
+    setAuthHeaders(state);
+    deleteJob(pk)
+      .then(response => {
+        toast.success("Job deleted succesfully");
+        handleRefresh();
         setLoading(false);
       })
       .catch(error => {
@@ -160,12 +192,12 @@ const ActiveJobs = () => {
 
               <div className="mb-2 md:mb-0">
                 <Link to={"/employer/jobdetails/" + item.pk}
-                  className="inline-flex items-center justify-center px-4 py-2 mr-1 text-center text-white rounded-md w-max text-bold bg-primary md:mt-0 md:ml-8 hover:-translate-y-8 hover:shadow-lg">
+                  className="inline-flex items-center justify-center px-4 py-2 mr-1 text-center text-white rounded-md w-max text-bold bg-primary md:mt-0 md:ml-8 hover:-translate-y-8">
                   view details
                 </Link>
 
-                <Link to={`/employer/pendingjobs/${item.pk}/${item.title}`}
-                  className="inline-flex items-center justify-center px-4 py-2 mr-1 text-center border rounded-md text-warning w-max text-bold border-warning md:mt-0 md:ml-8 hover:-translate-y-8 hover:shadow-lg">
+                <Link to={`/employer/pendingjobs?pk=${item.pk}&title=${item.title}`}
+                  className="inline-flex items-center justify-center px-4 py-2 mr-1 text-center border rounded-md text-warning w-max text-bold border-warning md:mt-0 md:ml-8 hover:-translate-y-8">
                   view applications
                 </Link>
               </div>
@@ -198,6 +230,7 @@ const ActiveJobs = () => {
 
               <div className="mb-2 md:mb-0">
                 <button
+                  onClick={() => handleDeleteJob(item.pk)}
                   className="inline-flex items-center justify-center px-4 py-2 mr-1 text-center text-white rounded-md w-max text-bold bg-danger md:mt-0 md:ml-8 hover:-translate-y-8 hover:shadow-lg">
                   delete
                 </button>
@@ -308,8 +341,17 @@ const ActiveJobs = () => {
               <Input
                 type="number"
                 placeholder="250000"
+                {...register("expected_salary")}
               />
               {errors.expected_salary && <ErrorMessage>{errors.expected_salary.message}</ErrorMessage>}
+
+              <Label>Closing Date</Label>
+              <Input
+                type="date"
+                defaultValue={new Date()}
+                {...register("closing_date")}
+              />
+              {errors.closing_date && <ErrorMessage>{errors.closing_date.message}</ErrorMessage>}
             </div>
 
             <SubmitButton type="submit"> Post Job</SubmitButton>
