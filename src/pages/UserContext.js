@@ -6,7 +6,8 @@ import { getUserProfile, getEmployerProfile, setAuthHeaders } from "services/aut
 import toast from "react-hot-toast";
 import LogInPage from "pages/LogInPage";
 import SignUpPage from "pages/SignUpPage";
-import LandingPage from "pages/LandingPage";
+// import LandingPage from "pages/LandingPage";
+import LandingPage2 from "pages/LandingPage2";
 import HomePage from "pages/users/HomePage";
 import UserRegistrationPage from "pages/users/UserRegistrationPage";
 import EmployerRegistrationPage from "pages/employers/EmployerRegistrationPage";
@@ -194,7 +195,7 @@ const DefaultRoutes = () => {
 
             <Switch>
                 <Route exact path="/">
-                    {state.isAuthorized === Authorized ? <Redirect to="/home" /> : <LandingPage />}
+                    {state.isAuthorized === Authorized ? <Redirect to="/home" /> : <LandingPage2 />}
                 </Route>
 
                 <Route exact path="/job/details/:pk">
