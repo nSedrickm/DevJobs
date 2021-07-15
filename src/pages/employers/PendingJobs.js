@@ -2,12 +2,11 @@ import React, { useState, useEffect } from 'react';
 import tw from "twin.macro";
 import toast from "react-hot-toast";
 import { FiAlertCircle, FiArrowLeftCircle, FiUser } from "react-icons/fi";
-import { Link, useHistory, useParams } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import { Loader } from "components";
 import { getApplications } from 'services/api.service';
 import { setAuthHeaders } from 'services/auth.service';
 import { useUserContext } from 'pages/UserContext';
-
 
 const Container = tw.div`w-full h-full pb-24 text-gray-800 bg-primary-lightest h-full`;
 const Header = tw.div`mx-auto flex flex-col md:flex-row items-center justify-center md:justify-between mb-10 md:relative p-8 `;
@@ -23,7 +22,9 @@ const PendingJobs = () => {
     const [details, setdetails] = useState({})
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(0);
-    const { pk, title } = useParams()
+    const query = new URLSearchParams(useLocation().search);
+    const pk = query.get("pk");
+    const title = query.get("title");
     const history = useHistory();
 
     useEffect(() => {
@@ -164,7 +165,7 @@ const PendingJobs = () => {
                                                         </td>
 
                                                         <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
-                                                            <Link to={`/employer/applicant/${item.pk}/${details[0].job}`} className="whitespace-no-wrap text-primary">
+                                                            <Link to={`/employer/applicant?user_id=${item.pk}&job_id=${details[0].job}`} className="whitespace-no-wrap text-primary">
                                                                 See profile
                                                             </Link>
                                                         </td>

@@ -192,12 +192,12 @@ const ActiveJobs = () => {
 
               <div className="mb-2 md:mb-0">
                 <Link to={"/employer/jobdetails/" + item.pk}
-                  className="inline-flex items-center justify-center px-4 py-2 mr-1 text-center text-white rounded-md w-max text-bold bg-primary md:mt-0 md:ml-8 hover:-translate-y-8 hover:shadow-lg">
+                  className="inline-flex items-center justify-center px-4 py-2 mr-1 text-center text-white rounded-md w-max text-bold bg-primary md:mt-0 md:ml-8 hover:-translate-y-8">
                   view details
                 </Link>
 
-                <Link to={`/employer/pendingjobs/${item.pk}/${item.title}`}
-                  className="inline-flex items-center justify-center px-4 py-2 mr-1 text-center border rounded-md text-warning w-max text-bold border-warning md:mt-0 md:ml-8 hover:-translate-y-8 hover:shadow-lg">
+                <Link to={`/employer/pendingjobs?pk=${item.pk}&title=${item.title}`}
+                  className="inline-flex items-center justify-center px-4 py-2 mr-1 text-center border rounded-md text-warning w-max text-bold border-warning md:mt-0 md:ml-8 hover:-translate-y-8">
                   view applications
                 </Link>
               </div>

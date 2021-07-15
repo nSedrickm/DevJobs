@@ -6,15 +6,16 @@ import { useUserContext } from "pages/UserContext";
 import { Loader } from "components";
 import { setAuthHeaders, getUserProfile } from "services/auth.service";
 import { acceptApplication, rejectApplication } from "services/api.service";
-import { useParams, useHistory } from "react-router-dom";
-
+import { useHistory, useLocation } from "react-router-dom";
 
 const ApplicantProfilePage = () => {
 
     const { state } = useUserContext();
     const [userData, setUserData] = useState();
     const [loading, setLoading] = useState(false);
-    const { user_id, job_id } = useParams()
+    const query = new URLSearchParams(useLocation().search);
+    const user_id = query.get("user_id");
+    const job_id = query.get("job_id");
     const history = useHistory();
 
     useEffect(() => {
