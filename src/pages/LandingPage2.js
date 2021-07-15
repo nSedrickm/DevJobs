@@ -1,32 +1,23 @@
 import React, { useEffect, useReducer } from 'react';
 import tw from "twin.macro";
-import styled from "styled-components";
-import heroBg from "images/hero.svg";
+import jobOfferIllustration from "images/job_offers.svg";
+import postIllustration from "images/post_online.svg";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { getJobs } from "services/api.service";
 import { Loader, EmptyState } from 'components';
-import { useUserContext } from './UserContext';
 import { getLocalJobs, setLocalJobs } from 'services/storage.service';
 import { Pagination } from 'evergreen-ui';
 import { paginateFunc, filterFunc } from 'utils/filters';
+import { BsPeopleCircle } from 'react-icons/bs';
+import { FiSearch, FiUserPlus } from 'react-icons/fi';
 
-const Container = tw.div`w-full text-gray-800 bg-primary-lightest`;
-const Header = styled.header`
-  ${tw`pt-24 text-center bg-white bg-cover md:pt-32 md:h-screen md:relative md:bg-contain md:bg-center`}
-  background-image: url(${heroBg});
-  background-repeat: no-repeat;
-`;
+const Container = tw.div`p-4 w-full text-secondary bg-primary-lightest`;
 const HeaderContent = tw.div`grid place-items-center p-8`;
-const Heading = tw.h1`text-primary text-6xl md:text-8xl font-bold`;
-const Description = tw.p`text-lg my-8 tracking-wide text-gray-700`;
 const ButtonRow = tw.div`mt-4 flex flex-col md:flex-row md:justify-between`;
 const Button = tw(Link)`px-24 py-3 mx-4 rounded-lg font-bold text-primary-lightest mt-5 hover:bg-green-700`;
 const ButtonPrimary = tw(Button)`bg-primary`;
-const ButtonOutline = tw(Button)`border border-primary text-primary hover:bg-green-100`;
-
 const InlineLoader = tw(props => <Loader {...props} />)``;
-
 const JobContainer = tw.div`p-4 sm:p-12 lg:p-20 justify-center grid md:grid-cols-2 lg:grid-cols-3 gap-6 place-items-center place-content-center`;
 const JobNav = tw.nav`px-4 sm:px-8 pt-20 pb-10 lg:px-20 text-center md:text-left flex flex-col items-center justify-center lg:flex-row lg:justify-between`;
 const JobNavTitle = tw.h2`font-bold text-3xl mb-8 lg:mb-0`;
@@ -91,9 +82,8 @@ function reducer(state, action) {
     }
 }
 
-const LandingPage = () => {
+const LandingPage2 = () => {
 
-    const { state } = useUserContext();
     const [lstate, ldispatch] = useReducer(reducer, initialState);
     const { jobs, page, pageItems, loading, active } = lstate;
 
@@ -160,19 +150,54 @@ const LandingPage = () => {
 
     return (
         <Container>
-            {!state.key && (
-                <Header>
-                    <HeaderContent>
-                        <Heading>DevJobs</Heading>
-                        <Description>&lt; Ctrl + F Developer Jobs Faster / &gt;</Description>
-                        <ButtonRow>
-                            <ButtonOutline to="/login">Log In</ButtonOutline>
-                            <ButtonPrimary to="/signup">Sign Up</ButtonPrimary>
-                        </ButtonRow>
-                        <p tw="my-8 text-gray-500">You need to have an account to register/post jobs</p>
-                    </HeaderContent>
-                </Header>
-            )}
+            <div className="flex flex-col justify-between p-4 bg-cover sm:p-12 lg:p-20 md:relative md:bg-contain md:bg-center md:flex-row">
+                <div className="w-full mb-4 md:w-1/2 md:mb-0">
+                    <h1 className="text-3xl font-bold leading-normal tracking-wide text-primary">Job Opportunities <span className="text-secondary">For</span></h1>
+                    <h1 className="text-3xl font-bold leading-normal tracking-wide text-primary">Developers <span className="text-secondary">Accross The Globe</span></h1>
+                    <p className="my-8 text-lg leading-relaxed tracking-normal">
+                        Finding your dream job as a developer just got easier. We curate and deliver top  jobs ifor developers across the globe straight to your inbox.
+                    </p>
+                </div>
+                <img
+                    src={jobOfferIllustration}
+                    alt="job offer illustration"
+                    className="h-80 md:w-1/2 "
+                />
+            </div>
+
+            <div className="my-4">
+
+                <h2 tw="text-primary text-3xl font-bold text-center tracking-wide leading-normal">How We Work</h2>
+
+                <JobContainer tw="lg:py-12">
+                    <JobCard tw="text-center text-secondary h-60">
+                        <JobCardBody>
+                            <JobCardTitle tw="my-8 text-lg text-primary inline-flex justify-center items-center">
+                                <BsPeopleCircle size={24} /> &nbsp; Create Account
+                            </JobCardTitle>
+                            <p>First, you have to <Link tw="text-primary" to="/signup">create an account</Link> with Devjobs to search for Jobs.</p>
+                        </JobCardBody>
+                    </JobCard>
+
+                    <JobCard tw="text-center text-secondary h-60">
+                        <JobCardBody>
+                            <JobCardTitle tw="my-8 text-lg text-primary inline-flex justify-center items-center">
+                                <FiSearch size={24} /> &nbsp; Search For Jobs
+                            </JobCardTitle>
+                            <p><span tw="text-primary">Search</span> among the available <span tw="text-primary">jobs</span> for your dream job </p>
+                        </JobCardBody>
+                    </JobCard>
+
+                    <JobCard tw="text-center text-secondary h-60">
+                        <JobCardBody>
+                            <JobCardTitle tw="my-8 text-lg text-primary inline-flex justify-center items-center">
+                                <FiUserPlus size={24} /> &nbsp; Apply For Jobs</JobCardTitle>
+                            <p><span tw="text-primary">Apply</span> for jobs with just <span tw="text-primary">two clicks </span> and enjoy your dream job </p>
+                        </JobCardBody>
+                    </JobCard>
+                </JobContainer>
+
+            </div>
 
             <JobNav>
                 <JobNavTitle>Posted Jobs</JobNavTitle>
@@ -276,15 +301,33 @@ const LandingPage = () => {
             )}
 
             <HeaderContent tw="py-20 text-center">
-                <h4 tw="text-gray-500 text-2xl font-bold">To see And Post Jobs</h4>
+                <h4 tw="text-gray-500 text-xl font-bold">To see And Post More Job Offers</h4>
                 <ButtonRow>
-                    <ButtonOutline to="/login">Log In</ButtonOutline>
                     <ButtonPrimary to="/signup">Sign Up</ButtonPrimary>
                 </ButtonRow>
-                <p tw="my-8 text-gray-500">You need to have an account to register/post jobs</p>
+                <p tw="my-8 text-gray-500">Already Have An Account? <Link tw="text-primary" to="/login">Sign In Here</Link></p>
             </HeaderContent>
+
+            <Divider />
+
+            <div className="flex flex-col justify-center p-4 bg-cover sm:p-12 lg:p-20 md:relative md:bg-contain md:bg-center md:flex-row">
+                <img
+                    src={postIllustration}
+                    alt="job offer illustration"
+                    className=""
+                />
+                <div className="mx-8 mt-24 md:mb-0">
+                    <h1 className="text-3xl font-bold leading-normal tracking-wide">Are You <span className="text-primary">In Search Of A Developer</span></h1>
+                    <h1 className="text-3xl font-bold leading-normal tracking-wide">To Recruit For Your Company</h1>
+                    <p className="my-8 text-lg leading-relaxed tracking-wide">
+                        <span className="text-primary">Devjobs</span> has made it easier for <span className="text-primary">recruiter</span> to hire <span className="text-primary">developers</span>
+                    </p>
+                    <ButtonPrimary tw="mx-0" to="/signup">Sign Up</ButtonPrimary>
+                </div>
+
+            </div>
         </Container>
     )
 }
 
-export default LandingPage;
+export default LandingPage2;

@@ -11,7 +11,7 @@ import { setAuthHeaders } from 'services/auth.service';
 import { getEmployerDashboard, createJob, deleteJob } from "services/api.service";
 import { useUserContext } from 'pages/UserContext';
 import { Dialog } from "evergreen-ui";
-import { Loader } from 'components';
+import { Loader, EmptyState } from 'components';
 
 const Container = tw.div`w-full h-full pb-24 text-gray-800 bg-primary-lightest`;
 const Header = tw.div`mx-auto flex flex-col md:flex-row items-center justify-center md:justify-between mb-10 md:relative p-8 `;
@@ -170,6 +170,9 @@ const ActiveJobs = () => {
 
       {page === 0 && (
         <ul className="p-4 bg-green-100 md:p-24">
+
+          {!job?.length && <EmptyState onClick={() => handleRefresh()} message="No Active Jobs" />}
+
           {job?.map((item) =>
             <li className="items-center justify-between w-full p-6 mb-4 transition duration-500 ease-in-out transform select-none bg-primary-lightest md:flex hover:-translate-y-1 rounded-2xl hover:shadow-xl" key={item.pk}>
               <div className="mb-2 md:mb-0">
@@ -208,6 +211,9 @@ const ActiveJobs = () => {
 
       {page === 2 && (
         <ul className="p-4 bg-red-100 md:p-24">
+
+          {!job?.length && <EmptyState onClick={() => handleRefresh()} message="No Expired Jobs" />}
+
           {job?.map((item) =>
             <li className="items-center justify-between w-full p-6 mb-4 transition duration-500 ease-in-out transform select-none bg-primary-lightest md:flex hover:-translate-y-1 rounded-2xl hover:shadow-xl" key={item.pk}>
               <div className="mb-2 md:mb-0">

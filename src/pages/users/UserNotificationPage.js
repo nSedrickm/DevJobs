@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import toast from "react-hot-toast";
-import tw from "twin.macro";
 import { Link } from "react-router-dom";
 import { FiBell } from "react-icons/fi";
 import { setAuthHeaders } from 'services/auth.service';
 import { getNotifications } from "services/api.service";
 import { useUserContext } from 'pages/UserContext';
-import { Loader } from 'components';
-
-const RefreshButton = tw.button`px-12 py-3 mx-auto rounded-lg font-bold text-primary-lightest mt-5 bg-green-700`;
+import { Loader, EmptyState } from 'components';
 
 const UserNotificationPage = () => {
 
@@ -92,14 +89,9 @@ const UserNotificationPage = () => {
         <h3 className="my-4 text-xl font-bold ">Applied Jobs</h3>
 
         <ul className="">
-          {!applied?.length && (
-            <div tw="h-20 bg-white m-4 sm:m-12 lg:mx-20  grid place-items-center text-center">
-              <div>
-                <p tw="text-2xl mx-auto mb-2 font-bold text-secondary-lightest">Sorry there are no available jobs for this period</p>
-                <RefreshButton onClick={() => handleRefresh()}>Refresh</RefreshButton>
-              </div>
-            </div>
-          )}
+
+          {!applied?.length && <EmptyState onClick={() => handleRefresh()} />}
+
           {applied?.map((item) =>
             <li className="items-center justify-between w-full p-6 mb-4 transition duration-500 ease-in-out transform select-none bg-primary-lightest md:flex hover:-translate-y-1 rounded-2xl hover:shadow-xl" key={item.job.pk}>
               <div className="mb-2 md:mb-0">
@@ -134,14 +126,9 @@ const UserNotificationPage = () => {
         <h3 className="my-4 text-xl font-bold ">Pending Jobs</h3>
 
         <ul className="">
-          {!pending?.length && (
-            <div tw="h-20 bg-white m-4 sm:m-12 lg:mx-20  grid place-items-center text-center">
-              <div>
-                <p tw="text-2xl mx-auto mb-2 font-bold text-secondary-lightest">Sorry there are no available jobs for this period</p>
-                <RefreshButton onClick={() => handleRefresh()}>Refresh</RefreshButton>
-              </div>
-            </div>
-          )}
+
+          {!pending?.length && <EmptyState onClick={() => handleRefresh()} />}
+
           {pending?.map((item) =>
             <li className="items-center justify-between w-full p-6 mb-4 transition duration-500 ease-in-out transform select-none bg-primary-lightest md:flex hover:-translate-y-1 rounded-2xl hover:shadow-xl" key={item.job.pk}>
               <div className="mb-2 md:mb-0">
@@ -176,14 +163,9 @@ const UserNotificationPage = () => {
         <h3 className="my-4 text-xl font-bold ">Decline Jobs</h3>
 
         <ul className="">
-          {!rejected?.length && (
-            <div tw="h-20 bg-white m-4 sm:m-12 lg:mx-20  grid place-items-center text-center">
-              <div>
-                <p tw="text-2xl mx-auto mb-2 font-bold text-secondary-lightest">Sorry there are no available jobs for this period</p>
-                <RefreshButton onClick={() => handleRefresh()}>Refresh</RefreshButton>
-              </div>
-            </div>
-          )}
+
+          {!rejected?.length && <EmptyState onClick={() => handleRefresh()} />}
+
           {rejected?.map((item) =>
             <li className="items-center justify-between w-full p-6 mb-4 transition duration-500 ease-in-out transform select-none bg-primary-lightest md:flex hover:-translate-y-1 rounded-2xl hover:shadow-xl" key={item.job.pk}>
               <div className="mb-2 md:mb-0">

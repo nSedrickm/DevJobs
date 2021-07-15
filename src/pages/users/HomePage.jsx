@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { getJobs } from "services/api.service";
 import { FiArrowRightCircle } from 'react-icons/fi';
-import { Loader} from 'components';
+import { Loader, EmptyState } from 'components';
 import { getLocalJobs, setLocalJobs } from 'services/storage.service';
 import { Pagination } from 'evergreen-ui';
 import { paginateFunc, filterFunc } from 'utils/filters';
@@ -22,7 +22,6 @@ const JobCardBody = tw.div`mb-4`;
 const JobMeta = tw.div`text-sm lg:text-base py-2`;
 const DetailsButton = tw(Link)`block text-center w-full p-2 sm:py-1.5 rounded font-bold text-sm border border-primary bg-primary hocus:bg-green-700 text-primary-lightest mb-3`;
 const Divider = tw.hr`mx-20 border-gray-300`;
-const RefreshButton = tw.button`px-12 py-3 mx-auto rounded-lg font-bold text-primary-lightest mt-5 bg-green-700`;
 
 let cachedJobs = getLocalJobs();
 
@@ -199,14 +198,7 @@ const LandingPage = () => {
                 <InlineLoader tw="h-96 bg-white m-4 sm:m-12 lg:m-20 shadow-lg rounded-md" />
             ) : (
                 <>
-                    {pageItems?.length === 0 && (
-                        <div tw="h-96 bg-white m-4 sm:m-12 lg:mx-20 shadow-lg rounded-md grid place-items-center text-center">
-                            <div>
-                                <p tw="text-2xl mx-auto mb-2 font-bold text-secondary-lightest">Sorry there are no available jobs for this period</p>
-                                <RefreshButton onClick={() => handleRefresh()}>Refresh</RefreshButton>
-                            </div>
-                        </div>
-                    )}
+                    {!pageItems?.length && <EmptyState onClick={() => handleRefresh()} message="No Active Jobs For this period" />}
 
                     {pageItems?.length > 0 && (
                         <JobContainer>

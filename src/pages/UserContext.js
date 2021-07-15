@@ -6,7 +6,8 @@ import { getUserProfile, getEmployerProfile, setAuthHeaders } from "services/aut
 import toast from "react-hot-toast";
 import LogInPage from "pages/LogInPage";
 import SignUpPage from "pages/SignUpPage";
-import LandingPage from "pages/LandingPage";
+// import LandingPage from "pages/LandingPage";
+import LandingPage2 from "pages/LandingPage2";
 import HomePage from "pages/users/HomePage";
 import UserRegistrationPage from "pages/users/UserRegistrationPage";
 import EmployerRegistrationPage from "pages/employers/EmployerRegistrationPage";
@@ -22,6 +23,7 @@ import AcceptedJobs from "pages/employers/AcceptedJobs";
 import EmployerJobDetails from "pages/employers/EmployerJobDetails";
 import ApplicantProfilePage from "pages/employers/ApplicantProfilePage";
 import UserNotificationPage from "pages/users/UserNotificationPage";
+import NotFoundPage from "pages/NotFoundPage";
 
 
 const UserContext = createContext();
@@ -194,7 +196,7 @@ const DefaultRoutes = () => {
 
             <Switch>
                 <Route exact path="/">
-                    {state.isAuthorized === Authorized ? <Redirect to="/home" /> : <LandingPage />}
+                    {state.isAuthorized === Authorized ? <Redirect to="/home" /> : <LandingPage2 />}
                 </Route>
 
                 <Route exact path="/job/details/:pk">
@@ -231,8 +233,8 @@ const DefaultRoutes = () => {
                 </Route>
 
                 <Route>
-                    {/* Redirect users to login if they hit a missing route*/}
-                    <Redirect to="/login" />
+                    {/* show 404 if user hits a missing route*/}
+                    <NotFoundPage />
                 </Route>
             </Switch>
 
@@ -263,6 +265,11 @@ const UserRoutes = () => {
 
                 <Route exact path="/users/notifications">
                     {state.isAuthorized === Authorized && !state.isEmployer ? <UserNotificationPage /> : <Redirect to="/login" />}
+                </Route>
+
+                <Route>
+                    {/* show 404 if user hits a missing route*/}
+                    <NotFoundPage />
                 </Route>
 
             </Switch>
@@ -314,6 +321,11 @@ const EmployerRoutes = () => {
 
                 <Route exact path="/employer/applicant">
                     {state.isAuthorized === Authorized && state.isEmployer ? <ApplicantProfilePage /> : <Redirect to="/login" />}
+                </Route>
+
+                <Route>
+                    {/* show 404 if user hits a missing route*/}
+                    <NotFoundPage />
                 </Route>
 
             </Switch>
