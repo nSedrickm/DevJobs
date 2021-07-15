@@ -44,7 +44,7 @@ const reducer = (state, action) => {
 
 const EmployerRegistrationPage = () => {
 
-    const { state } = useUserContext();
+    const { state, handleLogOut } = useUserContext();
 
     const [lstate, dispatch] = useReducer(reducer, {
         stage: 3,
@@ -104,7 +104,8 @@ const EmployerRegistrationPage = () => {
                         <h1 tw="text-3xl text-green-600 mb-4 font-bold">Registration Completed</h1>
                         <p tw="text-base font-medium">Welcome to a better hiring experience</p>
                     </header>
-                    <Link to="/home" tw="block w-2/3 sm:w-1/4 mx-auto p-2 bg-green-600  text-center font-bold text-white rounded-md">Finish</Link>
+                    <Link onClick={() => handleLogOut()}
+                        to="/home" tw="block w-2/3 sm:w-1/4 mx-auto p-2 bg-green-600  text-center font-bold text-white rounded-md">Finish</Link>
                 </div>
             </section>
         )

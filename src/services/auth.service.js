@@ -2,17 +2,16 @@ import axios from 'axios';
 
 let API_URL = process.env.REACT_APP_API_URL;
 axios.defaults.baseURL = API_URL;
-axios.defaults.timeout = 15000;
+axios.defaults.timeout = 60000;
 
 export const setAuthHeaders = ({ key }) => {
     axios.defaults.headers.common['Authorization'] = 'token ' + key;
 }
 
-export const registerUser = ({ username, email, password1, password2 }) => {
+export const registerUser = ({  email, password1, password2 }) => {
     return axios.post(API_URL + "/dj-rest-auth/registration/",
         {
             email: email,
-            username: username,
             password1: password1,
             password2: password2
         }).then(response => response)

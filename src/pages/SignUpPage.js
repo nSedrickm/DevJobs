@@ -16,7 +16,6 @@ const RadioInput = tw.input`border border-green-600 w-6 h-6 mr-4 rounded-full ho
 const ErrorMessage = tw.p`text-sm text-red-500 mb-2`;
 
 const SignupSchema = yup.object().shape({
-    username: yup.string().required('UserName is required'),
     email: yup.string().email().required('Email is required'),
     password1: yup.string().min(8, 'Password must be at least 8 characters').required('Password is required'),
     password2: yup.string().min(8, 'Password must be at least 8 characters').required('Confirm Password is required')
@@ -133,14 +132,6 @@ const SignUpPage = () => {
                         </div> */}
                         <div tw="w-full md:w-2/3 p-4 mx-auto">
                             <form tw="w-5/6 md:w-2/3 mx-auto" onSubmit={handleSubmit(handleSignUp)}>
-                                <Label>User Name</Label>
-                                <Input
-                                    type="text"
-                                    placeholder="johndoe"
-                                    {...register("username")}
-                                />
-                                {errors.username && <ErrorMessage>{errors.username.message}</ErrorMessage>}
-
                                 <Label>Email</Label>
                                 <Input type="email"
                                     placeholder="email@example.com"
