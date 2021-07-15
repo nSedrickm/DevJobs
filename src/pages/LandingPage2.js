@@ -5,7 +5,7 @@ import postIllustration from "images/post_online.svg";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { getJobs } from "services/api.service";
-import { Loader } from 'components';
+import { Loader, EmptyState } from 'components';
 import { getLocalJobs, setLocalJobs } from 'services/storage.service';
 import { Pagination } from 'evergreen-ui';
 import { paginateFunc, filterFunc } from 'utils/filters';
@@ -17,10 +17,7 @@ const HeaderContent = tw.div`grid place-items-center p-8`;
 const ButtonRow = tw.div`mt-4 flex flex-col md:flex-row md:justify-between`;
 const Button = tw(Link)`px-24 py-3 mx-4 rounded-lg font-bold text-primary-lightest mt-5 hover:bg-green-700`;
 const ButtonPrimary = tw(Button)`bg-primary`;
-const RefreshButton = tw.button`px-12 py-3 mx-auto rounded-lg font-bold text-primary-lightest mt-5 bg-green-700`;
-
 const InlineLoader = tw(props => <Loader {...props} />)``;
-
 const JobContainer = tw.div`p-4 sm:p-12 lg:p-20 justify-center grid md:grid-cols-2 lg:grid-cols-3 gap-6 place-items-center place-content-center`;
 const JobNav = tw.nav`px-4 sm:px-8 pt-20 pb-10 lg:px-20 text-center md:text-left flex flex-col items-center justify-center lg:flex-row lg:justify-between`;
 const JobNavTitle = tw.h2`font-bold text-3xl mb-8 lg:mb-0`;
@@ -258,14 +255,7 @@ const LandingPage2 = () => {
                 <InlineLoader tw="h-96 bg-white m-4 sm:m-12 lg:m-20 shadow-lg rounded-md" />
             ) : (
                 <>
-                    {pageItems?.length === 0 && (
-                        <div tw="h-96 bg-white m-4 sm:m-12 lg:mx-20 shadow-lg rounded-md grid place-items-center text-center">
-                            <div>
-                                <p tw="text-2xl mx-auto mb-2 font-bold text-secondary-lightest">Sorry there are no available jobs for this period</p>
-                                <RefreshButton onClick={() => handleRefresh()}>Refresh</RefreshButton>
-                            </div>
-                        </div>
-                    )}
+                    {!pageItems?.length && <EmptyState onClick={() => handleRefresh()}  message="No Active Jobs For this period" />}
 
                     {pageItems?.length > 0 && (
                         <JobContainer>
