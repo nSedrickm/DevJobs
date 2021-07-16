@@ -73,3 +73,7 @@ export const acceptApplication = (pk, user_id) => {
 export const rejectApplication = (pk, user_id) => {
     return axios.post(`${API_URL}/job/reject/?pk=${pk}&user_id=${user_id}`).then(response => response)
 }
+
+export const searchJobs = (search) => {
+    return axios.get(`${API_URL}/job?search=${search}`).then(response => response)
+}
